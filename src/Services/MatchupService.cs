@@ -76,10 +76,8 @@ public class MatchupService : IMatchupService
     {
         var player = _dbContext
             .Players
-            .FirstOrDefault(p => p.PlayerId == playerId);
-
-        if (player == null)
-            throw new PlayerNotFoundException(playerId);
+            .FirstOrDefault(p => p.PlayerId == playerId)
+            ?? throw new PlayerNotFoundException(playerId);
 
         _dbContext.Players.Remove(player);
         _dbContext.SaveChanges();
