@@ -8,15 +8,16 @@ using servartur.Exceptions;
 using servartur.Models;
 using servartur.Enums;
 using servartur.Algorithms;
+using Humanizer;
 
 namespace servartur.Services;
 
 public interface IMatchupService
 {
     int CreatePlayer(CreatePlayerDto dto);
-    RoomDto? GetById(int id);
+    RoomDto? GetRoomById(int roomId);
     int CreateRoom([FromBody] CreateRoomDto dto);
-    void RemovePlayer(int id);
+    void RemovePlayer(int playerId);
     void MakeTeams(int roomId);
 }
 
@@ -43,27 +44,13 @@ public class MatchupService : IMatchupService
         return room.RoomId;
     }
 
-    public RoomDto? GetById(int id)
-    {
-        var room = _dbContext
-            .Rooms
-            .Include(r => r.Players)
-            .FirstOrDefault(r => r.RoomId == id);
-
-        if (room == null) 
-            return null;
-
-        // TODO send also IsFull info
-        var result = _mapper.Map<RoomDto>(room);
-        return result;
-    }
     public int CreatePlayer(CreatePlayerDto dto)
     {
         var room = _dbContext.Rooms.FirstOrDefault(r => r.RoomId == dto.RoomId)
             ?? throw new RoomNotFoundException(dto.RoomId);
         if (room.Status != RoomStatus.Matchup)
             throw new RoomNotInMatchupException(dto.RoomId);
-        if (!PlayerNumberCalculator.IsPlayerCountLessThanMax(room.Players.Count))
+        if (room.Players.Count >= PlayerNumberCalculator.MaxNumberOfPLayers)
             throw new RoomIsFullException(dto.RoomId);
 
         var player = _mapper.Map<Player>(dto);
@@ -76,13 +63,23 @@ public class MatchupService : IMatchupService
     {
         var player = _dbContext
             .Players
-            .FirstOrDefault(p => p.PlayerId == playerId);
-
-        if (player == null)
-            throw new PlayerNotFoundException(playerId);
+            .FirstOrDefault(p => p.PlayerId == playerId)
+            ?? throw new PlayerNotFoundException(playerId);
 
         _dbContext.Players.Remove(player);
         _dbContext.SaveChanges();
+    }
+
+    public RoomDto GetRoomById(int roomId)
+    {
+        var room = _dbContext
+            .Rooms
+            .Include(r => r.Players)
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
+
+        var result = _mapper.Map<RoomDto>(room);
+        return result;
     }
 
     // TODO remove this later in favour of startRoom()

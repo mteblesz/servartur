@@ -25,14 +25,6 @@ public class MatchupController : ControllerBase
         return Created($"/api/rooms/{roomId}", null);
     }
 
-    [HttpGet("{id}")]
-    public ActionResult<RoomDto> GetRoomById([FromRoute] int id)
-    {
-        var room = _matchupService.GetById(id);
-        return room == null ? NotFound() : Ok(room);
-    }
-
-
     [HttpPost("player")]
     public ActionResult CreatePlayer([FromBody] CreatePlayerDto dto)
     {
@@ -40,13 +32,19 @@ public class MatchupController : ControllerBase
         return Created($"/api/rooms/player/{playerId}", null);
     }
 
-    [HttpDelete("player/{id}")]
-    public ActionResult RemovePlayer([FromRoute] int id)
+    [HttpDelete("player/{playerId}")]
+    public ActionResult RemovePlayer([FromRoute] int playerId)
     {
-        _matchupService.RemovePlayer(id);
+        _matchupService.RemovePlayer(playerId);
         return NoContent();
     }
 
+    [HttpGet("{roomId}")]
+    public ActionResult<RoomDto> GetRoomById([FromRoute] int roomId)
+    {
+        var room = _matchupService.GetRoomById(roomId);
+        return Ok(room);
+    }
 
     // TODO add startRoom - assign roles, create first squad and assign leader
     // TODO remove this later in favour of startRoom()
