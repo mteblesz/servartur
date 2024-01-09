@@ -245,7 +245,7 @@ public class MatchupServiceTests
         // Create a mock Player in the database
         var existingPlayerId = 1;
         var existingPlayer = new Player { PlayerId = existingPlayerId };
-        var existingPlayers = new List<Player>() {existingPlayer };
+        var existingPlayers = new List<Player>() { existingPlayer };
         dbContextMock.Setup(db => db.Players).ReturnsDbSet(existingPlayers);
 
         // Act
@@ -277,7 +277,60 @@ public class MatchupServiceTests
         dbContextMock.Verify(db => db.Players.Remove(It.IsAny<Player>()), Times.Never);
         dbContextMock.Verify(db => db.SaveChanges(), Times.Never);
     }
+    #endregion
 
+    #region GetRoomById tests
+    [Fact]
+    public void GetRoomById_ValidRoomId_ReturnsRoomDto()
+    {
+        // Arrange
+        var dbContextMock = new Mock<GameDbContext>(getDbOptions());
+        var loggerMock = new Mock<ILogger<MatchupService>>();
+        var mapperMock = new Mock<IMapper>();
+        var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
+        var roomId = 1;
+        var roomStatus = RoomStatus.Matchup;
+
+        var room = new Room()
+        {
+            RoomId = roomId,
+            Status = roomStatus,
+            Players = new List<Player>()
+        };
+        var expectedRoomDto = new RoomDto
+        {
+            RoomId = roomId,
+            Status = roomStatus.ToString(),
+            IsFull = false, // Adjust based on your specific criteria for IsFull
+            Players = new List<PlayerDto>() // Add players as needed for the test
+        };
+
+        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>() { room });
+        mapperMock.Setup(m => m.Map<RoomDto>(room)).Returns(expectedRoomDto);
+
+        // Act
+        var result = matchupService.GetRoomById(roomId);
+
+        // Assert
+        result.Should().BeEquivalentTo(expectedRoomDto);
+    }
+
+    [Fact]
+    public void GetRoomById_InvalidRoomId_ThrowsRoomNotFoundException()
+    {
+        // Arrange
+        var dbContextMock = new Mock<GameDbContext>(getDbOptions());
+        var loggerMock = new Mock<ILogger<MatchupService>>();
+        var mapperMock = new Mock<IMapper>();
+        var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
+
+        var invalidRoomId = 999;
+        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>());
+
+        // Act and Assert
+        Action action = () => matchupService.GetRoomById(invalidRoomId);
+        Assert.Throws<RoomNotFoundException>(action);
+    }
     #endregion
 }

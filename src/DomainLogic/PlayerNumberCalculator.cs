@@ -4,10 +4,10 @@
 /// </summary>
 public static class PlayerNumberCalculator
 {
-    public static bool IsPlayerCountLessThanMax(int playersCount)
-    => playersCount < 10;
+    public static int MaxNumberOfPLayers { get => 10; }
+    public static int MinNumberOfPLayers { get => 5; }
     public static bool IsPlayerCountValid(int playersCount)
-    => playersCount >= 5 && playersCount <= 10;
+    => playersCount >= MinNumberOfPLayers && playersCount <= MaxNumberOfPLayers;
     public static bool IsQuestNumberValid(int questNumber)
     => questNumber >= 1 && questNumber <= 5;
 

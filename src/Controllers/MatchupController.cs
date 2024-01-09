@@ -28,8 +28,8 @@ public class MatchupController : ControllerBase
     [HttpGet("{id}")]
     public ActionResult<RoomDto> GetRoomById([FromRoute] int id)
     {
-        var room = _matchupService.GetById(id);
-        return room == null ? NotFound() : Ok(room);
+        var room = _matchupService.GetRoomById(id);
+        return Ok(room);
     }
 
 
