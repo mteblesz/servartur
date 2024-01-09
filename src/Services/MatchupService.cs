@@ -15,9 +15,9 @@ namespace servartur.Services;
 public interface IMatchupService
 {
     int CreatePlayer(CreatePlayerDto dto);
-    RoomDto? GetRoomById(int id);
+    RoomDto? GetRoomById(int roomId);
     int CreateRoom([FromBody] CreateRoomDto dto);
-    void RemovePlayer(int id);
+    void RemovePlayer(int playerId);
     void MakeTeams(int roomId);
 }
 
