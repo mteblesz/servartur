@@ -330,14 +330,14 @@ public class MatchupServiceTests
         {
             RoomId = roomId,
             Status = roomStatus,
-            Players = new List<Player>()
+            Players = []
         };
         var expectedRoomDto = new RoomDto
         {
             RoomId = roomId,
             Status = roomStatus.ToString(),
-            IsFull = false, // Adjust based on your specific criteria for IsFull
-            Players = new List<PlayerDto>() // Add players as needed for the test
+            IsFull = false,
+            Players = []
         };
 
         dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>() { room });
