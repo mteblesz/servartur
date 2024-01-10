@@ -53,11 +53,12 @@ public static class GameStartHelper
     }
     public static Squad MakeFirstSquad(Player leader, int playersCount)
     {
-        var firstSquadSize = GameCountsCalculator.GetSquadRequiredSize(playersCount, 1);
+        var questNumber = 1;
+        var firstSquadSize = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber);
         var firstSquad = new Squad()
         {
             Leader = leader,
-            QuestNumber = 1,
+            QuestNumber = questNumber,
             RoundNumber = 1,
             RequiredPlayersNumber = firstSquadSize,
             Status = SquadStatus.SquadVoting,
