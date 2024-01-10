@@ -333,4 +333,8 @@ public class MatchupServiceTests
         Assert.Throws<RoomNotFoundException>(action);
     }
     #endregion
+
+    #region StartGame tests
+        // TODO
+    #endregion
 }

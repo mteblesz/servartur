@@ -46,12 +46,16 @@ public class MatchupController : ControllerBase
         return Ok(room);
     }
 
-    // TODO add startRoom - assign roles, create first squad and assign leader
-    // TODO remove this later in favour of startRoom()
-    [HttpPut("makeTeams/{roomId}")]
-    public ActionResult MakeTeams([FromRoute] int roomId)
-    {    
-        _matchupService.MakeTeams(roomId);
+    [HttpPut("StartGame")]
+    public ActionResult StartGame([FromBody] StartGameDto dto)
+    {
+        // check game rule
+        if (!(dto.AreMerlinAndAssassinInGame) && dto.ArePercivalAreMorganaInGame)
+        {
+            ModelState.AddModelError("", "Morgana and Percival can't be present with Merlin and Assassin missing");
+            return BadRequest(ModelState);
+        }
+        _matchupService.StartGame(dto);
         return NoContent();
     }
 }

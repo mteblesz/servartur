@@ -16,7 +16,7 @@ public class PlayerNumberCalculatorTests
     {
         // Arrange
         // Act
-        var result = PlayerNumberCalculator.GetEvilPlayersNumber(playersCount);
+        var result = GameCountsCalculator.GetEvilPlayersCount(playersCount);
         // Assert
         Assert.Equal(expected, result);
     }
@@ -32,7 +32,7 @@ public class PlayerNumberCalculatorTests
     {
         // Arrange
         // Act
-        Action action = () => PlayerNumberCalculator.GetEvilPlayersNumber(invalidPlayerCount);
+        Action action = () => GameCountsCalculator.GetEvilPlayersCount(invalidPlayerCount);
         // Assert
         Assert.Throws<ArgumentException>(action);
     }
@@ -53,7 +53,7 @@ public class PlayerNumberCalculatorTests
     {
         // Arrange
         // Act
-        var result = PlayerNumberCalculator.GetSquadRequiredSize(playersCount, questNumber);
+        var result = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber);
         // Assert
         Assert.Equal(expected, result);
     }
@@ -67,7 +67,7 @@ public class PlayerNumberCalculatorTests
     {
         // Arrange
         // Act
-        Action action = () => PlayerNumberCalculator.GetSquadRequiredSize(questNumber, playersCount);
+        Action action = () => GameCountsCalculator.GetSquadRequiredSize(questNumber, playersCount);
         // Assert
         Assert.Throws<ArgumentException>(action);
     }

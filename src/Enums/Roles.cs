@@ -12,6 +12,12 @@ public enum Team
 }
 public enum Role
 {
+    [EnumMember(Value = "GoodKnight")]
+    GoodKnight,
+
+    [EnumMember(Value = "EvilEntity")]
+    EvilEntity,
+
     [EnumMember(Value = "Merlin")]
     Merlin,
 
@@ -30,10 +36,15 @@ public enum Role
     [EnumMember(Value = "Oberon")]
     Oberon,
 }
-public static class RoleMapping
+public static class RoleTeamMapping
 {
-    public static readonly Dictionary<Role, Team> Map = new()
+    public static Team Map(Role role) => _dictionary[role];
+
+    private static readonly Dictionary<Role, Team> _dictionary = new()
     {
+        { Role.GoodKnight, Team.Good },
+        { Role.EvilEntity, Team.Evil },
+
         { Role.Merlin, Team.Good },
         { Role.Assassin, Team.Evil },
 

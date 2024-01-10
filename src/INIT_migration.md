@@ -1,3 +1,3 @@
 in Packet Manager Console:
-> add-migration init
+> add-migration Init
 > update-database
