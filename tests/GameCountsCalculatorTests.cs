@@ -2,7 +2,7 @@ using servartur.DomainLogic;
 
 namespace servartur.Tests;
 
-public class PlayerNumberCalculatorTests
+public class GameCountsCalculatorTests
 {
     [Theory]
     [InlineData(5, 2)]
