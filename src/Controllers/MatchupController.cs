@@ -49,10 +49,15 @@ public class MatchupController : ControllerBase
     [HttpPut("StartGame")]
     public ActionResult StartGame([FromBody] StartGameDto dto)
     {
-        // check game rule
+        // check game rules
         if (!(dto.AreMerlinAndAssassinInGame) && dto.ArePercivalAreMorganaInGame)
         {
             ModelState.AddModelError("", "Morgana and Percival can't be present with Merlin and Assassin missing");
+            return BadRequest(ModelState);
+        }
+        if (!(dto.AreMerlinAndAssassinInGame) && dto.AreOberonAndMordredInGame)
+        {
+            ModelState.AddModelError("", "Oberon and Mordred can't be present with Merlin and Assassin missing");
             return BadRequest(ModelState);
         }
         _matchupService.StartGame(dto);
