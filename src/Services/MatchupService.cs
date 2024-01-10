@@ -100,7 +100,7 @@ public class MatchupService : IMatchupService
 
         // Assign roles
         var roleInfo = _mapper.Map<GameStartHelper.RoleInfo>(dto);
-        var roles = GameStartHelper.MakeRoleDeck(roleInfo, playersCount, out bool tooManyEvilRoles);
+        var roles = GameStartHelper.MakeRoleDeck(playersCount, roleInfo, out bool tooManyEvilRoles);
         if (tooManyEvilRoles)
             throw new TooManyEvilRolesException();
 

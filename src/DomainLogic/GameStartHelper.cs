@@ -2,6 +2,7 @@
 using servartur.Exceptions;
 using servartur.Enums;
 using servartur.Algorithms;
+using Humanizer;
 
 namespace servartur.DomainLogic;
 
@@ -14,7 +15,7 @@ public static class GameStartHelper
         public bool AreOberonAndMordredInGame { get; set; }
 
         public RoleInfo(
-            bool areMerlinAndAssassinInGame, 
+            bool areMerlinAndAssassinInGame,
             bool arePercivalAreMorganaInGame,
             bool areOberonAndMordredInGame)
         {
@@ -23,8 +24,11 @@ public static class GameStartHelper
             AreOberonAndMordredInGame = areOberonAndMordredInGame;
         }
     }
-    public static List<Role> MakeRoleDeck(RoleInfo roleInfo, int playersCount, out bool tooManyEvilPlayers)
+    public static List<Role> MakeRoleDeck(int playersCount, RoleInfo roleInfo, out bool tooManyEvilRoles)
     {
+        if (!GameCountsCalculator.IsPlayerCountValid(playersCount))
+            throw new ArgumentException("Invalid number of players given");
+
         var roles = new List<Role>();
         if (roleInfo.AreMerlinAndAssassinInGame)
             roles.AddRange([Role.Merlin, Role.Assassin]);
@@ -38,7 +42,8 @@ public static class GameStartHelper
         int evilPlayersTargetCount = GameCountsCalculator.GetEvilPlayersCount(playersCount);
         int goodPlayersTargetCount = playersCount - evilPlayersTargetCount;
 
-        tooManyEvilPlayers = evilRolesCount <= evilPlayersTargetCount;
+        tooManyEvilRoles = evilRolesCount > evilPlayersTargetCount;
+        if (tooManyEvilRoles) return [];
 
         roles.AddRange(Enumerable.Repeat(Role.EvilEntity, evilPlayersTargetCount - evilRolesCount));
         roles.AddRange(Enumerable.Repeat(Role.GoodKnight, goodPlayersTargetCount - goodRolesCount));

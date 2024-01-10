@@ -11,5 +11,4 @@ public class MatchupServiceStartGameTests
                 .UseInMemoryDatabase(databaseName: "CreateRoom_ValidDto")
                 .Options;
 
-    // TODO
 }
