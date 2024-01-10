@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using servartur.DomainLogic;
 using servartur.Entities;
 using servartur.Exceptions;
 using servartur.Models;
 using servartur.Enums;
 using servartur.Algorithms;
-using Humanizer;
-using System.Collections.ObjectModel;
 
 namespace servartur.Services;
 
@@ -64,8 +61,7 @@ public class MatchupService : IMatchupService
     }
     public void RemovePlayer(int playerId)
     {
-        var player = _dbContext
-            .Players
+        var player = _dbContext.Players
             .FirstOrDefault(p => p.PlayerId == playerId)
             ?? throw new PlayerNotFoundException(playerId);
 
@@ -79,8 +75,7 @@ public class MatchupService : IMatchupService
 
     public RoomDto GetRoomById(int roomId)
     {
-        var room = _dbContext
-            .Rooms
+        var room = _dbContext.Rooms
             .Include(r => r.Players)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
@@ -91,8 +86,7 @@ public class MatchupService : IMatchupService
 
     public void StartGame(StartGameDto dto)
     {
-        var room = _dbContext
-            .Rooms
+        var room = _dbContext.Rooms
             .Include(r => r.Players)
             .Include(r => r.Squads)
             .FirstOrDefault(r => r.RoomId == dto.RoomId)
@@ -105,7 +99,11 @@ public class MatchupService : IMatchupService
             throw new RoomNotInMatchupException(dto.RoomId);
 
         // Assign roles
-        List<Role> roles = makeRoleDeck(dto, playersCount);
+        var roleInfo = _mapper.Map<GameStartHelper.RoleInfo>(dto);
+        var roles = GameStartHelper.MakeRoleDeck(roleInfo, playersCount, out bool tooManyEvilRoles);
+        if (tooManyEvilRoles)
+            throw new TooManyEvilRolesException();
+
         foreach (var player in room.Players)
         {
             player.Role = roles.Pop();
@@ -113,45 +111,12 @@ public class MatchupService : IMatchupService
         }
 
         // Create first Squad
-        var firstSquadSize = GameCountsCalculator.GetSquadRequiredSize(playersCount, 1);
-        var firstSquad = new Squad()
-        {
-            Leader = room.Players.First(),
-            QuestNumber = 1,
-            RoundNumber = 1,
-            RequiredPlayersNumber = firstSquadSize,
-            Status = SquadStatus.SquadVoting,
-        };
+        var firstSquad = GameStartHelper.MakeFirstSquad(room.Players.First(), playersCount);
         room.Squads.Add(firstSquad);
         room.CurrentSquad = firstSquad;
 
         // Update room
         room.Status = RoomStatus.Playing;
         _dbContext.SaveChanges();
-    }
-
-    private static List<Role> makeRoleDeck(StartGameDto dto, int playersCount)
-    {
-        var roles = new List<Role>();
-        if (dto.AreMerlinAndAssassinInGame)
-            roles.AddRange([Role.Merlin, Role.Assassin]);
-        if (dto.ArePercivalAreMorganaInGame)
-            roles.AddRange([Role.Percival, Role.Morgana]);
-        if (dto.AreOberonAndMordredInGame)
-            roles.AddRange([Role.Oberon, Role.Mordred]);
-
-        int evilRolesCount = roles.Count(r => RoleTeamMapping.Map(r) == Team.Evil);
-        int goodRolesCount = roles.Count(r => RoleTeamMapping.Map(r) == Team.Good);
-        int evilPlayersTargetCount = GameCountsCalculator.GetEvilPlayersCount(playersCount);
-        int goodPlayersTargetCount = playersCount - evilPlayersTargetCount;
-
-        if (evilRolesCount <= evilPlayersTargetCount)
-            throw new TooManyEvilRolesException();
-
-        roles.AddRange(Enumerable.Repeat(Role.EvilEntity, evilPlayersTargetCount - evilRolesCount));
-        roles.AddRange(Enumerable.Repeat(Role.GoodKnight, goodPlayersTargetCount - goodRolesCount));
-
-        roles.Shuffle();
-        return roles;
     }
 }
