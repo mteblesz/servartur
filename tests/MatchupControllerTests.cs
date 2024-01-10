@@ -1,21 +1,14 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using servartur.Entities;
-using servartur.Enums;
+﻿using servartur.Enums;
 using servartur.Models;
 using servartur.Services;
-using Moq.EntityFrameworkCore;
-using servartur.Exceptions;
-using System.Linq.Expressions;
 using servartur.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace servartur.Tests;
 public class MatchupControllerTests
 {
-    private MatchupController _controller;
-    private Mock<IMatchupService> _matchupServiceMock;
+    private readonly MatchupController _controller;
+    private readonly Mock<IMatchupService> _matchupServiceMock;
 
     public MatchupControllerTests()
     {
