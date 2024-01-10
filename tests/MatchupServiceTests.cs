@@ -119,10 +119,10 @@ public class MatchupServiceTests
     }
 
     [Theory]
-    //[InlineData(1)]
+    [InlineData(1)]
     [InlineData(2)]
-    //[InlineData(5)]
-    //[InlineData(10)]
+    [InlineData(5)]
+    [InlineData(10)]
     public void CreateMultiplePlayer_ValidDto_ReturnsPlayerIdAndAddsPLayerToDB(int numberOfCreations)
     {
         // Arrange
@@ -244,16 +244,21 @@ public class MatchupServiceTests
 
         // Create a mock Player in the database
         var existingPlayerId = 1;
-        var existingPlayer = new Player { PlayerId = existingPlayerId };
+        var existingRoomId = 1;
+        var existingPlayer = new Player { PlayerId = existingPlayerId, RoomId = existingRoomId };
         var existingPlayers = new List<Player>() { existingPlayer };
+        var existingRooms = new List<Room>() {
+           new() { RoomId = existingRoomId, Status = RoomStatus.Matchup, Players = existingPlayers }
+        };
         dbContextMock.Setup(db => db.Players).ReturnsDbSet(existingPlayers);
+        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(existingRooms);
 
         // Act
         matchupService.RemovePlayer(existingPlayerId);
 
         // Assert
         // Ensure the player was removed from the DbContext
-        dbContextMock.Verify(db => db.Players.Remove(existingPlayer), Times.Once);
+        dbContextMock.Verify(db => db.Players.Remove(It.IsAny<Player>()), Times.Once);
         dbContextMock.Verify(db => db.SaveChanges(), Times.Once);
     }
 
@@ -273,6 +278,35 @@ public class MatchupServiceTests
         // Act and Assert
         Action action = () => matchupService.RemovePlayer(nonExistingPlayerId);
         Assert.Throws<PlayerNotFoundException>(action);
+
+        dbContextMock.Verify(db => db.Players.Remove(It.IsAny<Player>()), Times.Never);
+        dbContextMock.Verify(db => db.SaveChanges(), Times.Never);
+    }
+
+    [Fact]
+    public void RemovePlayer_PlayersRoomIsNotInMatchup_ThrowsRoomNotInMatchupException()
+    {
+        // Arrange
+        var dbContextMock = new Mock<GameDbContext>(getDbOptions());
+        var loggerMock = new Mock<ILogger<MatchupService>>();
+        var mapperMock = new Mock<IMapper>();
+        var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
+
+        // Set up the DbContext to indicate that the Player's Room is not in matchup
+        var roomStatusOtherThanMatchup = RoomStatus.Playing;
+        var existingPlayerId = 1;
+        var existingRoomId = 1;
+        var existingPlayer = new Player { PlayerId = existingPlayerId, RoomId = existingRoomId };
+        var existingPlayers = new List<Player>() { existingPlayer };
+        var existingRooms = new List<Room>() {
+           new() { RoomId = existingRoomId, Status = roomStatusOtherThanMatchup, Players = existingPlayers }
+        };
+        dbContextMock.Setup(db => db.Players).ReturnsDbSet(existingPlayers);
+        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(existingRooms);
+
+        // Act and Assert
+        Action action = () => matchupService.RemovePlayer(existingPlayerId);
+        Assert.Throws<RoomNotInMatchupException>(action);
 
         dbContextMock.Verify(db => db.Players.Remove(It.IsAny<Player>()), Times.Never);
         dbContextMock.Verify(db => db.SaveChanges(), Times.Never);
@@ -335,6 +369,6 @@ public class MatchupServiceTests
     #endregion
 
     #region StartGame tests
-        // TODO
+    // TODO
     #endregion
 }

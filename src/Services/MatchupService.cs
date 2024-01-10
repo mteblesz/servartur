@@ -69,9 +69,8 @@ public class MatchupService : IMatchupService
             .FirstOrDefault(p => p.PlayerId == playerId)
             ?? throw new PlayerNotFoundException(playerId);
 
-        var room = _dbContext.Rooms.FirstOrDefault(r => r.RoomId == player.RoomId)
-            ?? throw new RoomNotFoundException(player.RoomId);
-        if (room.Status != RoomStatus.Matchup)
+        var room = _dbContext.Rooms.FirstOrDefault(r => r.RoomId == player.RoomId); 
+        if (room!.Status != RoomStatus.Matchup)
             throw new RoomNotInMatchupException(player.RoomId);
 
         _dbContext.Players.Remove(player);
