@@ -17,8 +17,6 @@ public class MappingProfile : Profile
 
         CreateMap<Player, PlayerDto>();
 
-        CreateMap<CreateRoomDto, Room>();
-
         CreateMap<CreatePlayerDto, Player>();
 
         CreateMap<StartGameDto, GameStartHelper.RoleInfo>();

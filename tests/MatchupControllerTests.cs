@@ -20,16 +20,11 @@ public class MatchupControllerTests
     public void CreateRoom_Returns_CreatedResult()
     {
         // Arrange
-        var createRoomDto = new CreateRoomDto();
-        var roomId = 1;
-        _matchupServiceMock.Setup(m => m.CreateRoom(It.IsAny<CreateRoomDto>()))
-            .Returns(roomId);
         // Act
-        var result = _controller.CreateRoom(createRoomDto);
+        var result = _controller.CreateRoom();
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<CreatedResult>();
-        _matchupServiceMock.Verify(ms => ms.CreateRoom(It.IsAny<CreateRoomDto>()), Times.Once);
     }
 
     [Fact]

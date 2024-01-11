@@ -14,7 +14,7 @@ public interface IMatchupService
 {
     int CreatePlayer(CreatePlayerDto dto);
     RoomDto? GetRoomById(int roomId);
-    int CreateRoom([FromBody] CreateRoomDto dto);
+    int CreateRoom();
     void RemovePlayer(int playerId);
     void StartGame(StartGameDto dto);
 }
@@ -32,10 +32,9 @@ public class MatchupService : IMatchupService
         _logger = logger;
     }
 
-    public int CreateRoom(CreateRoomDto dto)
+    public int CreateRoom()
     {
-        var room = _mapper.Map<Room>(dto);
-        room.Status = RoomStatus.Matchup;
+        var room = new Room { Status = RoomStatus.Matchup };
 
         _dbContext.Rooms.Add(room);
         _dbContext.SaveChanges();

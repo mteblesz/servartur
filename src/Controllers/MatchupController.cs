@@ -19,9 +19,9 @@ public class MatchupController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult CreateRoom([FromBody] CreateRoomDto dto)
+    public ActionResult CreateRoom()
     {
-        var roomId = _matchupService.CreateRoom(dto);
+        var roomId = _matchupService.CreateRoom();
         return Created($"/api/rooms/{roomId}", null);
     }
 
