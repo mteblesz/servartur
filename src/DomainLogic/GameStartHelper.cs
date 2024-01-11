@@ -53,6 +53,9 @@ public static class GameStartHelper
     }
     public static Squad MakeFirstSquad(Player leader, int playersCount)
     {
+        if (!GameCountsCalculator.IsPlayerCountValid(playersCount))
+            throw new ArgumentException("Invalid number of players given");
+
         var questNumber = 1;
         var firstSquadSize = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber);
         var firstSquad = new Squad()
