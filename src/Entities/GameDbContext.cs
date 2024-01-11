@@ -7,7 +7,7 @@ namespace servartur.Entities;
 public class GameDbContext : DbContext
 {
     private readonly string _connectionString =
-        "Data Source=.\\SQLEXPRESS;Initial Catalog=DatarturDb;Integrated Security=True";
+        "Data Source=.\\SQLEXPRESS;Initial Catalog=DatarturDb;Integrated Security=True;TrustServerCertificate=true";
 
     public GameDbContext(DbContextOptions options) : base(options) { }
 

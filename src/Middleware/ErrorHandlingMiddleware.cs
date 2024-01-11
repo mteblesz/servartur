@@ -17,7 +17,7 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             await next.Invoke(context);
         }
-        catch (BadRequestException ex)
+        catch (ConflitedRequestDataException ex)
         {
             context.Response.StatusCode = StatusCodes.Status409Conflict;
             await context.Response.WriteAsync(ex.Message);

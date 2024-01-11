@@ -1,8 +1,10 @@
-﻿namespace servartur.DomainLogic;
+﻿using servartur.Enums;
+using System.Data;
+namespace servartur.DomainLogic;
 /// <summary>
 /// Handles game rules related to bounds of number of players
 /// </summary>
-public static class PlayerNumberCalculator
+public static class GameCountsCalculator
 {
     public static int MaxNumberOfPLayers { get => 10; }
     public static int MinNumberOfPLayers { get => 5; }
@@ -11,7 +13,7 @@ public static class PlayerNumberCalculator
     public static bool IsQuestNumberValid(int questNumber)
     => questNumber >= 1 && questNumber <= 5;
 
-    public static int GetEvilPlayersNumber(int playersCount)
+    public static int GetEvilPlayersCount(int playersCount)
     {
         if (!IsPlayerCountValid(playersCount))
             throw new ArgumentException("Invalid number of players given");

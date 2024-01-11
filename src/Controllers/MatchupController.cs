@@ -19,9 +19,9 @@ public class MatchupController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult CreateRoom([FromBody] CreateRoomDto dto)
+    public ActionResult CreateRoom()
     {
-        var roomId = _matchupService.CreateRoom(dto);
+        var roomId = _matchupService.CreateRoom();
         return Created($"/api/rooms/{roomId}", null);
     }
 
@@ -46,12 +46,21 @@ public class MatchupController : ControllerBase
         return Ok(room);
     }
 
-    // TODO add startRoom - assign roles, create first squad and assign leader
-    // TODO remove this later in favour of startRoom()
-    [HttpPut("makeTeams/{roomId}")]
-    public ActionResult MakeTeams([FromRoute] int roomId)
-    {    
-        _matchupService.MakeTeams(roomId);
+    [HttpPut("StartGame")]
+    public ActionResult StartGame([FromBody] StartGameDto dto)
+    {
+        // check game rules
+        if (!(dto.AreMerlinAndAssassinInGame) && dto.ArePercivalAreMorganaInGame)
+        {
+            ModelState.AddModelError("", "Morgana and Percival can't be present with Merlin and Assassin missing");
+            return BadRequest(ModelState);
+        }
+        if (!(dto.AreMerlinAndAssassinInGame) && dto.AreOberonAndMordredInGame)
+        {
+            ModelState.AddModelError("", "Oberon and Mordred can't be present with Merlin and Assassin missing");
+            return BadRequest(ModelState);
+        }
+        _matchupService.StartGame(dto);
         return NoContent();
     }
 }

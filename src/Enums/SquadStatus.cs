@@ -7,6 +7,9 @@ public enum SquadStatus
     [EnumMember(Value = "Unknown")]
     Unknown,
 
+    [EnumMember(Value = "SquadVoting")]
+    SquadVoting,
+
     [EnumMember(Value = "Submitted")]
     Submitted,
 
