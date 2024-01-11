@@ -98,12 +98,12 @@ public class MatchupService : IMatchupService
         if (room.Status != RoomStatus.Matchup)
             throw new RoomNotInMatchupException(dto.RoomId);
 
-        // Assign roles
         var roleInfo = _mapper.Map<GameStartHelper.RoleInfo>(dto);
         var roles = GameStartHelper.MakeRoleDeck(playersCount, roleInfo, out bool tooManyEvilRoles);
         if (tooManyEvilRoles)
             throw new TooManyEvilRolesException();
 
+        // Assign roles
         foreach (var player in room.Players)
         {
             player.Role = roles.Pop();
