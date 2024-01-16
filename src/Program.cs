@@ -40,13 +40,12 @@ try
     var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
     seeder.Seed();
 
-
     // Configure the HTTP request pipeline. //middleware
     if (app.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
     }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseMiddleware<RequestTimingMiddleware>(); 
