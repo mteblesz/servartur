@@ -10,6 +10,8 @@ using servartur.Seeders;
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
+FirebaseInitializer.Initialize();
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,7 @@ try
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     builder.Services.AddScoped<IMatchupService, MatchupService>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
+    builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();
 
     // NLog: Setup NLog for Dependency injection
@@ -37,16 +40,17 @@ try
     var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
     seeder.Seed();
 
-
     // Configure the HTTP request pipeline. //middleware
     if (app.Environment.IsDevelopment())
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
     }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
-    app.UseMiddleware<RequestTimingMiddleware>();
+    app.UseMiddleware<RequestTimingMiddleware>(); 
+    app.UseMiddleware<FirebaseAuthMiddleware>();
+
     app.UseHttpsRedirection();
 
     //app.UseAuthorization();
