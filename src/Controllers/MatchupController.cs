@@ -8,7 +8,7 @@ using servartur.Services;
 
 namespace servartur.Controllers;
 [ApiController]
-[Route("/")]
+[Route("/")] // Adjust the base route for all actions
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
@@ -18,7 +18,7 @@ public class MatchupController : ControllerBase
         this._matchupService = matchupService;
     }
 
-    [HttpPost]
+    [HttpPost("room")]
     public ActionResult CreateRoom()
     {
         var roomId = _matchupService.CreateRoom();
@@ -46,7 +46,7 @@ public class MatchupController : ControllerBase
         return Ok(room);
     }
 
-    [HttpPut("StartGame")]
+    [HttpPut("start")]
     public ActionResult StartGame([FromBody] StartGameDto dto)
     {
         // check game rules
