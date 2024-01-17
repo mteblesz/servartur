@@ -8,7 +8,7 @@ using servartur.Services;
 
 namespace servartur.Controllers;
 [ApiController]
-[Route("api/[controller]")]
+[Route("/")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
