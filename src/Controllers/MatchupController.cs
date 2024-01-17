@@ -8,7 +8,7 @@ using servartur.Services;
 
 namespace servartur.Controllers;
 [ApiController]
-[Route("api/[controller]")]
+[Route("/")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
@@ -18,18 +18,18 @@ public class MatchupController : ControllerBase
         this._matchupService = matchupService;
     }
 
-    [HttpPost]
+    [HttpPost("room")]
     public ActionResult CreateRoom()
     {
         var roomId = _matchupService.CreateRoom();
-        return Created($"/api/rooms/{roomId}", null);
+        return Created($"/room/{roomId}", null);
     }
 
     [HttpPost("player")]
     public ActionResult CreatePlayer([FromBody] CreatePlayerDto dto)
     {
         var playerId = _matchupService.CreatePlayer(dto);
-        return Created($"/api/rooms/player/{playerId}", null);
+        return Created($"/player/{playerId}", null);
     }
 
     [HttpDelete("player/{playerId}")]
@@ -39,14 +39,14 @@ public class MatchupController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{roomId}")]
+    [HttpGet("room/{roomId}")]
     public ActionResult<RoomDto> GetRoomById([FromRoute] int roomId)
     {
         var room = _matchupService.GetRoomById(roomId);
         return Ok(room);
     }
 
-    [HttpPut("StartGame")]
+    [HttpPut("start")]
     public ActionResult StartGame([FromBody] StartGameDto dto)
     {
         // check game rules
