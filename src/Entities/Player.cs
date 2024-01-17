@@ -5,7 +5,6 @@ namespace servartur.Entities;
 public class Player
 {
     public int PlayerId { get; set; }
-    //public int UserFid { get; set; }
 
     [StringLength(maximumLength: 20, MinimumLength = 3)]
     public string? Nick { get; set; }
