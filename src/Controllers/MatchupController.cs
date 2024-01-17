@@ -22,14 +22,14 @@ public class MatchupController : ControllerBase
     public ActionResult CreateRoom()
     {
         var roomId = _matchupService.CreateRoom();
-        return Created($"/api/rooms/{roomId}", null);
+        return Created($"/room/{roomId}", null);
     }
 
     [HttpPost("player")]
     public ActionResult CreatePlayer([FromBody] CreatePlayerDto dto)
     {
         var playerId = _matchupService.CreatePlayer(dto);
-        return Created($"/api/rooms/player/{playerId}", null);
+        return Created($"/player/{playerId}", null);
     }
 
     [HttpDelete("player/{playerId}")]
@@ -39,7 +39,7 @@ public class MatchupController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{roomId}")]
+    [HttpGet("room/{roomId}")]
     public ActionResult<RoomDto> GetRoomById([FromRoute] int roomId)
     {
         var room = _matchupService.GetRoomById(roomId);
