@@ -22,17 +22,17 @@ public class SquadService : ISquadService
         _logger = logger;
     }
 
-    void AddMember(int playerId)
+    public void AddMember(int playerId)
     {
         throw new NotImplementedException();
     }
 
-    void RemoveMember(int playerId)
+    public void RemoveMember(int playerId)
     {
         throw new NotImplementedException();
     }
 
-    void SubmitSquad(int squadId)
+    public void SubmitSquad(int squadId)
     {
         throw new NotImplementedException();
     }
