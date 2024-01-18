@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using servartur.Entities;
-using servartur.Exceptions;
+﻿using Microsoft.AspNetCore.Mvc;
 using servartur.Models;
 using servartur.Services;
 
 namespace servartur.Controllers;
 [ApiController]
-[Route("/")]
+[Route("api/[controller]")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
