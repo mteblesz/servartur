@@ -37,23 +37,18 @@ public class InfoService : IInfoService
         return result;
     }
 
-    RoomInfoDto IInfoService.GetRoomById(int roomId)
-    {
-        throw new NotImplementedException();
-    }
-
-    PlayerInfoDto IInfoService.GetPlayerById(int playerId)
+    PlayerInfoDto GetPlayerById(int playerId)
     {
         throw new NotImplementedException();
     }
 
     //get good, evil etc, define predicate in controller
-    List<PlayerInfoDto> IInfoService.GetFilteredPlayers(int roomId, Predicate<Player> predicate)
+    List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate)
     {
         throw new NotImplementedException();
     }
 
-    SquadInfoDto IInfoService.GetQuestBySquadId(int squadId)
+    SquadInfoDto GetQuestBySquadId(int squadId)
     {
         throw new NotImplementedException();
     }
