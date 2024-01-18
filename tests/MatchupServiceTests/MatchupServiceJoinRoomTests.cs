@@ -55,7 +55,7 @@ public class MatchupServiceJoinRoomTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int roomId = 1;
-        var expectedPlayerIds = Enumerable.Range(0, numberOfCreations).ToList();  // InMemoryDatabase indexing
+        var expectedPlayerIds = Enumerable.Range(1, numberOfCreations).ToList();  // InMemoryDatabase indexing
 
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup};
         var rooms = new List<Room> { room };
