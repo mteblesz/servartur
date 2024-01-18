@@ -55,12 +55,12 @@ public class MatchupServiceJoinRoomTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int roomId = 1;
-        var expectedPlayerIds = Enumerable.Range(1, numberOfCreations).ToList();  // InMemoryDatabase indexing
+        var expectedPlayerIds = Enumerable.Range(1, numberOfCreations);  // InMemoryDatabase indexing
 
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup};
         var rooms = new List<Room> { room };
 
-        var playerIdProvider = new PlayerIdProvider(expectedPlayerIds);
+        var playerIdProvider = new PlayerIdProvider(expectedPlayerIds.ToList());
         dbContextMock.Setup(x => x.Players.Add(It.IsAny<Player>()))
             .Callback<Player>(p =>
             { 
