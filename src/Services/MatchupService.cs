@@ -12,7 +12,6 @@ namespace servartur.Services;
 
 public interface IMatchupService
 {
-    RoomDto GetRoomById(int roomId);
     int CreateRoom();
     int JoinRoom(int roomId);
     void SetNickname(PlayerNicknameSetDto dto);
@@ -31,17 +30,6 @@ public class MatchupService : IMatchupService
         _dbContext = dbContext;
         _mapper = mapper;
         _logger = logger;
-    }
-
-    public RoomDto GetRoomById(int roomId)
-    {
-        var room = _dbContext.Rooms
-            .Include(r => r.Players)
-            .FirstOrDefault(r => r.RoomId == roomId)
-            ?? throw new RoomNotFoundException(roomId);
-
-        var result = _mapper.Map<RoomDto>(room);
-        return result;
     }
 
     public int CreateRoom()

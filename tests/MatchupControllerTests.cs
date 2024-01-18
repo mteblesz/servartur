@@ -21,7 +21,7 @@ public class MatchupControllerTests
     {
         // Arrange
         var roomId = 1;
-        var roomDto = new RoomDto()
+        var roomDto = new RoomInfoDto()
         {
             RoomId = roomId,
             Status = RoomStatus.Unknown.ToString(),
@@ -38,7 +38,7 @@ public class MatchupControllerTests
         result.Should().NotBeNull();
         _matchupServiceMock.Verify(ms => ms.GetRoomById(It.IsAny<int>()), Times.Once);
         // Dto included in response is not null
-        result.Should().BeOfType<ActionResult<RoomDto>>()
+        result.Should().BeOfType<ActionResult<RoomInfoDto>>()
           .Which.Result.Should().BeOfType<OkObjectResult>()
           .Which.Value.Should().NotBeNull();
     }

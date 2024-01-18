@@ -34,7 +34,7 @@ public class MatchupServiceGetRoomByIdTests
             Status = roomStatus,
             Players = []
         };
-        var expectedRoomDto = new RoomDto
+        var expectedRoomDto = new RoomInfoDto
         {
             RoomId = roomId,
             Status = roomStatus.ToString(),
@@ -43,7 +43,7 @@ public class MatchupServiceGetRoomByIdTests
         };
 
         dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>() { room });
-        mapperMock.Setup(m => m.Map<RoomDto>(room)).Returns(expectedRoomDto);
+        mapperMock.Setup(m => m.Map<RoomInfoDto>(room)).Returns(expectedRoomDto);
 
         // Act
         var result = matchupService.GetRoomById(roomId);

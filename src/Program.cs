@@ -24,6 +24,10 @@ try
     builder.Services.AddScoped<DbSeeder>();
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     builder.Services.AddScoped<IMatchupService, MatchupService>();
+    builder.Services.AddScoped<IInfoService, InfoService>();
+    builder.Services.AddScoped<IVoteService, VoteService>();
+    builder.Services.AddScoped<IKillService, KillService>();
+    builder.Services.AddScoped<ISquadService, SquadService>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
     builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();

@@ -14,13 +14,6 @@ public class MatchupController : ControllerBase
         this._matchupService = matchupService;
     }
 
-    [HttpGet("room/{roomId}")]
-    public ActionResult<RoomDto> GetRoomById([FromRoute] int roomId)
-    {
-        var room = _matchupService.GetRoomById(roomId);
-        return Ok(room);
-    }
-
     [HttpPost("room")]
     public ActionResult CreateRoom()
     {
