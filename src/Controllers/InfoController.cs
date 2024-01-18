@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using servartur.Entities;
+using servartur.Enums;
 using servartur.Models;
 using servartur.Services;
 
@@ -19,5 +21,35 @@ public class InfoController : ControllerBase
     {
         var room = _infoService.GetRoomById(roomId);
         return Ok(room);
+    }
+
+    [HttpGet("player/{playerId}")]
+    public ActionResult<PlayerInfoDto> GetPlayerById(int playerId)
+    {
+        var player = _infoService.GetPlayerById(playerId);
+        return Ok(player);
+    }
+
+    [HttpGet("goodplayers/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetGoodPlayers(int roomId)
+    {
+        Predicate<Player> goodPredicate = p => p.Team == Team.Good;
+        var goodPlayers = _infoService.GetFilteredPlayers(roomId, goodPredicate);
+        return Ok(goodPlayers);
+    }
+
+    [HttpGet("evilplayers/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayers(int roomId)
+    {
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
+        return Ok(evilPlayers);
+    }
+
+    [HttpGet("quest/{squadId}")]
+    public ActionResult<SquadInfoDto> GetQuestBySquadId(int squadId)
+    {
+        var squad = _infoService.GetQuestBySquadId(squadId);
+        return Ok(squad);
     }
 }
