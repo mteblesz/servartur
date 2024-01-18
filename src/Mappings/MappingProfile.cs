@@ -12,12 +12,10 @@ public class MappingProfile : Profile
     {
         CreateMap<Room, RoomDto>()
             .ForMember(dest => dest.IsFull, opt => opt.MapFrom(src 
-            => src.Players.Count >= GameCountsCalculator.MaxNumberOfPLayers
+            => src.Players.Count >= GameCountsCalculator.MaxNumberOfPlayers
             ));
 
         CreateMap<Player, PlayerDto>();
-
-        CreateMap<CreatePlayerDto, Player>();
 
         CreateMap<StartGameDto, GameStartHelper.RoleInfo>();
     }

@@ -6,10 +6,10 @@ namespace servartur.DomainLogic;
 /// </summary>
 public static class GameCountsCalculator
 {
-    public static int MaxNumberOfPLayers { get => 10; }
-    public static int MinNumberOfPLayers { get => 5; }
+    public static int MaxNumberOfPlayers { get => 10; }
+    public static int MinNumberOfPlayers { get => 5; }
     public static bool IsPlayerCountValid(int playersCount)
-    => playersCount >= MinNumberOfPLayers && playersCount <= MaxNumberOfPLayers;
+    => playersCount >= MinNumberOfPlayers && playersCount <= MaxNumberOfPlayers;
     public static bool IsQuestNumberValid(int questNumber)
     => questNumber >= 1 && questNumber <= 5;
 

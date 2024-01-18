@@ -28,18 +28,25 @@ public class MatchupController : ControllerBase
     [HttpPost("room")]
     public ActionResult CreateRoom()
     {
-        var roomId = _matchupService.CreateRoom();
+        int roomId = _matchupService.CreateRoom();
         return Created($"/room/{roomId}", null);
     }
 
-    [HttpPost("player")]
-    public ActionResult CreatePlayer([FromBody] CreatePlayerDto dto)
+    [HttpPost("join/{roomId}")]
+    public ActionResult JoinRoom([FromRoute] int roomId)
     {
-        var playerId = _matchupService.CreatePlayer(dto);
+        int playerId = _matchupService.JoinRoom(roomId);
         return Created($"/player/{playerId}", null);
     }
 
-    [HttpDelete("player/{playerId}")]
+    [HttpPut("nick")]
+    public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
+    {
+        _matchupService.SetNickname(dto);
+        return NoContent();
+    }
+
+    [HttpDelete("remove/{playerId}")]
     public ActionResult RemovePlayer([FromRoute] int playerId)
     {
         _matchupService.RemovePlayer(playerId);

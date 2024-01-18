@@ -17,47 +17,6 @@ public class MatchupControllerTests
     }
 
     [Fact]
-    public void CreateRoom_Returns_CreatedResult()
-    {
-        // Arrange
-        // Act
-        var result = _controller.CreateRoom();
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().BeOfType<CreatedResult>();
-    }
-
-    [Fact]
-    public void CreatePlayer_Returns_CreatedResult()
-    {
-        // Arrange
-        var createPlayerDto = new CreatePlayerDto();
-        var playerId = 1;
-        _matchupServiceMock.Setup(m => m.CreatePlayer(It.IsAny<CreatePlayerDto>()))
-            .Returns(playerId);
-        // Act
-        var result = _controller.CreatePlayer(createPlayerDto);
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().BeOfType<CreatedResult>();
-        _matchupServiceMock.Verify(ms => ms.CreatePlayer(It.IsAny<CreatePlayerDto>()), Times.Once);
-    }
-
-    [Fact]
-    public void RemovePlayer_Returns_NoContentResult()
-    {
-        // Arrange
-        var playerId = 1;
-        //_matchupServiceMock.Setup(m => m.RemovePlayer(It.IsAny<int>()));
-        // Act
-        var result = _controller.RemovePlayer(playerId);
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().BeOfType<NoContentResult>();
-        _matchupServiceMock.Verify(ms => ms.RemovePlayer(It.IsAny<int>()), Times.Once);
-    }
-
-    [Fact]
     public void GetRoomById_Returns_OkResultWithContent()
     {
         // Arrange
@@ -82,6 +41,60 @@ public class MatchupControllerTests
         result.Should().BeOfType<ActionResult<RoomDto>>()
           .Which.Result.Should().BeOfType<OkObjectResult>()
           .Which.Value.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void CreateRoom_Returns_CreatedResult()
+    {
+        // Arrange
+        // Act
+        var result = _controller.CreateRoom();
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<CreatedResult>();
+    }
+
+    [Fact]
+    public void JoinRoom_Returns_CreatedResult()
+    {
+        // Arrange
+        var playerId = 1;
+        // Act
+        var result = _controller.JoinRoom(playerId);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<CreatedResult>();
+    }
+
+    [Fact]
+    public void SetNickname_Returns_NoContentResult()
+    {
+        // Arrange
+        var playerId = 1;
+        var playerNicknameSetDto = new PlayerNicknameSetDto()
+        {
+            PlayerId = playerId,
+            Nick = "test_nick",
+        };
+        // Act
+        var result = _controller.SetNickname(playerNicknameSetDto);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+    }
+
+    [Fact]
+    public void RemovePlayer_Returns_NoContentResult()
+    {
+        // Arrange
+        var playerId = 1;
+        //_matchupServiceMock.Setup(m => m.RemovePlayer(It.IsAny<int>()));
+        // Act
+        var result = _controller.RemovePlayer(playerId);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
+        _matchupServiceMock.Verify(ms => ms.RemovePlayer(It.IsAny<int>()), Times.Once);
     }
 
     [Theory]

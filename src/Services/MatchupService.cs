@@ -13,8 +13,9 @@ namespace servartur.Services;
 public interface IMatchupService
 {
     RoomDto GetRoomById(int roomId);
-    int CreatePlayer(CreatePlayerDto dto);
     int CreateRoom();
+    int JoinRoom(int roomId);
+    void SetNickname(PlayerNicknameSetDto dto);
     void RemovePlayer(int playerId);
     void StartGame(StartGameDto dto);
 }
@@ -52,23 +53,34 @@ public class MatchupService : IMatchupService
         return room.RoomId;
     }
 
-    public int CreatePlayer(CreatePlayerDto dto)
+    public int JoinRoom(int roomId)
     {
         var room = _dbContext.Rooms
             .Include(r => r.Players)
-            .FirstOrDefault(r => r.RoomId == dto.RoomId)
-            ?? throw new RoomNotFoundException(dto.RoomId);
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
         if (room.Status != RoomStatus.Matchup)
-            throw new RoomNotInMatchupException(dto.RoomId);
-        if (room.Players.Count >= GameCountsCalculator.MaxNumberOfPLayers)
-            throw new RoomIsFullException(dto.RoomId);
+            throw new RoomNotInMatchupException(roomId);
+        if (room.Players.Count >= GameCountsCalculator.MaxNumberOfPlayers)
+            throw new RoomIsFullException(roomId);
 
-        var player = _mapper.Map<Player>(dto);
+        var player = new Player() { RoomId = roomId };
         _dbContext.Players.Add(player);
         _dbContext.SaveChanges();
 
         return player.PlayerId;
     }
+
+    public void SetNickname(PlayerNicknameSetDto dto)
+    {
+        var player = _dbContext.Players
+            .FirstOrDefault(p => p.PlayerId == dto.PlayerId)
+            ?? throw new PlayerNotFoundException(dto.PlayerId);
+
+        player.Nick = dto.Nick;
+        _dbContext.SaveChanges();
+    }
+
     public void RemovePlayer(int playerId)
     {
         var player = _dbContext.Players
