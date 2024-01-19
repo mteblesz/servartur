@@ -18,5 +18,8 @@ public class MappingProfile : Profile
         CreateMap<Player, PlayerInfoDto>();
 
         CreateMap<StartGameDto, GameStartHelper.RoleInfo>();
+
+        CreateMap<VoteDto, SquadVote>();
+        CreateMap<VoteDto, QuestVote>();
     }
 }

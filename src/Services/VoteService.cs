@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using servartur.Entities;
+using servartur.Models;
 
 namespace servartur.Services;
 
 public interface IVoteService
 {
-    void VoteSquad(bool vote);
-    void VoteQuest(bool vote);
+    void VoteSquad(VoteDto voteDto);
+    void VoteQuest(VoteDto voteDto);
 
 }
 public class VoteService : IVoteService
@@ -22,12 +23,12 @@ public class VoteService : IVoteService
         _logger = logger;
     }
 
-    public void VoteSquad(bool vote)
+    public void VoteSquad(VoteDto voteDto)
     {
         throw new NotImplementedException();
     }
 
-    public void VoteQuest(bool vote)
+    public void VoteQuest(VoteDto voteDto)
     {
         throw new NotImplementedException();
     }
