@@ -28,7 +28,7 @@ public class MatchupController : ControllerBase
         return Created($"/player/{playerId}", null);
     }
 
-    [HttpPut("nick")]
+    [HttpPatch("nick")]
     public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
     {
         _matchupService.SetNickname(dto);
@@ -42,7 +42,7 @@ public class MatchupController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("start")]
+    [HttpPatch("start")]
     public ActionResult StartGame([FromBody] StartGameDto dto)
     {
         // check game rules
