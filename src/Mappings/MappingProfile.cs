@@ -15,9 +15,10 @@ public class MappingProfile : Profile
             => src.Players.Count >= GameCountsCalculator.MaxNumberOfPlayers
             ));
 
-        CreateMap<Player, PlayerInfoDto>();
-
         CreateMap<StartGameDto, GameStartHelper.RoleInfo>();
+
+        CreateMap<Player, PlayerInfoDto>();
+        CreateMap<Squad, SquadInfoDto>();
 
         CreateMap<VoteDto, SquadVote>();
         CreateMap<VoteDto, QuestVote>();
