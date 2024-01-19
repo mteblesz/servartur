@@ -24,14 +24,14 @@ public class InfoController : ControllerBase
     }
 
     [HttpGet("player/{playerId}")]
-    public ActionResult<PlayerInfoDto> GetPlayerById(int playerId)
+    public ActionResult<PlayerInfoDto> GetPlayerById([FromRoute] int playerId)
     {
         var player = _infoService.GetPlayerById(playerId);
         return Ok(player);
     }
 
     [HttpGet("goodplayers/{roomId}")]
-    public ActionResult<List<PlayerInfoDto>> GetGoodPlayers(int roomId)
+    public ActionResult<List<PlayerInfoDto>> GetGoodPlayers([FromRoute] int roomId)
     {
         Predicate<Player> goodPredicate = p => p.Team == Team.Good;
         var goodPlayers = _infoService.GetFilteredPlayers(roomId, goodPredicate);
@@ -39,7 +39,7 @@ public class InfoController : ControllerBase
     }
 
     [HttpGet("evilplayers/{roomId}")]
-    public ActionResult<List<PlayerInfoDto>> GetEvilPlayers(int roomId)
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayers([FromRoute] int roomId)
     {
         Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
         var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
@@ -47,7 +47,7 @@ public class InfoController : ControllerBase
     }
 
     [HttpGet("quest/{squadId}")]
-    public ActionResult<SquadInfoDto> GetQuestBySquadId(int squadId)
+    public ActionResult<SquadInfoDto> GetQuestBySquadId([FromRoute] int squadId)
     {
         var squad = _infoService.GetQuestBySquadId(squadId);
         return Ok(squad);

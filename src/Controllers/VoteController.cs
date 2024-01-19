@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using servartur.Models;
 using servartur.Services;
 
 namespace servartur.Controllers;
@@ -12,5 +11,19 @@ public class VoteController : ControllerBase
     public VoteController(IVoteService voteService)
     {
         this._voteService = voteService;
+    }
+
+    [HttpPost]
+    public ActionResult VoteSquad(bool vote)
+    {
+        _voteService.VoteSquad(vote);
+        return NoContent();
+    }
+
+    [HttpPost]
+    public ActionResult VoteQuest(bool vote)
+    {
+        _voteService.VoteSquad(vote);
+        return NoContent();
     }
 }
