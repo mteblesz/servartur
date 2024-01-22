@@ -39,17 +39,43 @@ public class InfoService : IInfoService
 
     public PlayerInfoDto GetPlayerById(int playerId)
     {
-        throw new NotImplementedException();
-    }
+        var player = _dbContext.Players
+            .FirstOrDefault(p => p.PlayerId == playerId)
+            ?? throw new PlayerNotFoundException(playerId);
 
-    //get good, evil etc, define predicate in controller
-    public List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate)
-    {
-        throw new NotImplementedException();
+        var result = _mapper.Map<PlayerInfoDto>(player);
+        return result;
     }
 
     public SquadInfoDto GetQuestBySquadId(int squadId)
     {
-        throw new NotImplementedException();
+        var squad = _dbContext.Squads
+            .Include(s => s.Memberships)
+            .ThenInclude(m => m.Player)
+            .FirstOrDefault(p => p.SquadId == squadId)
+            ?? throw new SquadNotFoundException(squadId);
+
+        var result = _mapper.Map<SquadInfoDto>(squad);
+        return result;
+    }
+
+    /// <summary>
+    /// Filters players in a specific room, by a predicate.
+    /// Use: getting a list of evil or good players in the room.
+    /// </summary>
+    /// <param name="roomId"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    /// <exception cref="RoomNotFoundException"></exception>
+    public List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate)
+    {
+        var room = _dbContext.Rooms
+            .Include(r => r.Players)
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
+
+        var filteredPlayers = room.Players.Select(p => predicate(p));
+        var result = filteredPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
+        return result;
     }
 }

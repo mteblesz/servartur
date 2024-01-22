@@ -18,7 +18,11 @@ public class MappingProfile : Profile
         CreateMap<StartGameDto, GameStartHelper.RoleInfo>();
 
         CreateMap<Player, PlayerInfoDto>();
-        CreateMap<Squad, SquadInfoDto>();
+        CreateMap<Squad, SquadInfoDto>()
+            .ForMember(dest => dest.MembersPlayerIds, opt => opt.MapFrom(
+                src => 
+                    src.Memberships.Select(m => m.Player)
+                ));
 
         CreateMap<VoteDto, SquadVote>();
         CreateMap<VoteDto, QuestVote>();
