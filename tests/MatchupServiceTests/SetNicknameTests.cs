@@ -10,7 +10,7 @@ using servartur.Services;
 
 namespace servartur.Tests.MatchupServiceTests;
 
-public class MatchupServiceSetNicknameTests
+public class SetNicknameTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()

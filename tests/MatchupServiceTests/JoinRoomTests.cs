@@ -9,7 +9,7 @@ using servartur.Services;
 using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
-public class MatchupServiceJoinRoomTests
+public class JoinRoomTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()

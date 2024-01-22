@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace servartur.Tests;
+namespace servartur.Tests.ControllersTests;
 public class InfoControllerTests
 {
     private readonly InfoController _controller;

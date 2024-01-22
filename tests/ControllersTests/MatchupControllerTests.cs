@@ -4,7 +4,7 @@ using servartur.Services;
 using servartur.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace servartur.Tests;
+namespace servartur.Tests.ControllersTests;
 public class MatchupControllerTests
 {
     private readonly MatchupController _controller;
@@ -104,7 +104,7 @@ public class MatchupControllerTests
         // Arrange
         var invalidDto = new StartGameDto
         {
-            RoomId= 1,
+            RoomId = 1,
             AreMerlinAndAssassinInGame = MnA,
             ArePercivalAreMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM
