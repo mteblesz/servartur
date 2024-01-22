@@ -14,7 +14,7 @@ public class SetNicknameTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "CreateRoom_ValidDto")
+                .UseInMemoryDatabase(databaseName: "test_db")
             .Options;
 
     [Fact]
@@ -53,7 +53,7 @@ public class SetNicknameTests
         const int playerId = 100;
         var dto = new PlayerNicknameSetDto() { PlayerId = playerId, Nick = "new_nick" };
 
-        dbContextMock.Setup(x => x.Players).ReturnsDbSet(new Player[] { });
+        dbContextMock.Setup(x => x.Players).ReturnsDbSet(Array.Empty<Player>());
 
         // Act and Assert
         Action action = () => matchupService.SetNickname(dto);
