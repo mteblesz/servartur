@@ -17,9 +17,9 @@ public class InfoService : IInfoService
 {
     private readonly GameDbContext _dbContext;
     private readonly IMapper _mapper;
-    public readonly ILogger<MatchupService> _logger;
+    public readonly ILogger<InfoService> _logger;
 
-    public InfoService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger)
+    public InfoService(GameDbContext dbContext, IMapper mapper, ILogger<InfoService> logger)
     {
         _dbContext = dbContext;
         _mapper = mapper;

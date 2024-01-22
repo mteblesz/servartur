@@ -14,9 +14,9 @@ public class VoteService : IVoteService
 {
     private readonly GameDbContext _dbContext;
     private readonly IMapper _mapper;
-    public readonly ILogger<MatchupService> _logger;
+    public readonly ILogger<VoteService> _logger;
 
-    public VoteService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger)
+    public VoteService(GameDbContext dbContext, IMapper mapper, ILogger<VoteService> logger)
     {
         _dbContext = dbContext;
         _mapper = mapper;

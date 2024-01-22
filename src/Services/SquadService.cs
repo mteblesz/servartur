@@ -13,9 +13,9 @@ public class SquadService : ISquadService
 {
     private readonly GameDbContext _dbContext;
     private readonly IMapper _mapper;
-    public readonly ILogger<MatchupService> _logger;
+    public readonly ILogger<SquadService> _logger;
 
-    public SquadService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger)
+    public SquadService(GameDbContext dbContext, IMapper mapper, ILogger<SquadService> logger)
     {
         _dbContext = dbContext;
         _mapper = mapper;
