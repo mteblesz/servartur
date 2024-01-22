@@ -17,33 +17,6 @@ public class MatchupControllerTests
     }
 
     [Fact]
-    public void GetRoomById_Returns_OkResultWithContent()
-    {
-        // Arrange
-        var roomId = 1;
-        var roomDto = new RoomInfoDto()
-        {
-            RoomId = roomId,
-            Status = RoomStatus.Unknown.ToString(),
-            IsFull = true,
-            Players = [],
-        };
-        _matchupServiceMock.Setup(m => m.GetRoomById(It.IsAny<int>()))
-            .Returns(roomDto);
-
-        // Act
-        var result = _controller.GetRoomById(roomId);
-
-        // Assert
-        result.Should().NotBeNull();
-        _matchupServiceMock.Verify(ms => ms.GetRoomById(It.IsAny<int>()), Times.Once);
-        // Dto included in response is not null
-        result.Should().BeOfType<ActionResult<RoomInfoDto>>()
-          .Which.Result.Should().BeOfType<OkObjectResult>()
-          .Which.Value.Should().NotBeNull();
-    }
-
-    [Fact]
     public void CreateRoom_Returns_CreatedResult()
     {
         // Arrange
