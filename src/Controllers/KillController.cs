@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using servartur.Services;
 
 namespace servartur.Controllers;
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class KillController : ControllerBase
 {
     private readonly IKillService _killService;

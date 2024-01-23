@@ -3,8 +3,8 @@ using servartur.Models;
 using servartur.Services;
 
 namespace servartur.Controllers;
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class VoteController : ControllerBase
 {
     private readonly IVoteService _voteService;

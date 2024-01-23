@@ -5,8 +5,8 @@ using servartur.Models;
 using servartur.Services;
 
 namespace servartur.Controllers;
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class InfoController : ControllerBase
 {
     private readonly IInfoService _infoService;
