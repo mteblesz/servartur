@@ -12,5 +12,5 @@ public class SquadInfoDto
     public SquadStatus Status { get; set; }
     public int LeaderId { get; set; }
 
-    public List<PlayerInfoDto> MembersPlayerIds { get; set; } = null!;
+    public List<PlayerInfoDto> Members { get; set; } = null!;
 }

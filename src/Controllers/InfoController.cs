@@ -49,7 +49,7 @@ public class InfoController : ControllerBase
     [HttpGet("quest/{squadId}")]
     public ActionResult<SquadInfoDto> GetQuestBySquadId([FromRoute] int squadId)
     {
-        var squad = _infoService.GetQuestBySquadId(squadId);
+        var squad = _infoService.GetSquadById(squadId);
         return Ok(squad);
     }
 }

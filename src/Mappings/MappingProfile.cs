@@ -19,7 +19,7 @@ public class MappingProfile : Profile
 
         CreateMap<Player, PlayerInfoDto>();
         CreateMap<Squad, SquadInfoDto>()
-            .ForMember(dest => dest.MembersPlayerIds, opt => opt.MapFrom(
+            .ForMember(dest => dest.Members, opt => opt.MapFrom(
                 src => 
                     src.Memberships.Select(m => m.Player)
                 ));

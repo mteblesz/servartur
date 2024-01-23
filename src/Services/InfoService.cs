@@ -11,7 +11,7 @@ public interface IInfoService
     RoomInfoDto GetRoomById(int roomId);
     PlayerInfoDto GetPlayerById(int playerId);
     List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate);
-    SquadInfoDto GetQuestBySquadId(int squadId);
+    SquadInfoDto GetSquadById(int squadId);
 }
 public class InfoService : IInfoService
 {
@@ -47,7 +47,7 @@ public class InfoService : IInfoService
         return result;
     }
 
-    public SquadInfoDto GetQuestBySquadId(int squadId)
+    public SquadInfoDto GetSquadById(int squadId)
     {
         var squad = _dbContext.Squads
             .Include(s => s.Memberships)
