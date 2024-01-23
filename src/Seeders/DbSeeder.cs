@@ -7,46 +7,46 @@ namespace servartur.Seeders;
 
 public class DbSeeder
 {
-    private readonly GameDbContext dbContext;
+    private readonly GameDbContext _dbContext;
 
     public DbSeeder(GameDbContext dbContext)
     {
-        this.dbContext = dbContext;
+        this._dbContext = dbContext;
     }
     public void Seed()
     {
-        if (dbContext.Database.CanConnect())
+        if (_dbContext.Database.CanConnect())
         {
-            if (!dbContext.Rooms.Any())
+            if (!_dbContext.Rooms.Any())
             {
                 var partialRooms = new List<Room>() { new Room(), new Room() };
-                dbContext.Rooms.AddRange(partialRooms);
-                dbContext.SaveChanges();
+                _dbContext.Rooms.AddRange(partialRooms);
+                _dbContext.SaveChanges();
 
                 var players = getPlayers(partialRooms);
-                dbContext.Players.AddRange(players);
-                dbContext.SaveChanges();
+                _dbContext.Players.AddRange(players);
+                _dbContext.SaveChanges();
 
                 var squads = getSquads(partialRooms, players);
-                dbContext.Squads.AddRange(squads);
-                dbContext.SaveChanges();
+                _dbContext.Squads.AddRange(squads);
+                _dbContext.SaveChanges();
 
                 fillRooms(partialRooms, players, squads);
-                dbContext.SaveChanges();
+                _dbContext.SaveChanges();
 
 
 
                 var memberships = getMemberships(players, squads);
-                dbContext.Memberships.AddRange(memberships);
-                dbContext.SaveChanges();
+                _dbContext.Memberships.AddRange(memberships);
+                _dbContext.SaveChanges();
 
                 var squadVotes = getSquadVotes(players, squads);
-                dbContext.SquadVotes.AddRange(squadVotes);
-                dbContext.SaveChanges();
+                _dbContext.SquadVotes.AddRange(squadVotes);
+                _dbContext.SaveChanges();
 
                 var questVotes = getQuestVotes(players, squads);
-                dbContext.QuestVotes.AddRange(questVotes);
-                dbContext.SaveChanges();
+                _dbContext.QuestVotes.AddRange(questVotes);
+                _dbContext.SaveChanges();
             }
         }
     }

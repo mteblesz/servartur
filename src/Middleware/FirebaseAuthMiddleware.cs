@@ -13,7 +13,7 @@ public class FirebaseAuthMiddleware : IMiddleware
     {
         try
         {
-            var authHeader = context.Request.Headers["Authorization"].ToString();
+            var authHeader = context.Request.Headers.Authorization.ToString();
             if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized; 
@@ -28,5 +28,4 @@ public class FirebaseAuthMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status401Unauthorized; 
         }
     }
-
 }
