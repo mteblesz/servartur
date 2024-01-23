@@ -14,14 +14,14 @@ public class VoteController : ControllerBase
         this._voteService = voteService;
     }
 
-    [HttpPost]
+    [HttpPost("squad")]
     public ActionResult VoteSquad([FromBody] VoteDto voteDto)
     {
         _voteService.VoteSquad(voteDto);
         return NoContent();
     }
 
-    [HttpPost]
+    [HttpPost("quest")]
     public ActionResult VoteQuest([FromBody] VoteDto voteDto)
     {
         _voteService.VoteSquad(voteDto);
