@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using servartur.Entities;
-using servartur.Exceptions;
+﻿using Microsoft.AspNetCore.Mvc;
 using servartur.Models;
 using servartur.Services;
 
 namespace servartur.Controllers;
 [ApiController]
-[Route("/")]
+[Route("api/[controller]")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
@@ -21,32 +17,32 @@ public class MatchupController : ControllerBase
     [HttpPost("room")]
     public ActionResult CreateRoom()
     {
-        var roomId = _matchupService.CreateRoom();
+        int roomId = _matchupService.CreateRoom();
         return Created($"/room/{roomId}", null);
     }
 
-    [HttpPost("player")]
-    public ActionResult CreatePlayer([FromBody] CreatePlayerDto dto)
+    [HttpPost("join/{roomId}")]
+    public ActionResult JoinRoom([FromRoute] int roomId)
     {
-        var playerId = _matchupService.CreatePlayer(dto);
+        int playerId = _matchupService.JoinRoom(roomId);
         return Created($"/player/{playerId}", null);
     }
 
-    [HttpDelete("player/{playerId}")]
+    [HttpPatch("nick")]
+    public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
+    {
+        _matchupService.SetNickname(dto);
+        return NoContent();
+    }
+
+    [HttpDelete("remove/{playerId}")]
     public ActionResult RemovePlayer([FromRoute] int playerId)
     {
         _matchupService.RemovePlayer(playerId);
         return NoContent();
     }
 
-    [HttpGet("room/{roomId}")]
-    public ActionResult<RoomDto> GetRoomById([FromRoute] int roomId)
-    {
-        var room = _matchupService.GetRoomById(roomId);
-        return Ok(room);
-    }
-
-    [HttpPut("start")]
+    [HttpPatch("start")]
     public ActionResult StartGame([FromBody] StartGameDto dto)
     {
         // check game rules

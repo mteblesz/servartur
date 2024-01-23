@@ -11,11 +11,11 @@ using servartur.Exceptions;
 
 namespace servartur.Tests.MatchupServiceTests;
 
-public class MatchupServiceStartGameTests
+public class StartGameTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "CreateRoom_ValidDto")
+                .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
 
     [Theory]

@@ -2,13 +2,12 @@
 
 namespace servartur.Models;
 
-public class CreatePlayerDto
+public class PlayerNicknameSetDto
 {
-    //public int UserFid { get; set; }
+    [Required]
+    public int PlayerId { get; set; }
 
     [Required]
     [StringLength(20, MinimumLength = 3)]
     public string Nick { get; set; } = null!;
-    [Required]
-    public int RoomId { get; set; }
 }

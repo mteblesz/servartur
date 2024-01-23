@@ -17,3 +17,9 @@ public class PlayerNotFoundException : EntityNotFoundException
     public PlayerNotFoundException(int playerId)
         : base("Player", playerId) { }
 }
+public class SquadNotFoundException : EntityNotFoundException
+{
+    /// <param name="squadId">Id of the squad that was not found.</param>
+    public SquadNotFoundException(int squadId)
+        : base("Squad", squadId) { }
+}

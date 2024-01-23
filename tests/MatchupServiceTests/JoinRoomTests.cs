@@ -9,15 +9,15 @@ using servartur.Services;
 using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
-public class MatchupServiceCreatePLayerTests
+public class JoinRoomTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "CreateRoom_ValidDto")
+                .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
 
     [Fact]
-    public void CreatePlayer_ValidDto_ReturnsPlayerIdAndAddsPLayerToDB()
+    public void JoinRoom_ValidDto_ReturnsPlayerIdAndAddsPlayerToDB()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -26,17 +26,14 @@ public class MatchupServiceCreatePLayerTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int roomId = 1;
-        var createPlayerDto = new CreatePlayerDto() { RoomId = roomId };
-        var expectedPlayerId = 1;
-        var player = new Player() { PlayerId = expectedPlayerId, Nick = "test_nick", RoomId = roomId };
-        var rooms = new List<Room>() { new() { RoomId = roomId, Status = RoomStatus.Matchup } };
+        var expectedPlayerId = 0; // InMemoryDatabase indexing
+        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup };
 
-        mapperMock.Setup(m => m.Map<Player>(It.IsAny<CreatePlayerDto>())).Returns(player);
-        dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
+        dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet([room]);
         dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(new List<Player>());
 
         // Act
-        var result = matchupService.CreatePlayer(createPlayerDto);
+        var result = matchupService.JoinRoom(roomId);
 
         // Assert
         result.Should().Be(expectedPlayerId);
@@ -49,7 +46,7 @@ public class MatchupServiceCreatePLayerTests
     [InlineData(2)]
     [InlineData(5)]
     [InlineData(10)]
-    public void CreateMultiplePlayer_ValidDto_ReturnsPlayerIdAndAddsPLayerToDB(int numberOfCreations)
+    public void JoinRoomMultiple_ValidDto_ReturnsPlayerIdAndAddsPlayerToDB(int numberOfCreations)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -58,37 +55,39 @@ public class MatchupServiceCreatePLayerTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int roomId = 1;
-        var createPlayerDto = new CreatePlayerDto() { RoomId = roomId };
         var expectedPlayerIds = Enumerable.Range(1, numberOfCreations);
-        var players = Enumerable.Range(1, numberOfCreations)
-            .Select(i => new Player() { PlayerId = i, Nick = $"test_nick_{i}", RoomId = roomId }).ToList();
-        var rooms = new List<Room>() { new() { RoomId = roomId, Status = RoomStatus.Matchup } };
 
-        var playerProvider = new PlayerProvider(players);
-        mapperMock.Setup(m => m.Map<Player>(It.IsAny<CreatePlayerDto>()))
-            .Returns(() => playerProvider.GetNext());
+        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup};
+        var rooms = new List<Room> { room };
+
+        var playerIdProvider = new PlayerIdProvider(expectedPlayerIds.ToList());
+        dbContextMock.Setup(x => x.Players.Add(It.IsAny<Player>()))
+            .Callback<Player>(p =>
+            { 
+                p.PlayerId = playerIdProvider.GetNext(); // Mock<GameDbContext> won't index propertly by itself
+            });
+
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
-        dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(players);
 
         // Act
         var results = new List<int>();
         for (int i = 0; i < numberOfCreations; i++)
-            results.Add(matchupService.CreatePlayer(createPlayerDto));
+            results.Add(matchupService.JoinRoom(roomId));
 
         // Assert
         results.Should().BeEquivalentTo(expectedPlayerIds);
         dbContextMock.Verify(db => db.Players.Add(It.IsAny<Player>()), Times.Exactly(numberOfCreations));
         dbContextMock.Verify(db => db.SaveChanges(), Times.Exactly(numberOfCreations));
     }
-    private class PlayerProvider(IList<Player> players)
+    private class PlayerIdProvider(IList<int> ids)
     {
-        private readonly IList<Player> _players = players;
+        private readonly IList<int> _ids = ids;
         private int i = 0;
-        public Player GetNext() => _players[i++];
+        public int GetNext() => _ids[i++];
     }
 
     [Fact]
-    public void CreatePlayer_RoomNotFound_ThrowsRoomNotFoundException()
+    public void JoinRoom_RoomNotFound_ThrowsRoomNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -96,13 +95,12 @@ public class MatchupServiceCreatePLayerTests
         var mapperMock = new Mock<IMapper>();
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
-        var createPlayerDto = new CreatePlayerDto() { RoomId = 100 };
-
+        var invalidRoomId = 100;
         var rooms = new List<Room>() { new() { RoomId = 1 }, new() { RoomId = 2 } };
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        Action action = () => matchupService.CreatePlayer(createPlayerDto);
+        Action action = () => matchupService.JoinRoom(invalidRoomId);
         Assert.Throws<RoomNotFoundException>(action);
     }
 
@@ -111,7 +109,7 @@ public class MatchupServiceCreatePLayerTests
     [InlineData(RoomStatus.Playing)]
     [InlineData(RoomStatus.Assassination)]
     [InlineData(RoomStatus.Result)]
-    public void CreatePlayer_RoomNotInMatchup_ThrowsRoomNotInMatchupException(RoomStatus status)
+    public void JoinRoom_RoomNotInMatchup_ThrowsRoomNotInMatchupException(RoomStatus status)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -120,17 +118,16 @@ public class MatchupServiceCreatePLayerTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int roomId = 1;
-        var createPlayerDto = new CreatePlayerDto() { RoomId = roomId };
 
         var rooms = new List<Room>() { new() { RoomId = roomId, Status = status } };
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        Action action = () => matchupService.CreatePlayer(createPlayerDto);
+        Action action = () => matchupService.JoinRoom(roomId);
         Assert.Throws<RoomNotInMatchupException>(action);
     }
     [Fact]
-    public void CreatePlayer_RoomNotInFull_ThrowsRoomIsFullException()
+    public void JoinRoom_RoomNotInFull_ThrowsRoomIsFullException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -139,7 +136,6 @@ public class MatchupServiceCreatePLayerTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int roomId = 1;
-        var createPlayerDto = new CreatePlayerDto() { RoomId = roomId };
         var players = Enumerable.Range(1, 10)
             .Select(i => new Player() { PlayerId = i, Nick = $"test_{i}", RoomId = roomId })
             .ToList();
@@ -153,7 +149,8 @@ public class MatchupServiceCreatePLayerTests
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        Action action = () => matchupService.CreatePlayer(createPlayerDto);
+        Action action = () => matchupService.JoinRoom(roomId);
         Assert.Throws<RoomIsFullException>(action);
     }
+
 }

@@ -1,11 +1,11 @@
 ﻿namespace servartur.Models;
 
-public class RoomDto
+public class RoomInfoDto
 {
     public int RoomId { get; set; }
     public string Status { get; set; } = null!;
     public bool IsFull { get; set; }
 
-    public List<PlayerDto> Players { get; set; } = null!;
+    public List<PlayerInfoDto> Players { get; set; } = null!;
 
 }

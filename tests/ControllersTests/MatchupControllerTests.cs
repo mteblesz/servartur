@@ -4,7 +4,7 @@ using servartur.Services;
 using servartur.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace servartur.Tests;
+namespace servartur.Tests.ControllersTests;
 public class MatchupControllerTests
 {
     private readonly MatchupController _controller;
@@ -28,19 +28,32 @@ public class MatchupControllerTests
     }
 
     [Fact]
-    public void CreatePlayer_Returns_CreatedResult()
+    public void JoinRoom_Returns_CreatedResult()
     {
         // Arrange
-        var createPlayerDto = new CreatePlayerDto();
         var playerId = 1;
-        _matchupServiceMock.Setup(m => m.CreatePlayer(It.IsAny<CreatePlayerDto>()))
-            .Returns(playerId);
         // Act
-        var result = _controller.CreatePlayer(createPlayerDto);
+        var result = _controller.JoinRoom(playerId);
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<CreatedResult>();
-        _matchupServiceMock.Verify(ms => ms.CreatePlayer(It.IsAny<CreatePlayerDto>()), Times.Once);
+    }
+
+    [Fact]
+    public void SetNickname_Returns_NoContentResult()
+    {
+        // Arrange
+        var playerId = 1;
+        var playerNicknameSetDto = new PlayerNicknameSetDto()
+        {
+            PlayerId = playerId,
+            Nick = "test_nick",
+        };
+        // Act
+        var result = _controller.SetNickname(playerNicknameSetDto);
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<NoContentResult>();
     }
 
     [Fact]
@@ -55,33 +68,6 @@ public class MatchupControllerTests
         result.Should().NotBeNull();
         result.Should().BeOfType<NoContentResult>();
         _matchupServiceMock.Verify(ms => ms.RemovePlayer(It.IsAny<int>()), Times.Once);
-    }
-
-    [Fact]
-    public void GetRoomById_Returns_OkResultWithContent()
-    {
-        // Arrange
-        var roomId = 1;
-        var roomDto = new RoomDto()
-        {
-            RoomId = roomId,
-            Status = RoomStatus.Unknown.ToString(),
-            IsFull = true,
-            Players = [],
-        };
-        _matchupServiceMock.Setup(m => m.GetRoomById(It.IsAny<int>()))
-            .Returns(roomDto);
-
-        // Act
-        var result = _controller.GetRoomById(roomId);
-
-        // Assert
-        result.Should().NotBeNull();
-        _matchupServiceMock.Verify(ms => ms.GetRoomById(It.IsAny<int>()), Times.Once);
-        // Dto included in response is not null
-        result.Should().BeOfType<ActionResult<RoomDto>>()
-          .Which.Result.Should().BeOfType<OkObjectResult>()
-          .Which.Value.Should().NotBeNull();
     }
 
     [Theory]
@@ -118,7 +104,7 @@ public class MatchupControllerTests
         // Arrange
         var invalidDto = new StartGameDto
         {
-            RoomId= 1,
+            RoomId = 1,
             AreMerlinAndAssassinInGame = MnA,
             ArePercivalAreMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM
