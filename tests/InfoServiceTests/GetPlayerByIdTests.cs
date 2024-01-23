@@ -3,20 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using servartur.Entities;
 using servartur.Enums;
+using servartur.Exceptions;
 using servartur.Models;
 using servartur.Services;
-using servartur.Exceptions;
 using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.InfoServiceTests;
-public class GetRoomByIdTests
+public class GetPlayerByIdTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()
                 .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
     [Fact]
-    public void GetRoomById_ValidRoomId_ReturnsRoomInfoDto()
+    public void GetPlayerById_ValidPlayerId_ReturnsPlayerInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -24,35 +24,34 @@ public class GetRoomByIdTests
         var mapperMock = new Mock<IMapper>();
         var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
-        var roomId = 1;
-        var roomStatus = RoomStatus.Matchup;
-
-        var room = new Room()
+        var player = new Player()
         {
-            RoomId = roomId,
-            Status = roomStatus,
-            Players = []
+            PlayerId = 1,
+            Nick = "test_nick",
+            Team = Team.Evil,
+            Role = Role.Assassin,
+            RoomId = 1,
         };
-        var expectedRoomInfoDto = new RoomInfoDto
+        var expectedPlayerInfoDto = new PlayerInfoDto
         {
-            RoomId = roomId,
-            Status = roomStatus.ToString(),
-            IsFull = false,
-            Players = []
+            PlayerId = player.PlayerId,
+            Nick = player!.Nick,
+            Team = Team.Evil.ToString(),
+            Role = Role.Assassin.ToString(),
         };
 
-        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>() { room });
-        mapperMock.Setup(m => m.Map<RoomInfoDto>(room)).Returns(expectedRoomInfoDto);
+        dbContextMock.Setup(db => db.Players).ReturnsDbSet(new List<Player>() { player });
+        mapperMock.Setup(m => m.Map<PlayerInfoDto>(player)).Returns(expectedPlayerInfoDto);
 
         // Act
-        var result = infoService.GetRoomById(roomId);
+        var result = infoService.GetPlayerById(player.PlayerId);
 
         // Assert
-        result.Should().BeEquivalentTo(expectedRoomInfoDto);
+        result.Should().BeEquivalentTo(expectedPlayerInfoDto);
     }
 
     [Fact]
-    public void GetRoomById_InvalidRoomId_ThrowsRoomNotFoundException()
+    public void GetPlayerById_InvalidPlayerId_ThrowsPlayerNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -60,11 +59,11 @@ public class GetRoomByIdTests
         var mapperMock = new Mock<IMapper>();
         var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
-        var invalidRoomId = 999;
-        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>());
+        var invalidPlayerId = 999;
+        dbContextMock.Setup(db => db.Players).ReturnsDbSet(new List<Player>());
 
         // Act and Assert
-        Action action = () => infoService.GetRoomById(invalidRoomId);
-        Assert.Throws<RoomNotFoundException>(action);
+        Action action = () => infoService.GetPlayerById(invalidPlayerId);
+        Assert.Throws<PlayerNotFoundException>(action);
     }
 }

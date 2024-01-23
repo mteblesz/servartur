@@ -74,7 +74,7 @@ public class InfoService : IInfoService
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
-        var filteredPlayers = room.Players.Select(p => predicate(p));
+        var filteredPlayers = room.Players.Where(p => predicate(p)).ToList();
         var result = filteredPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
         return result;
     }
