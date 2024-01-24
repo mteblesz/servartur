@@ -31,7 +31,7 @@ public class InfoControllerTests
         {
             RoomId = roomId,
             Status = RoomStatus.Unknown.ToString(),
-            IsFull = true,
+            CurrentSquadId = 1,
             Players = [],
         };
         _infoServiceMock.Setup(m => m.GetRoomById(It.IsAny<int>()))
