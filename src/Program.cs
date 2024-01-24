@@ -7,6 +7,11 @@ using servartur.Middleware;
 using servartur.Seeders;
 using servartur;
 
+bool isDebugMode = false;
+#if DEBUG
+isDebugMode = true;
+#endif
+
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -31,7 +36,8 @@ try
     builder.Services.AddScoped<IKillService, KillService>();
     builder.Services.AddScoped<ISquadService, SquadService>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
-    builder.Services.AddScoped<FirebaseAuthMiddleware>();
+    if (!isDebugMode)
+        builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();
 
     // NLog: Setup NLog for Dependency injection
@@ -49,6 +55,8 @@ try
     // Configure the HTTP request pipeline. //middleware
     if (app.Environment.IsDevelopment())
     {
+        //app.UseSwagger();
+        //app.UseSwaggerUI();
     }
     app.UseSwagger();
     app.UseSwaggerUI();
