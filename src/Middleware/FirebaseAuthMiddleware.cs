@@ -16,7 +16,7 @@ public class FirebaseAuthMiddleware : IMiddleware
             var authHeader = context.Request.Headers.Authorization.ToString();
             if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
             {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized; 
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;
             }
             var token = authHeader.Substring("Bearer ".Length).Trim();
@@ -25,7 +25,7 @@ public class FirebaseAuthMiddleware : IMiddleware
         }
         catch (FirebaseAuthException) //thrown by VerifyIdTokenAsync
         {
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized; 
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
         }
     }
 }

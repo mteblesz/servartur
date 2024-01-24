@@ -7,11 +7,6 @@ using servartur.Middleware;
 using servartur.Seeders;
 using servartur;
 
-bool isDebugMode = false;
-#if DEBUG
-isDebugMode = true;
-#endif
-
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -36,8 +31,7 @@ try
     builder.Services.AddScoped<IKillService, KillService>();
     builder.Services.AddScoped<ISquadService, SquadService>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
-    if (!isDebugMode)
-        builder.Services.AddScoped<FirebaseAuthMiddleware>();
+    builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();
 
     // NLog: Setup NLog for Dependency injection
@@ -63,7 +57,8 @@ try
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseMiddleware<RequestTimingMiddleware>(); 
-    app.UseMiddleware<FirebaseAuthMiddleware>();
+    if (Environment.GetEnvironmentVariable("AUTH_TRIGGERED") == "true")
+        app.UseMiddleware<FirebaseAuthMiddleware>();
 
     app.UseHttpsRedirection();
 
