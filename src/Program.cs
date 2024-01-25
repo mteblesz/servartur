@@ -6,6 +6,7 @@ using NLog.Web;
 using servartur.Middleware;
 using servartur.Seeders;
 using servartur;
+using servartur.RealTimeUpdates;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -33,8 +34,8 @@ try
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
     builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();
+    builder.Services.AddSignalR();
 
-    // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
@@ -61,9 +62,7 @@ try
         app.UseMiddleware<FirebaseAuthMiddleware>();
 
     app.UseHttpsRedirection();
-
-    //app.UseAuthorization();
-
+    app.MapHub<UpdatesHub>("updates-hub");
     app.MapControllers();
 
     app.Run();
