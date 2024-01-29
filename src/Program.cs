@@ -62,7 +62,7 @@ try
         app.UseMiddleware<FirebaseAuthMiddleware>();
 
     app.UseHttpsRedirection();
-    app.MapHub<UpdatesHub>("updates-hub");
+    app.MapHub<UpdatesHub>("/rtu");
     app.MapControllers();
 
     app.Run();
