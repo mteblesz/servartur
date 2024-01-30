@@ -2,7 +2,7 @@ name: Build and deploy .NET Core application to Web App servartur-service with A
 on:
   push:
     branches:
-    - main
+    - publishing
 env:
   AZURE_WEBAPP_NAME: servartur-service
   AZURE_WEBAPP_PACKAGE_PATH: src\publish
