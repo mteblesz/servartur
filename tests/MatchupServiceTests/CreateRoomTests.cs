@@ -8,11 +8,11 @@ using servartur.Services;
 using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
-public class MatchupServiceCreateRoomTests
+public class CreateRoomTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "CreateRoom_ValidDto")
+                .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
 
     [Fact]

@@ -10,15 +10,18 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Room, RoomDto>()
-            .ForMember(dest => dest.IsFull, opt => opt.MapFrom(src 
-            => src.Players.Count >= GameCountsCalculator.MaxNumberOfPLayers
-            ));
-
-        CreateMap<Player, PlayerDto>();
-
-        CreateMap<CreatePlayerDto, Player>();
+        CreateMap<Room, RoomInfoDto>();
 
         CreateMap<StartGameDto, GameStartHelper.RoleInfo>();
+
+        CreateMap<Player, PlayerInfoDto>();
+        CreateMap<Squad, SquadInfoDto>()
+            .ForMember(dest => dest.Members, opt => opt.MapFrom(
+                src => 
+                    src.Memberships.Select(m => m.Player)
+                ));
+
+        CreateMap<VoteDto, SquadVote>();
+        CreateMap<VoteDto, QuestVote>();
     }
 }

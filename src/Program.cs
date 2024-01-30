@@ -5,6 +5,8 @@ using NLog;
 using NLog.Web;
 using servartur.Middleware;
 using servartur.Seeders;
+using servartur;
+using servartur.RealTimeUpdates;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -17,6 +19,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
+    builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(addSwaggerOptions());
@@ -24,11 +27,15 @@ try
     builder.Services.AddScoped<DbSeeder>();
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     builder.Services.AddScoped<IMatchupService, MatchupService>();
+    builder.Services.AddScoped<IInfoService, InfoService>();
+    builder.Services.AddScoped<IVoteService, VoteService>();
+    builder.Services.AddScoped<IKillService, KillService>();
+    builder.Services.AddScoped<ISquadService, SquadService>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
     builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();
+    builder.Services.AddSignalR();
 
-    // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
@@ -43,18 +50,19 @@ try
     // Configure the HTTP request pipeline. //middleware
     if (app.Environment.IsDevelopment())
     {
+        //app.UseSwagger();
+        //app.UseSwaggerUI();
     }
     app.UseSwagger();
     app.UseSwaggerUI();
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseMiddleware<RequestTimingMiddleware>(); 
-    app.UseMiddleware<FirebaseAuthMiddleware>();
+    if (Environment.GetEnvironmentVariable("AUTH_TRIGGERED") == "true")
+        app.UseMiddleware<FirebaseAuthMiddleware>();
 
     app.UseHttpsRedirection();
-
-    //app.UseAuthorization();
-
+    app.MapHub<UpdatesHub>("/rtu");
     app.MapControllers();
 
     app.Run();

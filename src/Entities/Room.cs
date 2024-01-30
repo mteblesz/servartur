@@ -10,7 +10,6 @@ public class Room
     }
 
     public int RoomId { get; set; }
-    //public string HostUserFId { get; set; }
     public RoomStatus Status { get; set; }
     public int LastRoundWithSquadOnQuest { get; set; }
 

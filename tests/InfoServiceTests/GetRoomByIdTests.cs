@@ -8,22 +8,21 @@ using servartur.Services;
 using servartur.Exceptions;
 using Moq.EntityFrameworkCore;
 
-namespace servartur.Tests.MatchupServiceTests;
-
-public class MatchupServiceGetRoomByIdTests
+namespace servartur.Tests.InfoServiceTests;
+public class GetRoomByIdTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
         => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "CreateRoom_ValidDto")
+                .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
     [Fact]
-    public void GetRoomById_ValidRoomId_ReturnsRoomDto()
+    public void GetRoomById_ValidRoomId_ReturnsRoomInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
-        var loggerMock = new Mock<ILogger<MatchupService>>();
+        var loggerMock = new Mock<ILogger<InfoService>>();
         var mapperMock = new Mock<IMapper>();
-        var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
+        var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         var roomId = 1;
         var roomStatus = RoomStatus.Matchup;
@@ -34,22 +33,22 @@ public class MatchupServiceGetRoomByIdTests
             Status = roomStatus,
             Players = []
         };
-        var expectedRoomDto = new RoomDto
+        var expectedRoomInfoDto = new RoomInfoDto
         {
             RoomId = roomId,
             Status = roomStatus.ToString(),
-            IsFull = false,
+            CurrentSquadId = null,
             Players = []
         };
 
         dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>() { room });
-        mapperMock.Setup(m => m.Map<RoomDto>(room)).Returns(expectedRoomDto);
+        mapperMock.Setup(m => m.Map<RoomInfoDto>(room)).Returns(expectedRoomInfoDto);
 
         // Act
-        var result = matchupService.GetRoomById(roomId);
+        var result = infoService.GetRoomById(roomId);
 
         // Assert
-        result.Should().BeEquivalentTo(expectedRoomDto);
+        result.Should().BeEquivalentTo(expectedRoomInfoDto);
     }
 
     [Fact]
@@ -57,15 +56,15 @@ public class MatchupServiceGetRoomByIdTests
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
-        var loggerMock = new Mock<ILogger<MatchupService>>();
+        var loggerMock = new Mock<ILogger<InfoService>>();
         var mapperMock = new Mock<IMapper>();
-        var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
+        var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         var invalidRoomId = 999;
         dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>());
 
         // Act and Assert
-        Action action = () => matchupService.GetRoomById(invalidRoomId);
+        Action action = () => infoService.GetRoomById(invalidRoomId);
         Assert.Throws<RoomNotFoundException>(action);
     }
 }
