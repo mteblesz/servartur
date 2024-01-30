@@ -42,7 +42,7 @@ public class MatchupController : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch("start")]
+    [HttpPut("start")]
     public ActionResult StartGame([FromBody] StartGameDto dto)
     {
         // check game rules

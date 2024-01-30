@@ -37,7 +37,7 @@ public class GetRoomByIdTests
         {
             RoomId = roomId,
             Status = roomStatus.ToString(),
-            IsFull = false,
+            CurrentSquadId = null,
             Players = []
         };
 
