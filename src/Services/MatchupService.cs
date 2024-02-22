@@ -17,6 +17,8 @@ public interface IMatchupService
     void SetNickname(PlayerNicknameSetDto dto);
     void RemovePlayer(int playerId);
     void StartGame(StartGameDto dto);
+    List<PlayerInfoDto> GetUpdatedPlayers(int roomId);
+    int GetRoomId(int playerId);
 }
 
 public class MatchupService : IMatchupService
@@ -117,5 +119,25 @@ public class MatchupService : IMatchupService
         // Update room
         room.Status = RoomStatus.Playing;
         _dbContext.SaveChanges();
+    }
+
+    public List<PlayerInfoDto> GetUpdatedPlayers(int roomId)
+    {
+        var room = _dbContext.Rooms
+            .Include(r => r.Players)
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
+
+        var players = _mapper.Map<List<PlayerInfoDto>>(room.Players);
+        return players.OrderBy(player => player.PlayerId).ToList();
+    }
+    public int GetRoomId(int playerId)
+    {
+        var room = _dbContext.Rooms
+            .Include(r => r.Players)
+            .FirstOrDefault(r => r.Players.Any(p => p.PlayerId == playerId))
+            ?? throw new PlayerNotFoundException(playerId);
+
+        return room.RoomId;
     }
 }
