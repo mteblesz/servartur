@@ -40,21 +40,20 @@ public class MatchupController : ControllerBase
     public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
     {
         _matchupService.SetNickname(dto);
-        var roomId = _matchupService.GetRoomId(dto.PlayerId);
-        var players = _matchupService.GetUpdatedPlayers(roomId);
+        var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
 
         _hubContext.Clients.All.ReceivePlayerList(players);
         return NoContent();
     }
 
     [HttpDelete("remove/{playerId}")]
-    public ActionResult RemovePlayer([FromRoute] int playerId)
+    public ActionResult RemovePlayer([FromBody] PlayerRemoveDto dto)
     {
-        var roomId = _matchupService.GetRoomId(playerId);
-        _matchupService.RemovePlayer(playerId);
-        var players = _matchupService.GetUpdatedPlayers(roomId);
+        _matchupService.RemovePlayer(dto.PlayerId);
+        var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
 
         _hubContext.Clients.All.ReceivePlayerList(players);
+        // _hubContext.Clients.group(id).ReceiveRemoval(); // TODO
         return NoContent();
     }
 
