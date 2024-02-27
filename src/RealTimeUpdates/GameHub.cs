@@ -8,7 +8,6 @@ namespace servartur.RealTimeUpdates;
 
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-// Group membership isn't preserved when a connection reconnects.  !!! https://learn.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-8.0
 
 using GameHubContext = IHubContext<GameHub, IGameHubClient>;
 
@@ -22,13 +21,14 @@ public class GameHub : Hub<IGameHubClient>
 {
     //https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections#in-memory-storage
     // private readonly static ConnectionMapping _connections =  new ConnectionMapping();
-    // maybe map here 
+    // TODO maybe map here 
     public override async Task OnConnectedAsync()
     {
         await Clients.Caller.ReceiveMessage($"{Context.ConnectionId} has joined.");
     }
     public async Task JoinRoomGroup(string groupName)
     {
+        // Group membership isn't preserved when a connection reconnects.  !!! https://learn.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-8.0
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         await Clients.Group(groupName).ReceiveMessage($"{Context.ConnectionId} has joined the group {groupName}.");
     }
