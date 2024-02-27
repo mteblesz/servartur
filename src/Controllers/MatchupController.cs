@@ -48,14 +48,14 @@ public class MatchupController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("remove/{playerId}")]
-    public ActionResult RemovePlayer([FromRoute] int playerId, [FromBody] RoomConnectionDto dto)
+    [HttpDelete("remove/{playerId}/from/{roomId}")]
+    public ActionResult RemovePlayer([FromRoute] int playerId, [FromRoute] int roomId)
     {
         _matchupService.RemovePlayer(playerId);
 
-        var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
-        _ = _hubContext.RefreshPlayers(dto.RoomId, players);
-        _ = _hubContext.SendRemovalInfo(dto.RoomId, playerId);
+        var players = _matchupService.GetUpdatedPlayers(roomId);
+        _ = _hubContext.RefreshPlayers(roomId, players);
+        _ = _hubContext.SendRemovalInfo(roomId, playerId);
         return NoContent();
     }
 
