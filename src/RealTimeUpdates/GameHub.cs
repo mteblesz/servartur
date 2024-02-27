@@ -16,7 +16,7 @@ public interface IGameHubClient
 {
     Task ReceiveMessage(string message);
     Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayerList);
-    Task ReceiveRemoval();
+    Task ReceiveRemoval(string playerId);
 }
 public class GameHub : Hub<IGameHubClient>
 {
@@ -43,9 +43,9 @@ public static class GameHubExtensions
         await context.Clients.Group(groupName).ReceivePlayerList(players);
     }
 
-    public static async Task SendRemovalInfo(this GameHubContext context, int roomId)
+    public static async Task SendRemovalInfo(this GameHubContext context, int roomId, int playerId)
     {
         var groupName = roomId.ToString();
-        await context.Clients.Group(groupName).ReceiveRemoval();
+        await context.Clients.Group(groupName).ReceiveRemoval(playerId.ToString());
     }
 }

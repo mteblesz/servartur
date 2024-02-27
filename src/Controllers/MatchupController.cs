@@ -6,18 +6,19 @@ using Microsoft.AspNetCore.SignalR;
 using servartur.Entities;
 
 namespace servartur.Controllers;
+using GameHubContext = IHubContext<GameHub, IGameHubClient>;
 
 [ApiController]
 [Route("api/[controller]")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
-    private readonly IHubFacade _hubFacade;
+    private readonly GameHubContext _hubContext;
 
-    public MatchupController(IMatchupService matchupService, IHubFacade hubFacade)
+    public MatchupController(IMatchupService matchupService, GameHubContext hubContext)
     {
         this._matchupService = matchupService;
-        this._hubFacade = hubFacade;
+        this._hubContext = hubContext;
     }
 
     [HttpPost("room")]
@@ -28,36 +29,33 @@ public class MatchupController : ControllerBase
     }
 
     [HttpPost("join/{roomId}")]
-    public async Task<ActionResult> JoinRoomAsync([FromRoute] int roomId, [FromQuery] string hubConnectionId)
+    public ActionResult JoinRoom([FromRoute] int roomId)
     {
         int playerId = _matchupService.JoinRoom(roomId);
-        await _hubFacade.AddToRoomGroup(roomId, hubConnectionId);
 
         var players = _matchupService.GetUpdatedPlayers(roomId);
-        await _hubFacade.RefreshPlayers(roomId, players);
+        _ = _hubContext.RefreshPlayers(roomId, players);
         return Created($"/player/{playerId}", null);
     }
 
     [HttpPatch("nick")]
-    public async Task<ActionResult> SetNicknameAsync([FromBody] PlayerNicknameSetDto dto)
+    public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
     {
         _matchupService.SetNickname(dto);
         var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
 
-        await _hubFacade.RefreshPlayers(dto.RoomId, players);
+        _ = _hubContext.RefreshPlayers(dto.RoomId, players);
         return NoContent();
     }
 
     [HttpDelete("remove/{playerId}")]
-    public async Task<ActionResult> RemovePlayerAsync([FromRoute] int playerId, [FromBody] RoomConnectionDto dto)
+    public ActionResult RemovePlayer([FromRoute] int playerId, [FromBody] RoomConnectionDto dto)
     {
         _matchupService.RemovePlayer(playerId);
-        await _hubFacade.RemoveFromRoomGroup(dto.RoomId, dto.HubConnectionId);
-
-        await _hubFacade.SendRemovalInfo(playerId);
 
         var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
-        await _hubFacade.RefreshPlayers(dto.RoomId, players);
+        _ = _hubContext.RefreshPlayers(dto.RoomId, players);
+        _ = _hubContext.SendRemovalInfo(dto.RoomId, playerId);
         return NoContent();
     }
 
@@ -77,7 +75,7 @@ public class MatchupController : ControllerBase
         }
         _matchupService.StartGame(dto);
 
-        // _hubFacade.Clients.All.ReceiveRoomStartedInfo(room);
+        // _hubContext.Clients.All.ReceiveRoomStartedInfo(room);
         return NoContent();
     }
 }
