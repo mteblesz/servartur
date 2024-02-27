@@ -38,7 +38,10 @@ try
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
     builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();
-    builder.Services.AddSignalR(); 
+    builder.Services.AddSignalR();
+    builder.Services.AddSingleton<IConnectionMapping, ConnectionMapping>();
+    builder.Services.AddSingleton<IHubFacade, HubFacade>();
+
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowAll",

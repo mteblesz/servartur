@@ -6,6 +6,8 @@ using servartur.Models;
 
 namespace servartur.RealTimeUpdates;
 
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 // Group membership isn't preserved when a connection reconnects.  !!! https://learn.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-8.0
 
 using GameHubContext = IHubContext<GameHub, IGameHubClient>;
@@ -18,38 +20,32 @@ public interface IGameHubClient
 }
 public class GameHub : Hub<IGameHubClient>
 {
+    //https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections#in-memory-storage
+    // private readonly static ConnectionMapping _connections =  new ConnectionMapping();
+    // maybe map here 
     public override async Task OnConnectedAsync()
     {
-        await Clients.All.ReceiveMessage($"{Context.ConnectionId} has joined.");
+        await Clients.Caller.ReceiveMessage($"{Context.ConnectionId} has joined.");
+    }
+    public async Task JoinRoomGroup(string groupName)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        await Clients.Group(groupName).ReceiveMessage($"{Context.ConnectionId} has joined the group {groupName}.");
     }
 }
 
 // https://stackoverflow.com/a/74414966/23287406
 public static class GameHubExtensions
 {
-    public static async Task AddToRoomGroup(this GameHubContext context, int roomId, string hubConnectionId)
+    public static async Task RefreshPlayers(this GameHubContext context, int roomId, List<PlayerInfoDto> players)
     {
         var groupName = roomId.ToString();
-        await context.Groups.AddToGroupAsync(hubConnectionId, groupName);
-        await context.Clients.Group(groupName).ReceiveMessage($"{hubConnectionId} has joined the group {groupName}.");
+        await context.Clients.Group(groupName).ReceivePlayerList(players);
     }
 
-    public static async Task RemoveFromRoomGroup(this GameHubContext context, int roomId, string hubConnectionId)
+    public static async Task SendRemovalInfo(this GameHubContext context, int roomId)
     {
         var groupName = roomId.ToString();
-        await context.Groups.RemoveFromGroupAsync(hubConnectionId, groupName);
-        await context.Clients.Group(groupName).ReceiveMessage($"{hubConnectionId} has left the group {groupName}.");
-    }
-
-    public static void RefreshPlayers(this GameHubContext context, int roomId, List<PlayerInfoDto> players)
-    {
-        var groupName = roomId.ToString();
-        context.Clients.Group(groupName).ReceivePlayerList(players);
-    }
-
-    public static async Task SendRemovalInfo(this GameHubContext context, string hubConnectionId)
-    {
-        await context.Clients.Client(hubConnectionId).ReceiveRemoval();
+        await context.Clients.Group(groupName).ReceiveRemoval();
     }
 }
-
