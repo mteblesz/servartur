@@ -21,7 +21,7 @@ public class RoomIsFullException : ConflitedRequestDataException
 public class TooManyEvilRolesException : ConflitedRequestDataException
 {
     public TooManyEvilRolesException()
-        : base("There are too many evil roles defined in the request") { }
+        : base("Too many evil roles for this number of players") { }
 }
 public class PlayerCountInvalidException : ConflitedRequestDataException
 {
