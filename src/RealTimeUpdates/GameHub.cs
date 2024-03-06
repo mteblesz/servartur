@@ -26,7 +26,7 @@ public class GameHub : Hub<IGameHubClient>
     // TODO maybe map here 
     public override async Task OnConnectedAsync()
     {
-        await Clients.Caller.ReceiveMessage($"{Context.ConnectionId} has joined.");
+        //await Clients.Caller.ReceiveMessage($"{Context.ConnectionId} has joined.");
     }
     public async Task JoinRoomGroup(string groupName)
     {

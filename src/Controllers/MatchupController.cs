@@ -75,7 +75,9 @@ public class MatchupController : ControllerBase
         }
         _matchupService.StartGame(dto);
 
-        // _hubContext.Clients.All.ReceiveRoomStartedInfo(room); // TODO!!!
+        var roomId = dto.RoomId;
+        var players = _matchupService.GetUpdatedPlayers(roomId);
+        _ = _hubContext.SendStartGame(roomId, players);
         return NoContent();
     }
 }

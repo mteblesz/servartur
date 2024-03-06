@@ -78,7 +78,7 @@ public class MatchupService : IMatchupService
             ?? throw new PlayerNotFoundException(playerId);
 
         var room = _dbContext.Rooms.FirstOrDefault(r => r.RoomId == player.RoomId); 
-        if (room!.Status != RoomStatus.Matchup)
+        if (room!.Status == RoomStatus.Unknown)
             throw new RoomNotInMatchupException(player.RoomId);
 
         _dbContext.Players.Remove(player);
