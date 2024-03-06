@@ -1,17 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using servartur.Models;
 using servartur.Services;
+using servartur.RealTimeUpdates;
+using Microsoft.AspNetCore.SignalR;
+using servartur.Entities;
 
 namespace servartur.Controllers;
+using GameHubContext = IHubContext<GameHub, IGameHubClient>;
+
 [ApiController]
 [Route("api/[controller]")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
+    private readonly GameHubContext _hubContext;
 
-    public MatchupController(IMatchupService matchupService)
+    public MatchupController(IMatchupService matchupService, GameHubContext hubContext)
     {
         this._matchupService = matchupService;
+        this._hubContext = hubContext;
     }
 
     [HttpPost("room")]
@@ -25,6 +32,9 @@ public class MatchupController : ControllerBase
     public ActionResult JoinRoom([FromRoute] int roomId)
     {
         int playerId = _matchupService.JoinRoom(roomId);
+
+        var players = _matchupService.GetUpdatedPlayers(roomId);
+        _ = _hubContext.RefreshPlayers(roomId, players);
         return Created($"/player/{playerId}", null);
     }
 
@@ -32,13 +42,20 @@ public class MatchupController : ControllerBase
     public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
     {
         _matchupService.SetNickname(dto);
+        var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
+
+        _ = _hubContext.RefreshPlayers(dto.RoomId, players);
         return NoContent();
     }
 
-    [HttpDelete("remove/{playerId}")]
-    public ActionResult RemovePlayer([FromRoute] int playerId)
+    [HttpDelete("remove/{playerId}/from/{roomId}")]
+    public ActionResult RemovePlayer([FromRoute] int playerId, [FromRoute] int roomId)
     {
         _matchupService.RemovePlayer(playerId);
+
+        var players = _matchupService.GetUpdatedPlayers(roomId);
+        _ = _hubContext.RefreshPlayers(roomId, players);
+        _ = _hubContext.SendRemovalInfo(roomId, playerId);
         return NoContent();
     }
 
@@ -57,6 +74,8 @@ public class MatchupController : ControllerBase
             return BadRequest(ModelState);
         }
         _matchupService.StartGame(dto);
+
+        // _hubContext.Clients.All.ReceiveRoomStartedInfo(room);
         return NoContent();
     }
 }

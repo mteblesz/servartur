@@ -7,6 +7,10 @@ using servartur.Middleware;
 using servartur.Seeders;
 using servartur;
 using servartur.RealTimeUpdates;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
+using Microsoft.Extensions.Options;
+using System.Security.Cryptography.X509Certificates;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -36,6 +40,15 @@ try
     builder.Services.AddScoped<RequestTimingMiddleware>();
     builder.Services.AddSignalR();
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAll",
+            builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+    });
+
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
@@ -57,12 +70,14 @@ try
     app.UseSwaggerUI();
 
     app.UseMiddleware<ErrorHandlingMiddleware>();
-    app.UseMiddleware<RequestTimingMiddleware>(); 
+    app.UseMiddleware<RequestTimingMiddleware>();
     if (Environment.GetEnvironmentVariable("AUTH_TRIGGERED") == "true")
-        app.UseMiddleware<FirebaseAuthMiddleware>();
+        app.UseMiddleware<FirebaseAuthMiddleware>(); 
+    
+    app.UseCors("AllowAll");
 
-    app.UseHttpsRedirection();
-    app.MapHub<UpdatesHub>("/rtu");
+    //app.UseHttpsRedirection();
+    app.MapHub<GameHub>("/rtu");
     app.MapControllers();
 
     app.Run();

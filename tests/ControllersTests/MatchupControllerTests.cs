@@ -50,7 +50,7 @@ public class MatchupControllerTests
             Nick = "test_nick",
         };
         // Act
-        var result = _controller.SetNickname(playerNicknameSetDto);
+        var result = _controller.SetNicknameAsync(playerNicknameSetDto);
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<NoContentResult>();

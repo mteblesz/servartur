@@ -5,6 +5,8 @@ namespace servartur.Models;
 public class PlayerNicknameSetDto
 {
     [Required]
+    public int RoomId { get; set; }
+    [Required]
     public int PlayerId { get; set; }
 
     [Required]
