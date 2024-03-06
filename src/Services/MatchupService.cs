@@ -78,7 +78,7 @@ public class MatchupService : IMatchupService
             ?? throw new PlayerNotFoundException(playerId);
 
         var room = _dbContext.Rooms.FirstOrDefault(r => r.RoomId == player.RoomId); 
-        if (room!.Status != RoomStatus.Matchup)
+        if (room!.Status == RoomStatus.Unknown)
             throw new RoomNotInMatchupException(player.RoomId);
 
         _dbContext.Players.Remove(player);
@@ -112,7 +112,9 @@ public class MatchupService : IMatchupService
         }
 
         // Create first Squad
-        var firstSquad = GameStartHelper.MakeFirstSquad(room.Players.First(), playersCount);
+        Random random = new Random();
+        var leader = room.Players[random.Next(room.Players.Count)];
+        var firstSquad = GameStartHelper.MakeFirstSquad(leader, playersCount);
         room.Squads.Add(firstSquad);
         room.CurrentSquad = firstSquad;
 

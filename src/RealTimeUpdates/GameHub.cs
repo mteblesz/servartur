@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using servartur.Entities;
 using servartur.Models;
+using System.Collections.Generic;
 
 namespace servartur.RealTimeUpdates;
 
@@ -14,8 +15,9 @@ using GameHubContext = IHubContext<GameHub, IGameHubClient>;
 public interface IGameHubClient
 {
     Task ReceiveMessage(string message);
-    Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayerList);
+    Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayers);
     Task ReceiveRemoval(string playerId);
+    Task ReceiveStartGame(List<PlayerInfoDto> updatedPlayers);
 }
 public class GameHub : Hub<IGameHubClient>
 {
@@ -24,7 +26,7 @@ public class GameHub : Hub<IGameHubClient>
     // TODO maybe map here 
     public override async Task OnConnectedAsync()
     {
-        await Clients.Caller.ReceiveMessage($"{Context.ConnectionId} has joined.");
+        //await Clients.Caller.ReceiveMessage($"{Context.ConnectionId} has joined.");
     }
     public async Task JoinRoomGroup(string groupName)
     {
@@ -37,15 +39,19 @@ public class GameHub : Hub<IGameHubClient>
 // https://stackoverflow.com/a/74414966/23287406
 public static class GameHubExtensions
 {
-    public static async Task RefreshPlayers(this GameHubContext context, int roomId, List<PlayerInfoDto> players)
+    public static async Task RefreshPlayers(this GameHubContext context, int roomId, List<PlayerInfoDto> updatedPlayers)
     {
         var groupName = roomId.ToString();
-        await context.Clients.Group(groupName).ReceivePlayerList(players);
+        await context.Clients.Group(groupName).ReceivePlayerList(updatedPlayers);
     }
-
     public static async Task SendRemovalInfo(this GameHubContext context, int roomId, int playerId)
     {
         var groupName = roomId.ToString();
         await context.Clients.Group(groupName).ReceiveRemoval(playerId.ToString());
+    }
+    public static async Task SendStartGame(this GameHubContext context, int roomId, List<PlayerInfoDto> updatedPlayers)
+    {
+        var groupName = roomId.ToString();
+        await context.Clients.Group(groupName).ReceiveStartGame(updatedPlayers);
     }
 }
