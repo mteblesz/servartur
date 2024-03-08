@@ -32,9 +32,7 @@ public class MatchupController : ControllerBase
     public ActionResult JoinRoom([FromRoute] int roomId)
     {
         int playerId = _matchupService.JoinRoom(roomId);
-
-        var players = _matchupService.GetUpdatedPlayers(roomId);
-        _ = _hubContext.RefreshPlayers(roomId, players);
+        refreshPlayersData(roomId);
         return Created($"/player/{playerId}", null);
     }
 
@@ -42,9 +40,7 @@ public class MatchupController : ControllerBase
     public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
     {
         _matchupService.SetNickname(dto);
-        var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
-
-        _ = _hubContext.RefreshPlayers(dto.RoomId, players);
+        refreshPlayersData(dto.RoomId);
         return NoContent();
     }
 
@@ -52,10 +48,8 @@ public class MatchupController : ControllerBase
     public ActionResult RemovePlayer([FromRoute] int playerId, [FromRoute] int roomId)
     {
         _matchupService.RemovePlayer(playerId);
-
-        var players = _matchupService.GetUpdatedPlayers(roomId);
-        _ = _hubContext.RefreshPlayers(roomId, players);
-        _ = _hubContext.SendRemovalInfo(roomId, playerId);
+        refreshPlayersData(roomId);
+        sendRemovalInfo(playerId, roomId);
         return NoContent();
     }
 
@@ -75,9 +69,17 @@ public class MatchupController : ControllerBase
         }
         _matchupService.StartGame(dto);
 
-        var roomId = dto.RoomId;
-        var players = _matchupService.GetUpdatedPlayers(roomId);
-        _ = _hubContext.SendStartGame(roomId);
+        refreshPlayersData(dto.RoomId);
         return NoContent();
+    }
+
+    private void refreshPlayersData(int roomId)
+    {
+        var players = _matchupService.GetUpdatedPlayers(roomId);
+        _ = _hubContext.RefreshPlayers(roomId, players);
+    }
+    private void sendRemovalInfo(int playerId, int roomId)
+    {
+        _ = _hubContext.SendRemovalInfo(roomId, playerId);
     }
 }
