@@ -17,7 +17,7 @@ public interface IGameHubClient
     Task ReceiveMessage(string message);
     Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayers);
     Task ReceiveRemoval(string playerId);
-    Task ReceiveStartGame(List<PlayerInfoDto> updatedPlayers);
+    Task ReceiveStartGame();
 }
 public class GameHub : Hub<IGameHubClient>
 {
@@ -49,9 +49,9 @@ public static class GameHubExtensions
         var groupName = roomId.ToString();
         await context.Clients.Group(groupName).ReceiveRemoval(playerId.ToString());
     }
-    public static async Task SendStartGame(this GameHubContext context, int roomId, List<PlayerInfoDto> updatedPlayers)
+    public static async Task SendStartGame(this GameHubContext context, int roomId)
     {
         var groupName = roomId.ToString();
-        await context.Clients.Group(groupName).ReceiveStartGame(updatedPlayers);
+        await context.Clients.Group(groupName).ReceiveStartGame();
     }
 }

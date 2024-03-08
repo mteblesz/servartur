@@ -8,8 +8,10 @@ namespace servartur.Services;
 
 public interface IInfoService
 {
+    
     RoomInfoDto GetRoomById(int roomId);
     PlayerInfoDto GetPlayerById(int playerId);
+    PlayerRoleInfoDto GetRoleByPlayerId(int playerId);
     List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate);
     SquadInfoDto GetSquadById(int squadId);
 }
@@ -44,6 +46,16 @@ public class InfoService : IInfoService
             ?? throw new PlayerNotFoundException(playerId);
 
         var result = _mapper.Map<PlayerInfoDto>(player);
+        return result;
+    }
+
+    public PlayerRoleInfoDto GetRoleByPlayerId(int playerId)
+    {
+        var player = _dbContext.Players
+            .FirstOrDefault(p => p.PlayerId == playerId)
+            ?? throw new PlayerNotFoundException(playerId);
+
+        var result = _mapper.Map<PlayerRoleInfoDto>(player);
         return result;
     }
 
