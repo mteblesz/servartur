@@ -28,3 +28,9 @@ public class PlayerCountInvalidException : ConflitedRequestDataException
     public PlayerCountInvalidException(int roomId)
         : base($"Room with id {roomId} has invalid number of players and game cannot be started") { }
 }
+
+public class PercivalNotInGameException : ConflitedRequestDataException
+{
+    public PercivalNotInGameException(int roomId)
+        : base($"Percival is not present in game of room {roomId}") { }
+}
