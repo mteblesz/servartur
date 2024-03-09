@@ -53,6 +53,22 @@ public class InfoController : ControllerBase
         return Ok(evilPlayers);
     }
 
+    [HttpGet("evilknows/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForEvil([FromRoute] int roomId)
+    {
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil && p.Role != Role.Oberon;
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
+        return Ok(evilPlayers);
+    }
+
+    [HttpGet("merlinknows/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForMerlin([FromRoute] int roomId)
+    {
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil && p.Role != Role.Mordred;
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
+        return Ok(evilPlayers);
+    }
+
     [HttpGet("percivalknowns/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetKnownByPercivalPlayers([FromRoute] int roomId)
     {
