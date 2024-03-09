@@ -14,7 +14,7 @@ public interface IInfoService
     RoomInfoDto GetRoomById(int roomId);
     PlayerInfoDto GetPlayerById(int playerId);
     PlayerRoleInfoDto GetRoleByPlayerId(int playerId);
-    List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate);
+    List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate, Func<Player, Player>? obfuscate = null);
     List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId);
     SquadInfoDto GetSquadById(int squadId);
 }
@@ -63,22 +63,26 @@ public class InfoService : IInfoService
     }
 
     /// <summary>
-    /// Filters players in a specific room, by a predicate.
-    /// Use: getting a list of evil or good players in the room.
+    /// Filters players in a specific room, by a predicate. May alter players with obfuscate func
+    /// Use: getting a list of evil or good players in the room. Obfucate Oberon or Mordred for player info
     /// </summary>
     /// <param name="roomId"></param>
     /// <param name="predicate"></param>
+    /// <param name="obfuscate"></param>
     /// <returns></returns>
     /// <exception cref="RoomNotFoundException"></exception>
-    public List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate)
+    public List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> filter, Func<Player, Player>? obfuscate = null)
     {
         var room = _dbContext.Rooms
             .Include(r => r.Players)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
-        var filteredPlayers = room.Players.Where(p => predicate(p)).ToList();
-        var result = filteredPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
+        var filteredPlayers = room.Players.Where(p => filter(p)).ToList();
+        obfuscate ??= p => p;
+        var obfuscatedPlayers = room.Players.Select(p => obfuscate(p)).ToList();
+
+        var result = obfuscatedPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
         return result;
     }
     public List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId)
