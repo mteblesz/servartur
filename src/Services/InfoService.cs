@@ -67,8 +67,8 @@ public class InfoService : IInfoService
     /// Use: getting a list of evil or good players in the room. Obfucate Oberon or Mordred for player info
     /// </summary>
     /// <param name="roomId"></param>
-    /// <param name="predicate"></param>
-    /// <param name="obfuscate"></param>
+    /// <param name="predicate"> Flilter players list by this predicate</param>
+    /// <param name="obfuscate"> Modify filtered players. When not provided, do Identity(player) </param> 
     /// <returns></returns>
     /// <exception cref="RoomNotFoundException"></exception>
     public List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> filter, Func<Player, Player>? obfuscate = null)
@@ -79,9 +79,8 @@ public class InfoService : IInfoService
             ?? throw new RoomNotFoundException(roomId);
 
         var filteredPlayers = room.Players.Where(p => filter(p)).ToList();
-        obfuscate ??= p => p;
-        var obfuscatedPlayers = room.Players.Select(p => obfuscate(p)).ToList();
-
+        obfuscate ??= p => p; 
+        var obfuscatedPlayers = filteredPlayers.Select(p => obfuscate(p)).ToList();
         var result = obfuscatedPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
         return result;
     }
