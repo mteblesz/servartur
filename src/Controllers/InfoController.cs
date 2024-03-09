@@ -53,7 +53,7 @@ public class InfoController : ControllerBase
         return Ok(evilPlayers);
     }
 
-    [HttpGet("percival_known/{roomId}")]
+    [HttpGet("percivalknowns/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetKnownByPercivalPlayers([FromRoute] int roomId)
     {
         var mmPlayers = _infoService.GetKnownByPercivalPlayers(roomId);
