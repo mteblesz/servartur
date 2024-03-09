@@ -49,7 +49,7 @@ public class MatchupController : ControllerBase
     {
         _matchupService.RemovePlayer(playerId);
         refreshPlayersData(roomId);
-        sendRemovalInfo(playerId, roomId);
+        sendRemovalInfo(roomId, playerId);
         return NoContent();
     }
 
@@ -70,6 +70,7 @@ public class MatchupController : ControllerBase
         _matchupService.StartGame(dto);
 
         refreshPlayersData(dto.RoomId);
+        sendStartGame(dto.RoomId);
         return NoContent();
     }
 
@@ -78,8 +79,12 @@ public class MatchupController : ControllerBase
         var players = _matchupService.GetUpdatedPlayers(roomId);
         _ = _hubContext.RefreshPlayers(roomId, players);
     }
-    private void sendRemovalInfo(int playerId, int roomId)
+    private void sendRemovalInfo(int roomId, int playerId)
     {
         _ = _hubContext.SendRemovalInfo(roomId, playerId);
+    }
+    private void sendStartGame(int roomId)
+    {
+        _ = _hubContext.SendStartGame(roomId);
     }
 }
