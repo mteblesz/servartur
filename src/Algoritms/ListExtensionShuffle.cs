@@ -2,6 +2,7 @@
 
 public static class ListExtensionShuffle
 {
+    private static readonly Random _rng = new Random();
     /// <summary>
     /// Fisher-Yates shuffle extension for lists
     /// </summary>
@@ -9,13 +10,10 @@ public static class ListExtensionShuffle
     /// <param name="list"></param>
     public static void Shuffle<T>(this List<T> list)
     {
-        var rng = new Random();
-        int n = list.Count;
-        while (n > 1)
+        for (int i = 0; i < list.Count - 1; i++)
         {
-            n--;
-            int k = rng.Next(n + 1);
-            (list[n], list[k]) = (list[k], list[n]);
+            int pos = _rng.Next(i, list.Count);
+            (list[i], list[pos]) = (list[pos], list[i]);
         }
     }
 }
