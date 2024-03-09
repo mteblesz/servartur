@@ -30,6 +30,13 @@ public class InfoController : ControllerBase
         return Ok(player);
     }
 
+    [HttpGet("player/role/{playerId}")]
+    public ActionResult<PlayerRoleInfoDto> GetRoleByPlayerId([FromRoute] int playerId)
+    {
+        var roleInfo = _infoService.GetRoleByPlayerId(playerId);
+        return Ok(roleInfo);
+    }
+
     [HttpGet("goodplayers/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetGoodPlayers([FromRoute] int roomId)
     {
@@ -44,6 +51,29 @@ public class InfoController : ControllerBase
         Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
         var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
         return Ok(evilPlayers);
+    }
+
+    [HttpGet("evilknows/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForEvil([FromRoute] int roomId)
+    {
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil && p.Role != Role.Oberon;
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
+        return Ok(evilPlayers);
+    }
+
+    [HttpGet("merlinknows/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForMerlin([FromRoute] int roomId)
+    {
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil && p.Role != Role.Mordred;
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
+        return Ok(evilPlayers);
+    }
+
+    [HttpGet("percivalknowns/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetKnownByPercivalPlayers([FromRoute] int roomId)
+    {
+        var mmPlayers = _infoService.GetKnownByPercivalPlayers(roomId);
+        return Ok(mmPlayers);
     }
 
     [HttpGet("quest/{squadId}")]

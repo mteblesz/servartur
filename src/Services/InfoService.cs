@@ -1,16 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using servartur.Entities;
+using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models;
+using System.Linq;
 
 namespace servartur.Services;
 
 public interface IInfoService
 {
+    
     RoomInfoDto GetRoomById(int roomId);
     PlayerInfoDto GetPlayerById(int playerId);
+    PlayerRoleInfoDto GetRoleByPlayerId(int playerId);
     List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate);
+    List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId);
     SquadInfoDto GetSquadById(int squadId);
 }
 public class InfoService : IInfoService
@@ -47,15 +52,13 @@ public class InfoService : IInfoService
         return result;
     }
 
-    public SquadInfoDto GetSquadById(int squadId)
+    public PlayerRoleInfoDto GetRoleByPlayerId(int playerId)
     {
-        var squad = _dbContext.Squads
-            .Include(s => s.Memberships)
-            .ThenInclude(m => m.Player)
-            .FirstOrDefault(p => p.SquadId == squadId)
-            ?? throw new SquadNotFoundException(squadId);
+        var player = _dbContext.Players
+            .FirstOrDefault(p => p.PlayerId == playerId)
+            ?? throw new PlayerNotFoundException(playerId);
 
-        var result = _mapper.Map<SquadInfoDto>(squad);
+        var result = _mapper.Map<PlayerRoleInfoDto>(player);
         return result;
     }
 
@@ -76,6 +79,37 @@ public class InfoService : IInfoService
 
         var filteredPlayers = room.Players.Where(p => predicate(p)).ToList();
         var result = filteredPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
+        return result;
+    }
+    public List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId)
+    {
+        var room = _dbContext.Rooms
+            .Include(r => r.Players)
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
+
+        if (!room.Players.Any(p => p.Role == Role.Percival))
+            throw new PercivalNotInGameException(roomId);
+
+        Predicate<Player> predicate = p => p.Role == Role.Merlin || p.Role == Role.Morgana; 
+        var filteredPlayers = room.Players.Where(p => predicate(p)).ToList();
+        if (filteredPlayers.Count != 2)
+            throw new PercivalButNoMerlinMorganaException(roomId);
+
+        var result = filteredPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
+        return result;
+    }
+
+
+    public SquadInfoDto GetSquadById(int squadId)
+    {
+        var squad = _dbContext.Squads
+            .Include(s => s.Memberships)
+            .ThenInclude(m => m.Player)
+            .FirstOrDefault(p => p.SquadId == squadId)
+            ?? throw new SquadNotFoundException(squadId);
+
+        var result = _mapper.Map<SquadInfoDto>(squad);
         return result;
     }
 }
