@@ -16,11 +16,11 @@ public static class GameStartHelper
 
         public RoleInfo(
             bool areMerlinAndAssassinInGame,
-            bool arePercivalAreMorganaInGame,
+            bool arePercivalAndMorganaInGame,
             bool areOberonAndMordredInGame)
         {
             AreMerlinAndAssassinInGame = areMerlinAndAssassinInGame;
-            ArePercivalAndMorganaInGame = arePercivalAreMorganaInGame;
+            ArePercivalAndMorganaInGame = arePercivalAndMorganaInGame;
             AreOberonAndMordredInGame = areOberonAndMordredInGame;
         }
     }
