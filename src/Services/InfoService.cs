@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using servartur.Algorithms;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
@@ -79,6 +80,7 @@ public class InfoService : IInfoService
             ?? throw new RoomNotFoundException(roomId);
 
         var filteredPlayers = room.Players.Where(p => filter(p)).ToList();
+        if (obfuscate != null) filteredPlayers.Shuffle();
         obfuscate ??= p => p; 
         var obfuscatedPlayers = filteredPlayers.Select(p => obfuscate(p)).ToList();
         var result = obfuscatedPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
