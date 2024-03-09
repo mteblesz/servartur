@@ -82,7 +82,7 @@ public class MatchupControllerTests
         {
             RoomId = 1,
             AreMerlinAndAssassinInGame = MnA,
-            ArePercivalAreMorganaInGame = PnM,
+            ArePercivalAndMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM,
         };
 
@@ -106,7 +106,7 @@ public class MatchupControllerTests
         {
             RoomId = 1,
             AreMerlinAndAssassinInGame = MnA,
-            ArePercivalAreMorganaInGame = PnM,
+            ArePercivalAndMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM
         };
 

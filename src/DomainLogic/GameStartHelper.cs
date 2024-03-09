@@ -11,7 +11,7 @@ public static class GameStartHelper
     public class RoleInfo
     {
         public bool AreMerlinAndAssassinInGame { get; set; }
-        public bool ArePercivalAreMorganaInGame { get; set; }
+        public bool ArePercivalAndMorganaInGame { get; set; }
         public bool AreOberonAndMordredInGame { get; set; }
 
         public RoleInfo(
@@ -20,7 +20,7 @@ public static class GameStartHelper
             bool areOberonAndMordredInGame)
         {
             AreMerlinAndAssassinInGame = areMerlinAndAssassinInGame;
-            ArePercivalAreMorganaInGame = arePercivalAreMorganaInGame;
+            ArePercivalAndMorganaInGame = arePercivalAreMorganaInGame;
             AreOberonAndMordredInGame = areOberonAndMordredInGame;
         }
     }
@@ -32,7 +32,7 @@ public static class GameStartHelper
         var roles = new List<Role>();
         if (roleInfo.AreMerlinAndAssassinInGame)
             roles.AddRange([Role.Merlin, Role.Assassin]);
-        if (roleInfo.ArePercivalAreMorganaInGame)
+        if (roleInfo.ArePercivalAndMorganaInGame)
             roles.AddRange([Role.Percival, Role.Morgana]);
         if (roleInfo.AreOberonAndMordredInGame)
             roles.AddRange([Role.Oberon, Role.Mordred]);

@@ -9,7 +9,7 @@ public class StartGameDto
     [Required]
     public bool AreMerlinAndAssassinInGame { get; set; }
     [Required]
-    public bool ArePercivalAreMorganaInGame { get; set; }
+    public bool ArePercivalAndMorganaInGame { get; set; }
     [Required]
     public bool AreOberonAndMordredInGame { get; set; }
 }

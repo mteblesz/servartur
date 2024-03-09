@@ -36,7 +36,7 @@ public class StartGameTests
         {
             RoomId = roomId,
             AreMerlinAndAssassinInGame = MnA,
-            ArePercivalAreMorganaInGame = PnM,
+            ArePercivalAndMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM,
         };
 
@@ -86,7 +86,7 @@ public class StartGameTests
         {
             RoomId = roomId,
             AreMerlinAndAssassinInGame = true,
-            ArePercivalAreMorganaInGame = true,
+            ArePercivalAndMorganaInGame = true,
             AreOberonAndMordredInGame = false,
         };
 
@@ -127,7 +127,7 @@ public class StartGameTests
         {
             RoomId = roomId,
             AreMerlinAndAssassinInGame = true,
-            ArePercivalAreMorganaInGame = true,
+            ArePercivalAndMorganaInGame = true,
             AreOberonAndMordredInGame = false,
         };
 
@@ -173,7 +173,7 @@ public class StartGameTests
         {
             RoomId = roomId,
             AreMerlinAndAssassinInGame = MnA,
-            ArePercivalAreMorganaInGame = PnM,
+            ArePercivalAndMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM,
         };
 
