@@ -20,18 +20,10 @@ public interface IMatchupService
     List<PlayerInfoDto> GetUpdatedPlayers(int roomId);
 }
 
-public class MatchupService : IMatchupService
-{
-    private readonly GameDbContext _dbContext;
-    private readonly IMapper _mapper;
-    public readonly ILogger<MatchupService> _logger;
-
-    public MatchupService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-        _logger = logger;
-    }
+public class MatchupService : DataUpdatesService, IMatchupService
+{ 
+    public MatchupService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger) 
+        : base(dbContext, mapper, logger) { }
 
     public int CreateRoom()
     {
@@ -120,16 +112,5 @@ public class MatchupService : IMatchupService
         // Update room
         room.Status = RoomStatus.Playing;
         _dbContext.SaveChanges();
-    }
-
-    public List<PlayerInfoDto> GetUpdatedPlayers(int roomId)
-    {
-        var room = _dbContext.Rooms
-            .Include(r => r.Players)
-            .FirstOrDefault(r => r.RoomId == roomId)
-            ?? throw new RoomNotFoundException(roomId);
-
-        var players = _mapper.Map<List<PlayerInfoDto>>(room.Players);
-        return players.OrderBy(player => player.PlayerId).ToList();
     }
 }

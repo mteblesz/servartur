@@ -10,18 +10,10 @@ public interface IVoteService
     void VoteQuest(VoteDto voteDto);
 
 }
-public class VoteService : IVoteService
+public class VoteService : BaseService, IVoteService
 {
-    private readonly GameDbContext _dbContext;
-    private readonly IMapper _mapper;
-    public readonly ILogger<VoteService> _logger;
-
     public VoteService(GameDbContext dbContext, IMapper mapper, ILogger<VoteService> logger)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        : base(dbContext, mapper, logger) { }
 
     public void VoteSquad(VoteDto voteDto)
     {

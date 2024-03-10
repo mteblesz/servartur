@@ -7,18 +7,10 @@ public interface IKillService
 {
     bool KillPlayer(int playerId);
 }
-public class KillService : IKillService
+public class KillService : BaseService, IKillService
 {
-    private readonly GameDbContext _dbContext;
-    private readonly IMapper _mapper;
-    public readonly ILogger<KillService> _logger;
-
     public KillService(GameDbContext dbContext, IMapper mapper, ILogger<KillService> logger)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        : base(dbContext, mapper, logger) { }
 
     public bool KillPlayer(int playerId)
     {

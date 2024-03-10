@@ -19,18 +19,10 @@ public interface IInfoService
     List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId);
     SquadInfoDto GetSquadById(int squadId);
 }
-public class InfoService : IInfoService
+public class InfoService : BaseService, IInfoService
 {
-    private readonly GameDbContext _dbContext;
-    private readonly IMapper _mapper;
-    public readonly ILogger<InfoService> _logger;
-
     public InfoService(GameDbContext dbContext, IMapper mapper, ILogger<InfoService> logger)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        : base(dbContext, mapper, logger) { }
 
     public RoomInfoDto GetRoomById(int roomId)
     {
