@@ -7,7 +7,7 @@ public enum RoomStatus
     [EnumMember(Value = "unknown")]
     Unknown,
 
-    [EnumMember(Value = "Matchup")]
+    [EnumMember(Value = "matchup")]
     Matchup,
 
     [EnumMember(Value = "playing")]
