@@ -69,6 +69,7 @@ public class MatchupController : ControllerBase
         _matchupService.StartGame(dto);
 
         refreshPlayersData(dto.RoomId);
+        refreshSquadsData(dto.RoomId);
         sendStartGame(dto.RoomId);
         return NoContent();
     }
@@ -85,5 +86,10 @@ public class MatchupController : ControllerBase
     private void sendStartGame(int roomId)
     {
         _ = _hubContext.SendStartGame(roomId);
+    }
+    private void refreshSquadsData(int roomId)
+    {
+        var squads = _matchupService.GetUpdatedSquads(roomId);
+        _ = _hubContext.RefreshSquads(roomId, squads);
     }
 }

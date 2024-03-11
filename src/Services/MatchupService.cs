@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using servartur.DomainLogic;
 using servartur.Entities;
 using servartur.Exceptions;
-using servartur.Models;
 using servartur.Enums;
 using servartur.Algorithms;
 using servartur.Models.Outgoing;
@@ -20,6 +19,7 @@ public interface IMatchupService
     void RemovePlayer(int playerId);
     void StartGame(StartGameDto dto);
     List<PlayerInfoDto> GetUpdatedPlayers(int roomId);
+    List<SquadInfoDto> GetUpdatedSquads(int roomId);
 }
 
 public class MatchupService : DataUpdatesService, IMatchupService
