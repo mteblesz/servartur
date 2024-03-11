@@ -6,16 +6,15 @@ using servartur.Entities;
 using servartur.Models.Incoming;
 
 namespace servartur.Controllers;
-using GameHubContext = IHubContext<GameHub, IGameHubClient>;
 
 [ApiController]
 [Route("api/[controller]")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
-    private readonly GameHubContext _hubContext;
+    private readonly IHubContext<GameHub, IGameHubClient> _hubContext;
 
-    public MatchupController(IMatchupService matchupService, GameHubContext hubContext)
+    public MatchupController(IMatchupService matchupService, IHubContext<GameHub, IGameHubClient> hubContext)
     {
         this._matchupService = matchupService;
         this._hubContext = hubContext;
