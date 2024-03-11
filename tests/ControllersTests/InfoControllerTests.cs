@@ -55,10 +55,10 @@ public class InfoControllerTests
         var roomId = 1;
         var goodPlayersDto = new List<PlayerInfoDto>
             {
-                new PlayerInfoDto { PlayerId = 1, Nick = "Player1", Team = Team.Good.ToString(), Role = Role.GoodKnight.ToString() },
-                new PlayerInfoDto { PlayerId = 2, Nick = "Player2", Team = Team.Good.ToString(), Role = Role.Merlin.ToString() },
+                new PlayerInfoDto { PlayerId = 1, Nick = "Player1"},
+                new PlayerInfoDto { PlayerId = 2, Nick = "Player2"},
             };
-        _infoServiceMock.Setup(m => m.GetFilteredPlayers(It.IsAny<int>(), It.IsAny<Predicate<Player>>()))
+        _infoServiceMock.Setup(m => m.GetFilteredPlayers(It.IsAny<int>(), It.IsAny<Predicate<Player>>(), null))
             .Returns(goodPlayersDto);
 
         // Act
@@ -66,7 +66,7 @@ public class InfoControllerTests
 
         // Assert
         result.Should().NotBeNull();
-        _infoServiceMock.Verify(ms => ms.GetFilteredPlayers(roomId, It.IsAny<Predicate<Player>>()), Times.Once);
+        _infoServiceMock.Verify(ms => ms.GetFilteredPlayers(roomId, It.IsAny<Predicate<Player>>(), null), Times.Once);
 
         result.Should().BeOfType<ActionResult<List<PlayerInfoDto>>>()
           .Which.Result.Should().BeOfType<OkObjectResult>()
@@ -81,10 +81,10 @@ public class InfoControllerTests
         var roomId = 1;
         var evilPlayersDto = new List<PlayerInfoDto>
             {
-                new PlayerInfoDto { PlayerId = 3, Nick = "Player3", Team = Team.Evil.ToString(), Role = Role.Assassin.ToString() },
-                new PlayerInfoDto { PlayerId = 4, Nick = "Player4", Team = Team.Evil.ToString(), Role = Role.EvilEntity.ToString() },
+                new PlayerInfoDto { PlayerId = 3, Nick = "Player3"},
+                new PlayerInfoDto { PlayerId = 4, Nick = "Player4"},
             };
-        _infoServiceMock.Setup(m => m.GetFilteredPlayers(It.IsAny<int>(), It.IsAny<Predicate<Player>>()))
+        _infoServiceMock.Setup(m => m.GetFilteredPlayers(It.IsAny<int>(), It.IsAny<Predicate<Player>>(), null))
             .Returns(evilPlayersDto);
 
         // Act
@@ -92,7 +92,7 @@ public class InfoControllerTests
 
         // Assert
         result.Should().NotBeNull();
-        _infoServiceMock.Verify(ms => ms.GetFilteredPlayers(roomId, It.IsAny<Predicate<Player>>()), Times.Once);
+        _infoServiceMock.Verify(ms => ms.GetFilteredPlayers(roomId, It.IsAny<Predicate<Player>>(), null), Times.Once);
 
         result.Should().BeOfType<ActionResult<List<PlayerInfoDto>>>()
           .Which.Result.Should().BeOfType<OkObjectResult>()

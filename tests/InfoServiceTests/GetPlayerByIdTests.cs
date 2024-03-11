@@ -36,8 +36,6 @@ public class GetPlayerByIdTests
         {
             PlayerId = player.PlayerId,
             Nick = player!.Nick,
-            Team = Team.Evil.ToString(),
-            Role = Role.Assassin.ToString(),
         };
 
         dbContextMock.Setup(db => db.Players).ReturnsDbSet(new List<Player>() { player });

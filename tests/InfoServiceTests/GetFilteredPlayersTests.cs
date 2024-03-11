@@ -22,8 +22,6 @@ public class GetFilteredPlayersTests
         {
             PlayerId = p.PlayerId,
             Nick = p.Nick ?? "",
-            Team = p.Team.ToString() ?? "",
-            Role = p.Role.ToString() ?? "",
         };
 
     public static TheoryData<List<Player>, Predicate<Player>, List<PlayerInfoDto>> ValidTestCases()

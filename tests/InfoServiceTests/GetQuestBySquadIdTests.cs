@@ -30,7 +30,7 @@ public class GetQuestBySquadIdTests
         {
             SquadId = 1,
             QuestNumber = 1,
-            RoundNumber = 1,
+            SquadNumber = 1,
             RequiredPlayersNumber = 2,
             Status = SquadStatus.Failed,
             LeaderId = leader.PlayerId,
@@ -45,17 +45,15 @@ public class GetQuestBySquadIdTests
 
         List<PlayerInfoDto> memberDtos =
         [
-            new () { PlayerId = leader.PlayerId, Nick = "leader", Team = Team.Good.ToString(), Role = Role.GoodKnight.ToString() },
-            new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity", Team = Team.Evil.ToString(), Role = Role.EvilEntity.ToString() },
+            new () { PlayerId = leader.PlayerId, Nick = "leader"},
+            new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity"},
         ]; 
         var expectedSquadInfoDto = new SquadInfoDto
         {
             SquadId = squad.SquadId,
             QuestNumber = 1,
-            RoundNumber = 1,
             RequiredPlayersNumber = 2,
             Status = SquadStatus.Failed,
-            LeaderId = leader.PlayerId,
             Members = memberDtos,
         };
 
