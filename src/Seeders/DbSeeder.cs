@@ -133,7 +133,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 1,
-                RoundNumber = 1,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
                 Status = SquadStatus.Rejected,
                 Leader = players[0],
@@ -142,7 +142,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 1,
-                RoundNumber = 2,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
                 Status = SquadStatus.Successfull,
                 Leader = players[1],
@@ -151,7 +151,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 2,
-                RoundNumber = 3,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 3,
                 Status = SquadStatus.Failed,
                 Leader = players[2],
@@ -160,7 +160,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 3,
-                RoundNumber = 4,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
                 Status = SquadStatus.Failed,
                 Leader = players[3],
@@ -169,7 +169,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 4,
-                RoundNumber = 5,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
                 Status = SquadStatus.Successfull,
                 Leader = players[4],
@@ -178,7 +178,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 5,
-                RoundNumber = 6,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 3,
                 Status = SquadStatus.Successfull,
                 Leader = players[0],

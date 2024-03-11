@@ -8,9 +8,17 @@ public class Squad
         Status = SquadStatus.Unknown;
     }
     public int SquadId { get; set; }
+    /// <summary>
+    /// number of this squad's quest
+    /// </summary>
     public int QuestNumber { get; set; }
-    public int RoundNumber { get; set; }
+    /// <summary>
+    /// number of squads that failed Squad Voting for this quest + 1
+    /// </summary>
+    public int SquadNumber { get; set; }
+    public int SquadFailsToEvilWinCount => 5 - SquadNumber;
     public int RequiredPlayersNumber { get; set; }
+    public int IsDoubleFailSquad { get; set; }
     public SquadStatus Status { get; set; }
 
     public int LeaderId { get; set; }
