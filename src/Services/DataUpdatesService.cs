@@ -66,12 +66,12 @@ public abstract class DataUpdatesService : BaseService
         // Map finished + current 
         var summary = _mapper.Map<List<QuestInfoShortDto>>(squads);
         // Add future squads
-        summary.AddRange(getFutureQuestsInfo(room.Players.Count, squads.Count));
+        summary.AddRange(getUpcomingQuestsInfo(room.Players.Count, squads.Count));
 
         // return (finished + current + future) quest info
         return summary.OrderBy(s => s.QuestNumber).ToList();
     }
-    private static List<QuestInfoShortDto> getFutureQuestsInfo(int playersCount, int curentQuestNumber)
+    private static List<QuestInfoShortDto> getUpcomingQuestsInfo(int playersCount, int curentQuestNumber)
     {
         List<QuestInfoShortDto> result = [];
         for (int i = curentQuestNumber + 1; i <= 5; i++)
@@ -82,7 +82,7 @@ public abstract class DataUpdatesService : BaseService
                 QuestNumber = i,
                 RequiredPlayersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, i),
                 IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, i),
-                Status = SquadStatus.Pending,
+                Status = SquadStatus.Upcoming,
             });
         }
         return result;

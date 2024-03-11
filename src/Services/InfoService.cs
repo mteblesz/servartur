@@ -17,7 +17,7 @@ public interface IInfoService
     PlayerRoleInfoDto GetRoleByPlayerId(int playerId);
     List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate, Func<Player, Player>? obfuscate = null);
     List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId);
-    QuestInfoDto QuestBySquadId(int squadId);
+    QuestInfoDto GetQuestBySquadId(int squadId);
 }
 public class InfoService : BaseService, IInfoService
 {
@@ -99,7 +99,7 @@ public class InfoService : BaseService, IInfoService
     }
 
 
-    public QuestInfoDto QuestBySquadId(int squadId)
+    public QuestInfoDto GetQuestBySquadId(int squadId)
     {
         var squad = _dbContext.Squads
             .Include(s => s.Memberships)

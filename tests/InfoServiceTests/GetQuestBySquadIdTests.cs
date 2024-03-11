@@ -61,7 +61,7 @@ public class GetQuestBySquadIdTests
         mapperMock.Setup(m => m.Map<SquadInfoDto>(It.IsAny<Squad>())).Returns(expectedSquadInfoDto);
 
         // Act
-        var result = infoService.GetSquadById(squad.SquadId);
+        var result = infoService.GetQuestBySquadId(squad.SquadId);
 
         // Assert
         result.Should().BeEquivalentTo(expectedSquadInfoDto);
@@ -80,7 +80,7 @@ public class GetQuestBySquadIdTests
         dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>());
 
         // Act and Assert
-        Action action = () => infoService.GetSquadById(invalidSquadId);
+        Action action = () => infoService.GetQuestBySquadId(invalidSquadId);
         Assert.Throws<SquadNotFoundException>(action);
     }
 }
