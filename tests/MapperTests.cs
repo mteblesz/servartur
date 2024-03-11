@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using servartur.Entities;
-using servartur.Models;
 using servartur.Mappings;
 using servartur.Enums;
 using static servartur.DomainLogic.GameStartHelper;
+using servartur.Models.Outgoing;
 
 namespace servartur.Tests;
 public class MappingProfileTests

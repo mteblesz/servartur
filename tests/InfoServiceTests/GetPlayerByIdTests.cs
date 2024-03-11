@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
-using servartur.Models;
 using servartur.Services;
 using Moq.EntityFrameworkCore;
+using servartur.Models.Outgoing;
 
 namespace servartur.Tests.InfoServiceTests;
 public class GetPlayerByIdTests

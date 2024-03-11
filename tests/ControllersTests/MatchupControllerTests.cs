@@ -1,8 +1,8 @@
 ﻿using servartur.Enums;
-using servartur.Models;
 using servartur.Services;
 using servartur.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using servartur.Models.Incoming;
 
 namespace servartur.Tests.ControllersTests;
 public class MatchupControllerTests

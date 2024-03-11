@@ -2,7 +2,7 @@
 using servartur.Controllers;
 using servartur.Entities;
 using servartur.Enums;
-using servartur.Models;
+using servartur.Models.Outgoing;
 using servartur.Services;
 using System;
 using System.Collections.Generic;
