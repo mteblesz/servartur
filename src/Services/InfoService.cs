@@ -93,6 +93,7 @@ public class InfoService : BaseService, IInfoService
         if (filteredPlayers.Count != 2)
             throw new PercivalButNoMerlinMorganaException(roomId);
 
+        filteredPlayers.Shuffle();
         var result = filteredPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
         return result;
     }
