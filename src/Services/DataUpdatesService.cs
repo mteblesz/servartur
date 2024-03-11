@@ -30,6 +30,14 @@ public abstract class DataUpdatesService : BaseService
     {
         var room = _dbContext.Rooms
             .Include(r => r.Squads)
+                .ThenInclude(s => s.Leader)
+                .ThenInclude(s => s.Memberships)
+                    .ThenInclude(m => m.Player)
+            .Include(r => r.Squads)
+                .ThenInclude(s => s.SquadVotes)
+                    .ThenInclude(v => v.Voter)
+            .Include(r => r.Squads)
+                .ThenInclude(s => s.QuestVotes)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
