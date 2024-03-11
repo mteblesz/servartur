@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using servartur.Entities;
 using servartur.Enums;
-using servartur.Models;
+using servartur.Models.Outgoing;
 using servartur.Services;
 
 namespace servartur.Controllers;

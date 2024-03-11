@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using servartur.Models;
 using servartur.Services;
 using servartur.RealTimeUpdates;
 using Microsoft.AspNetCore.SignalR;
 using servartur.Entities;
+using servartur.Models.Incoming;
 
 namespace servartur.Controllers;
 using GameHubContext = IHubContext<GameHub, IGameHubClient>;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using servartur.Models;
+using servartur.Models.Outgoing;
 
 namespace servartur.RealTimeUpdates;
 

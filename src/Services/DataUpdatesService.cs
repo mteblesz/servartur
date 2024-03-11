@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Exceptions;
-using servartur.Models;
+using servartur.Models.Outgoing;
 
 namespace servartur.Services;
 

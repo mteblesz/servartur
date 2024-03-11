@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using servartur.Entities;
-using servartur.Models;
+using servartur.Models.Outgoing;
 using System.Collections.Generic;
 
 namespace servartur.RealTimeUpdates;

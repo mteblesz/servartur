@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using servartur.Entities;
+using servartur.Models.Outgoing;
 
 namespace servartur.Services;
 

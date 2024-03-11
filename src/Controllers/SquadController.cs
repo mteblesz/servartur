@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using servartur.Entities;
+using servartur.Models;
+using servartur.RealTimeUpdates;
 using servartur.Services;
 
 namespace servartur.Controllers;

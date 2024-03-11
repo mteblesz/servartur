@@ -4,7 +4,7 @@ using servartur.Algorithms;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
-using servartur.Models;
+using servartur.Models.Outgoing;
 using System.Linq;
 
 namespace servartur.Services;
