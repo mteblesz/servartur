@@ -18,7 +18,7 @@ public class MappingProfile : Profile
         CreateMap<Player, PlayerRoleInfoDto>();
 
 
-        CreateMap<SquadVote, SquadVoteInfoDto>()
+        CreateMap<SquadVote, VoteInfoDto>()
             .ForMember(dest => dest.VoterNick, opt => opt.MapFrom(
                 src => src.Voter.Nick))
             .ForMember(dest => dest.Value, opt => opt.MapFrom(

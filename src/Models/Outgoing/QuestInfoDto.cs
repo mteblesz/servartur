@@ -12,6 +12,6 @@ public class QuestInfoDto
     public PlayerInfoDto Leader { get; set; } = null!;
 
     public List<PlayerInfoDto> Members { get; set; } = null!;
-    public List<SquadVoteInfoDto> SquadVoteInfo { get; set; } = null!;
+    public List<VoteInfoDto> SquadVoteInfo { get; set; } = null!;
     public int? QuestVoteSuccessCount { get; set; }
 }
