@@ -9,7 +9,8 @@ public interface ISquadService
     void AddMember(int playerId);
     void RemoveMember(int playerId);
     void SubmitSquad(int squadId);
-    List<SquadInfoDto> GetUpdatedSquads(int roomId);
+    SquadInfoDto GetUpdatedCurrentSquad(int roomId);
+    List<QuestInfoShortDto> GetUpdatedQuestsSummary(int roomId);
 }
 public class SquadService : DataUpdatesService, ISquadService
 {

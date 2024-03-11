@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
-using servartur.Entities;
+﻿using Microsoft.AspNetCore.SignalR;
 using servartur.Models.Outgoing;
-using System.Collections.Generic;
 
 namespace servartur.RealTimeUpdates;
 
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 public interface IGameHubClient
 {
@@ -16,7 +11,8 @@ public interface IGameHubClient
     Task ReceiveRemoval(string playerId);
     Task ReceiveStartGame();
 
-    Task ReceiveSquadsList(List<SquadInfoDto> updatedSquads);
+    Task ReceiveCurrentSquad(SquadInfoDto updatedCurrentSquad);
+    Task ReceiveSquadsSummary(List<QuestInfoShortDto> updatedQuestsSummary);
 }
 
 public class GameHub : Hub<IGameHubClient>

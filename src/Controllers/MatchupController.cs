@@ -2,7 +2,6 @@
 using servartur.Services;
 using servartur.RealTimeUpdates;
 using Microsoft.AspNetCore.SignalR;
-using servartur.Entities;
 using servartur.Models.Incoming;
 
 namespace servartur.Controllers;
@@ -69,7 +68,7 @@ public class MatchupController : ControllerBase
         _matchupService.StartGame(dto);
 
         refreshPlayersData(dto.RoomId);
-        refreshSquadsData(dto.RoomId);
+        refreshAllSquadsData(dto.RoomId);
         sendStartGame(dto.RoomId);
         return NoContent();
     }
@@ -87,9 +86,11 @@ public class MatchupController : ControllerBase
     {
         _ = _hubContext.SendStartGame(roomId);
     }
-    private void refreshSquadsData(int roomId)
+    private void refreshAllSquadsData(int roomId)
     {
-        var squads = _matchupService.GetUpdatedSquads(roomId);
-        _ = _hubContext.RefreshSquads(roomId, squads);
+        var curentSquad = _matchupService.GetUpdatedCurrentSquad(roomId);
+        var questsSummary = _matchupService.GetUpdatedQuestsSummary(roomId);
+        _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
+        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
     }
 }

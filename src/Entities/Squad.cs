@@ -5,7 +5,7 @@ public class Squad
 {
     public Squad()
     {
-        Status = SquadStatus.Unknown;
+        Status = SquadStatus.Pending;
     }
     public int SquadId { get; set; }
     /// <summary>

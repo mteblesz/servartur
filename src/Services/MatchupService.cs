@@ -19,7 +19,8 @@ public interface IMatchupService
     void RemovePlayer(int playerId);
     void StartGame(StartGameDto dto);
     List<PlayerInfoDto> GetUpdatedPlayers(int roomId);
-    List<SquadInfoDto> GetUpdatedSquads(int roomId);
+    SquadInfoDto GetUpdatedCurrentSquad(int roomId);
+    List<QuestInfoShortDto> GetUpdatedQuestsSummary(int roomId);
 }
 
 public class MatchupService : DataUpdatesService, IMatchupService
