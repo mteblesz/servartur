@@ -24,8 +24,8 @@ public enum SquadStatus
     [EnumMember(Value = "QuestVoting")]
     QuestVoting,
 
-    [EnumMember(Value = "Successfull")]
-    Successfull,
+    [EnumMember(Value = "Successful")]
+    Successful,
     [EnumMember(Value = "Failed")]
     Failed,
 }

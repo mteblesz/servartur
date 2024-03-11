@@ -58,7 +58,7 @@ public abstract class DataUpdatesService : BaseService
         // Select finished quests
         var squads = room.Squads
             .Where(s =>
-                    s.Status == SquadStatus.Successfull
+                    s.Status == SquadStatus.Successful
                     || s.Status == SquadStatus.Failed).ToList();
         // Add current squad
         squads.Add(room.Squads.First(s => s.SquadId == room.CurrentSquadId));

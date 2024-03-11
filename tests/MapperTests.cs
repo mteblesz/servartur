@@ -49,7 +49,7 @@ public class MappingProfileTests
             QuestNumber = 2,
             SquadNumber = 1,
             RequiredPlayersNumber = 3,
-            Status = SquadStatus.Successfull,
+            Status = SquadStatus.Successful,
             LeaderId = leader2.PlayerId,
             Leader = leader2,
             RoomId = 100,
