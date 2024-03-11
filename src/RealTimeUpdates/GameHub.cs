@@ -15,7 +15,10 @@ public interface IGameHubClient
     Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayers);
     Task ReceiveRemoval(string playerId);
     Task ReceiveStartGame();
+
+    Task ReceiveSquadsList(List<SquadInfoDto> updatedSquads);
 }
+
 public class GameHub : Hub<IGameHubClient>
 {
     //https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections#in-memory-storage
