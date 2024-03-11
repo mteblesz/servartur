@@ -18,7 +18,7 @@ public class Squad
     public int SquadNumber { get; set; }
     public int SquadFailsToEvilWinCount => 5 - SquadNumber;
     public int RequiredPlayersNumber { get; set; }
-    public int IsDoubleFailSquad { get; set; }
+    public bool IsDoubleFail { get; set; }
     public SquadStatus Status { get; set; }
 
     public int LeaderId { get; set; }
