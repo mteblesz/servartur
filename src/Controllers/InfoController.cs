@@ -87,9 +87,9 @@ public class InfoController : ControllerBase
     }
 
     [HttpGet("quest/{squadId}")]
-    public ActionResult<SquadInfoDto> GetQuestBySquadId([FromRoute] int squadId)
+    public ActionResult<QuestInfoDto> GetQuestBySquadId([FromRoute] int squadId)
     {
-        var squad = _infoService.GetSquadById(squadId);
+        var squad = _infoService.QuestBySquadId(squadId);
         return Ok(squad);
     }
 }

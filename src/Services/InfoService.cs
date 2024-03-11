@@ -17,7 +17,7 @@ public interface IInfoService
     PlayerRoleInfoDto GetRoleByPlayerId(int playerId);
     List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate, Func<Player, Player>? obfuscate = null);
     List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId);
-    SquadInfoDto GetSquadById(int squadId);
+    QuestInfoDto QuestBySquadId(int squadId);
 }
 public class InfoService : BaseService, IInfoService
 {
@@ -98,15 +98,18 @@ public class InfoService : BaseService, IInfoService
     }
 
 
-    public SquadInfoDto GetSquadById(int squadId)
+    public QuestInfoDto QuestBySquadId(int squadId)
     {
         var squad = _dbContext.Squads
             .Include(s => s.Memberships)
-            .ThenInclude(m => m.Player)
+                .ThenInclude(m => m.Player)
+            .Include(s => s.SquadVotes)
+                .ThenInclude(v => v.Voter)
+            .Include(s => s.QuestVotes)
             .FirstOrDefault(p => p.SquadId == squadId)
             ?? throw new SquadNotFoundException(squadId);
 
-        var result = _mapper.Map<SquadInfoDto>(squad);
+        var result = _mapper.Map<QuestInfoDto>(squad);
         return result;
     }
 }
