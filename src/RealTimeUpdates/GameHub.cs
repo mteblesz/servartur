@@ -13,6 +13,8 @@ public interface IGameHubClient
 
     Task ReceiveCurrentSquad(SquadInfoDto updatedCurrentSquad);
     Task ReceiveSquadsSummary(List<QuestInfoShortDto> updatedQuestsSummary);
+
+    Task ReceivePlayerLeft(PlayerInfoDto playerInfoDto);
 }
 
 public class GameHub : Hub<IGameHubClient>
