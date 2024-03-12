@@ -13,7 +13,8 @@ public class Player
 
     public Role? Role { get; set; }
 
-    public int RoomId { get; set; } // Required foreign key property
+    public int RoomId { get; set; } 
+    public virtual Room Room { get; set; }
 
     public virtual List<Membership> Memberships { get; set; } = [];
     public virtual List<SquadVote> SquadVotes { get; set; } = [];
