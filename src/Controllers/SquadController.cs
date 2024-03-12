@@ -12,9 +12,9 @@ namespace servartur.Controllers;
 public class SquadController : ControllerBase
 {
     private readonly ISquadService _squadService;
-    private readonly IHubContext<GameHub, IGameHubClient> _hubContext;
+    private readonly IHubContext<UpdatesHub, IUpdatesHubClient> _hubContext;
 
-    public SquadController(ISquadService squadService, IHubContext<GameHub, IGameHubClient> hubContext)
+    public SquadController(ISquadService squadService, IHubContext<UpdatesHub, IUpdatesHubClient> hubContext)
     {
         this._squadService = squadService;
         this._hubContext = hubContext;

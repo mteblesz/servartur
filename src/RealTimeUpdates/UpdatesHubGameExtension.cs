@@ -2,12 +2,12 @@
 namespace servartur.RealTimeUpdates;
 
 using global::servartur.Models.Outgoing;
-using GameHubContext = IHubContext<GameHub, IGameHubClient>;
+using UpdatesHubContext = IHubContext<UpdatesHub, IUpdatesHubClient>;
 
 // https://stackoverflow.com/a/74414966/23287406
-public static class GameHubGameExtensions
+public static class UpdatesHubGameExtensions
 {
-    public static async Task SendPlayerLeftInfo(this GameHubContext context, int roomId, PlayerInfoDto playerInfoDto)
+    public static async Task SendPlayerLeftInfo(this UpdatesHubContext context, int roomId, PlayerInfoDto playerInfoDto)
     {
         var groupName = roomId.ToString();
         await context.Clients.Group(groupName).ReceivePlayerLeft(playerInfoDto);

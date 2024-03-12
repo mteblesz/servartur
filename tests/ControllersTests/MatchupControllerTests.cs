@@ -11,12 +11,12 @@ public class MatchupControllerTests
 {
     private readonly MatchupController _controller;
     private readonly Mock<IMatchupService> _matchupServiceMock;
-    private readonly Mock<IHubContext<GameHub, IGameHubClient>> _hubContextMock;
+    private readonly Mock<IHubContext<UpdatesHub, IUpdatesHubClient>> _hubContextMock;
 
     public MatchupControllerTests()
     {
         _matchupServiceMock = new Mock<IMatchupService>();
-        _hubContextMock = new Mock<IHubContext<GameHub, IGameHubClient>>();
+        _hubContextMock = new Mock<IHubContext<UpdatesHub, IUpdatesHubClient>>();
         _controller = new MatchupController(_matchupServiceMock.Object, _hubContextMock.Object);
     }
 

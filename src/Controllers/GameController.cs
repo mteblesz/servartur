@@ -13,9 +13,9 @@ namespace servartur.Controllers;
 public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
-    private readonly IHubContext<GameHub, IGameHubClient> _hubContext;
+    private readonly IHubContext<UpdatesHub, IUpdatesHubClient> _hubContext;
 
-    public GameController(IGameService gameService, IHubContext<GameHub, IGameHubClient> hubContext)
+    public GameController(IGameService gameService, IHubContext<UpdatesHub, IUpdatesHubClient> hubContext)
     {
         this._gameService = gameService;
         this._hubContext = hubContext;

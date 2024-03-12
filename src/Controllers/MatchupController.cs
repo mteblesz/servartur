@@ -11,9 +11,9 @@ namespace servartur.Controllers;
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
-    private readonly IHubContext<GameHub, IGameHubClient> _hubContext;
+    private readonly IHubContext<UpdatesHub, IUpdatesHubClient> _hubContext;
 
-    public MatchupController(IMatchupService matchupService, IHubContext<GameHub, IGameHubClient> hubContext)
+    public MatchupController(IMatchupService matchupService, IHubContext<UpdatesHub, IUpdatesHubClient> hubContext)
     {
         this._matchupService = matchupService;
         this._hubContext = hubContext;

@@ -3,8 +3,7 @@ using servartur.Models.Outgoing;
 
 namespace servartur.RealTimeUpdates;
 
-
-public interface IGameHubClient
+public interface IUpdatesHubClient
 {
     Task ReceiveMessage(string message);
     Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayers);
@@ -17,7 +16,7 @@ public interface IGameHubClient
     Task ReceivePlayerLeft(PlayerInfoDto playerInfoDto);
 }
 
-public class GameHub : Hub<IGameHubClient>
+public class UpdatesHub : Hub<IUpdatesHubClient>
 {
     //https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections#in-memory-storage
     // private readonly static ConnectionMapping _connections =  new ConnectionMapping();

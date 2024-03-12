@@ -78,7 +78,7 @@ try
     app.UseCors("AllowAll");
 
     //app.UseHttpsRedirection();
-    app.MapHub<GameHub>("/rtu");
+    app.MapHub<UpdatesHub>("/rtu");
     app.MapControllers();
 
     app.Run();
