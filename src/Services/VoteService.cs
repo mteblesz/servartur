@@ -1,34 +1,26 @@
 ﻿using AutoMapper;
 using servartur.Entities;
-using servartur.Models;
+using servartur.Models.Incoming;
 
 namespace servartur.Services;
 
 public interface IVoteService
 {
-    void VoteSquad(VoteDto voteDto);
-    void VoteQuest(VoteDto voteDto);
+    void VoteSquad(CastVoteDto voteDto);
+    void VoteQuest(CastVoteDto voteDto);
 
 }
-public class VoteService : IVoteService
+public class VoteService : BaseService, IVoteService
 {
-    private readonly GameDbContext _dbContext;
-    private readonly IMapper _mapper;
-    public readonly ILogger<VoteService> _logger;
-
     public VoteService(GameDbContext dbContext, IMapper mapper, ILogger<VoteService> logger)
-    {
-        _dbContext = dbContext;
-        _mapper = mapper;
-        _logger = logger;
-    }
+        : base(dbContext, mapper, logger) { }
 
-    public void VoteSquad(VoteDto voteDto)
+    public void VoteSquad(CastVoteDto voteDto)
     {
         throw new NotImplementedException();
     }
 
-    public void VoteQuest(VoteDto voteDto)
+    public void VoteQuest(CastVoteDto voteDto)
     {
         throw new NotImplementedException();
     }

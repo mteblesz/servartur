@@ -1,4 +1,4 @@
-﻿namespace servartur.Models;
+﻿namespace servartur.Models.Outgoing;
 
 public class PlayerRoleInfoDto
 {

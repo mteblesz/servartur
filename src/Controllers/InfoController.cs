@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using servartur.Entities;
 using servartur.Enums;
-using servartur.Models;
+using servartur.Models.Outgoing;
 using servartur.Services;
 
 namespace servartur.Controllers;
@@ -56,16 +56,26 @@ public class InfoController : ControllerBase
     [HttpGet("evilknows/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForEvil([FromRoute] int roomId)
     {
-        Predicate<Player> evilPredicate = p => p.Team == Team.Evil && p.Role != Role.Oberon;
-        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
+        Func<Player, Player> obfuscate = p =>
+        {
+            p.Nick = (p.Role == Role.Oberon) ? "<Oberon>" : p.Nick;
+            return p;
+        };
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate, obfuscate);
         return Ok(evilPlayers);
     }
 
     [HttpGet("merlinknows/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForMerlin([FromRoute] int roomId)
     {
-        Predicate<Player> evilPredicate = p => p.Team == Team.Evil && p.Role != Role.Mordred;
-        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
+        Func<Player, Player> obfuscate = p =>
+        {
+            p.Nick = (p.Role == Role.Mordred) ? "<Mordred>" : p.Nick;
+            return p;
+        };
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate, obfuscate);
         return Ok(evilPlayers);
     }
 
@@ -77,9 +87,9 @@ public class InfoController : ControllerBase
     }
 
     [HttpGet("quest/{squadId}")]
-    public ActionResult<SquadInfoDto> GetQuestBySquadId([FromRoute] int squadId)
+    public ActionResult<QuestInfoDto> GetQuestBySquadId([FromRoute] int squadId)
     {
-        var squad = _infoService.GetSquadById(squadId);
+        var squad = _infoService.GetQuestBySquadId(squadId);
         return Ok(squad);
     }
 }

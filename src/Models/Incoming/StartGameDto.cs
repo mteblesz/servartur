@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace servartur.Models;
+namespace servartur.Models.Incoming;
 
 public class StartGameDto
 {

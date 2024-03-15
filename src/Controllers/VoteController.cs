@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using servartur.Models;
+using servartur.Models.Incoming;
 using servartur.Services;
 
 namespace servartur.Controllers;
@@ -15,14 +15,14 @@ public class VoteController : ControllerBase
     }
 
     [HttpPost("squad")]
-    public ActionResult VoteSquad([FromBody] VoteDto voteDto)
+    public ActionResult VoteSquad([FromBody] CastVoteDto voteDto)
     {
         _voteService.VoteSquad(voteDto);
         return NoContent();
     }
 
     [HttpPost("quest")]
-    public ActionResult VoteQuest([FromBody] VoteDto voteDto)
+    public ActionResult VoteQuest([FromBody] CastVoteDto voteDto)
     {
         _voteService.VoteSquad(voteDto);
         return NoContent();

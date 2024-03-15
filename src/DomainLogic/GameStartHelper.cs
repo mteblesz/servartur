@@ -57,13 +57,13 @@ public static class GameStartHelper
             throw new ArgumentException("Invalid number of players given");
 
         var questNumber = 1;
-        var firstSquadSize = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber);
         var firstSquad = new Squad()
         {
             Leader = leader,
             QuestNumber = questNumber,
-            RoundNumber = 1,
-            RequiredPlayersNumber = firstSquadSize,
+            SquadNumber = 1,
+            RequiredPlayersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber),
+            IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, questNumber),
             Status = SquadStatus.SquadVoting,
         };
         return firstSquad;

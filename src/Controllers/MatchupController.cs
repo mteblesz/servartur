@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using servartur.Models;
 using servartur.Services;
 using servartur.RealTimeUpdates;
 using Microsoft.AspNetCore.SignalR;
-using servartur.Entities;
+using servartur.Models.Incoming;
+using servartur.Utils;
 
 namespace servartur.Controllers;
-using GameHubContext = IHubContext<GameHub, IGameHubClient>;
 
 [ApiController]
 [Route("api/[controller]")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
-    private readonly GameHubContext _hubContext;
+    private readonly IHubContext<UpdatesHub, IUpdatesHubClient> _hubContext;
 
-    public MatchupController(IMatchupService matchupService, GameHubContext hubContext)
+    public MatchupController(IMatchupService matchupService, IHubContext<UpdatesHub, IUpdatesHubClient> hubContext)
     {
         this._matchupService = matchupService;
         this._hubContext = hubContext;
@@ -69,8 +68,9 @@ public class MatchupController : ControllerBase
         }
         _matchupService.StartGame(dto);
 
-        refreshPlayersData(dto.RoomId);
         sendStartGame(dto.RoomId);
+        refreshPlayersData(dto.RoomId);
+        refreshAllSquadsData(dto.RoomId);
         return NoContent();
     }
 
@@ -86,5 +86,12 @@ public class MatchupController : ControllerBase
     private void sendStartGame(int roomId)
     {
         _ = _hubContext.SendStartGame(roomId);
+    }
+    private void refreshAllSquadsData(int roomId)
+    {
+        var curentSquad = _matchupService.GetUpdatedCurrentSquad(roomId);
+        var questsSummary = _matchupService.GetUpdatedQuestsSummary(roomId);
+        _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
+        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
     }
 }

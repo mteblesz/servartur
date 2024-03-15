@@ -5,9 +5,9 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using servartur.Enums;
 using servartur.Services;
-using servartur.Models;
 using servartur.DomainLogic;
 using servartur.Exceptions;
+using servartur.Models.Incoming;
 
 namespace servartur.Tests.MatchupServiceTests;
 

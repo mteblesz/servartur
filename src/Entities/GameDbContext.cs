@@ -78,10 +78,10 @@ public class GameDbContext : DbContext
 
     private static void addRoomOneToMany(ModelBuilder modelBuilder)
     {
-        // One-to-many without navigation to principal
+        // Required one-to-many
         modelBuilder.Entity<Room>()
         .HasMany(e => e.Players)
-        .WithOne()
+        .WithOne(p => p.Room)
         .HasForeignKey(e => e.RoomId)
         .IsRequired()
         .OnDelete(DeleteBehavior.Restrict);
@@ -135,16 +135,16 @@ public class GameDbContext : DbContext
         //Required one-to-many
         modelBuilder.Entity<Player>()
         .HasMany(e => e.SquadVotes)
-        .WithOne(e => e.Player)
-        .HasForeignKey(e => e.PlayerId)
+        .WithOne(e => e.Voter)
+        .HasForeignKey(e => e.VoterId)
         .IsRequired(false)
         .OnDelete(DeleteBehavior.Restrict);
 
         //Required one-to-many
         modelBuilder.Entity<Player>()
         .HasMany(e => e.QuestVotes)
-        .WithOne(e => e.Player)
-        .HasForeignKey(e => e.PlayerId)
+        .WithOne(e => e.Voter)
+        .HasForeignKey(e => e.VoterId)
         .IsRequired(false)
         .OnDelete(DeleteBehavior.Restrict);
     }

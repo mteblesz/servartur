@@ -4,26 +4,28 @@ namespace servartur.Enums;
 
 public enum SquadStatus
 {
-    [EnumMember(Value = "Unknown")]
-    Unknown,
+    [EnumMember(Value = "uknown")]
+    Uknown,
 
-    [EnumMember(Value = "SquadVoting")]
+    [EnumMember(Value = "upcoming")]
+    Upcoming,
+
+    [EnumMember(Value = "squadVoting")]
     SquadVoting,
 
-    [EnumMember(Value = "Submitted")]
+    [EnumMember(Value = "submitted")]
     Submitted,
 
-    [EnumMember(Value = "Approved")]
+    [EnumMember(Value = "approved")]
     Approved,
-    [EnumMember(Value = "Rejected")]
+    [EnumMember(Value = "rejected")]
     Rejected,
 
-
-    [EnumMember(Value = "QuestVoting")]
+    [EnumMember(Value = "questVoting")]
     QuestVoting,
 
-    [EnumMember(Value = "Successfull")]
-    Successfull,
-    [EnumMember(Value = "Failed")]
+    [EnumMember(Value = "successful")]
+    Successful,
+    [EnumMember(Value = "failed")]
     Failed,
 }

@@ -4,18 +4,18 @@ namespace servartur.Enums;
 
 public enum RoomStatus
 {
-    [EnumMember(Value = "Unknown")]
+    [EnumMember(Value = "unknown")]
     Unknown,
 
-    [EnumMember(Value = "Matchup")]
+    [EnumMember(Value = "matchup")]
     Matchup,
 
-    [EnumMember(Value = "Playing")]
+    [EnumMember(Value = "playing")]
     Playing,
 
-    [EnumMember(Value = "Assassination")]
+    [EnumMember(Value = "assassination")]
     Assassination,
 
-    [EnumMember(Value = "Result")]
+    [EnumMember(Value = "result")]
     Result,
 }

@@ -133,7 +133,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 1,
-                RoundNumber = 1,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
                 Status = SquadStatus.Rejected,
                 Leader = players[0],
@@ -142,16 +142,16 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 1,
-                RoundNumber = 2,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
-                Status = SquadStatus.Successfull,
+                Status = SquadStatus.Successful,
                 Leader = players[1],
                 RoomId = rooms[0].RoomId,
             },
             new Squad()
             {
                 QuestNumber = 2,
-                RoundNumber = 3,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 3,
                 Status = SquadStatus.Failed,
                 Leader = players[2],
@@ -160,7 +160,7 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 3,
-                RoundNumber = 4,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
                 Status = SquadStatus.Failed,
                 Leader = players[3],
@@ -169,18 +169,18 @@ public class DbSeeder
             new Squad()
             {
                 QuestNumber = 4,
-                RoundNumber = 5,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 2,
-                Status = SquadStatus.Successfull,
+                Status = SquadStatus.Successful,
                 Leader = players[4],
                 RoomId = rooms[0].RoomId,
             },
             new Squad()
             {
                 QuestNumber = 5,
-                RoundNumber = 6,
+                SquadNumber = 1,
                 RequiredPlayersNumber = 3,
-                Status = SquadStatus.Successfull,
+                Status = SquadStatus.Successful,
                 Leader = players[0],
                 RoomId = rooms[0].RoomId,
             },
@@ -241,63 +241,63 @@ public class DbSeeder
     private List<QuestVote> getQuestVotes(List<Player> players, List<Squad> squads)
     {
         return [
-            new QuestVote() { Squad = squads[1], Player = players[1], Value = true },
-            new QuestVote() { Squad = squads[1], Player = players[3], Value = true },
+            new QuestVote() { Squad = squads[1], Voter = players[1], Value = true },
+            new QuestVote() { Squad = squads[1], Voter = players[3], Value = true },
 
-            new QuestVote() { Squad = squads[2], Player = players[2], Value = true },
-            new QuestVote() { Squad = squads[2], Player = players[3], Value = true },
-            new QuestVote() { Squad = squads[2], Player = players[1], Value = false },
+            new QuestVote() { Squad = squads[2], Voter = players[2], Value = true },
+            new QuestVote() { Squad = squads[2], Voter = players[3], Value = true },
+            new QuestVote() { Squad = squads[2], Voter = players[1], Value = false },
 
-            new QuestVote() { Squad = squads[3], Player = players[3], Value = true },
-            new QuestVote() { Squad = squads[3], Player = players[2], Value = false },
+            new QuestVote() { Squad = squads[3], Voter = players[3], Value = true },
+            new QuestVote() { Squad = squads[3], Voter = players[2], Value = false },
 
-            new QuestVote() { Squad = squads[4], Player = players[4], Value = true },
-            new QuestVote() { Squad = squads[4], Player = players[3], Value = true },
+            new QuestVote() { Squad = squads[4], Voter = players[4], Value = true },
+            new QuestVote() { Squad = squads[4], Voter = players[3], Value = true },
 
-            new QuestVote() { Squad = squads[5], Player = players[4], Value = true },
-            new QuestVote() { Squad = squads[5], Player = players[3], Value = true },
-            new QuestVote() { Squad = squads[5], Player = players[1], Value = true },
+            new QuestVote() { Squad = squads[5], Voter = players[4], Value = true },
+            new QuestVote() { Squad = squads[5], Voter = players[3], Value = true },
+            new QuestVote() { Squad = squads[5], Voter = players[1], Value = true },
         ];
     }
 
     private List<SquadVote> getSquadVotes(List<Player> players, List<Squad> squads)
     {
         return [
-            new SquadVote() { Squad = squads[0], Player = players[0], Value = true },
-            new SquadVote() { Squad = squads[0], Player = players[1], Value = true },
-            new SquadVote() { Squad = squads[0], Player = players[2], Value = false },
-            new SquadVote() { Squad = squads[0], Player = players[3], Value = false },
-            new SquadVote() { Squad = squads[0], Player = players[4], Value = false },
+            new SquadVote() { Squad = squads[0], Voter = players[0], Value = true },
+            new SquadVote() { Squad = squads[0], Voter = players[1], Value = true },
+            new SquadVote() { Squad = squads[0], Voter = players[2], Value = false },
+            new SquadVote() { Squad = squads[0], Voter = players[3], Value = false },
+            new SquadVote() { Squad = squads[0], Voter = players[4], Value = false },
 
-            new SquadVote() { Squad = squads[1], Player = players[0], Value = false },
-            new SquadVote() { Squad = squads[1], Player = players[1], Value = true },
-            new SquadVote() { Squad = squads[1], Player = players[2], Value = true },
-            new SquadVote() { Squad = squads[1], Player = players[3], Value = true },
-            new SquadVote() { Squad = squads[1], Player = players[4], Value = true },
+            new SquadVote() { Squad = squads[1], Voter = players[0], Value = false },
+            new SquadVote() { Squad = squads[1], Voter = players[1], Value = true },
+            new SquadVote() { Squad = squads[1], Voter = players[2], Value = true },
+            new SquadVote() { Squad = squads[1], Voter = players[3], Value = true },
+            new SquadVote() { Squad = squads[1], Voter = players[4], Value = true },
 
-            new SquadVote() { Squad = squads[2], Player = players[0], Value = false },
-            new SquadVote() { Squad = squads[2], Player = players[1], Value = true },
-            new SquadVote() { Squad = squads[2], Player = players[2], Value = true },
-            new SquadVote() { Squad = squads[2], Player = players[3], Value = true },
-            new SquadVote() { Squad = squads[2], Player = players[4], Value = false },
+            new SquadVote() { Squad = squads[2], Voter = players[0], Value = false },
+            new SquadVote() { Squad = squads[2], Voter = players[1], Value = true },
+            new SquadVote() { Squad = squads[2], Voter = players[2], Value = true },
+            new SquadVote() { Squad = squads[2], Voter = players[3], Value = true },
+            new SquadVote() { Squad = squads[2], Voter = players[4], Value = false },
 
-            new SquadVote() { Squad = squads[3], Player = players[0], Value = true },
-            new SquadVote() { Squad = squads[3], Player = players[1], Value = true },
-            new SquadVote() { Squad = squads[3], Player = players[2], Value = false },
-            new SquadVote() { Squad = squads[3], Player = players[3], Value = true },
-            new SquadVote() { Squad = squads[3], Player = players[4], Value = false },
+            new SquadVote() { Squad = squads[3], Voter = players[0], Value = true },
+            new SquadVote() { Squad = squads[3], Voter = players[1], Value = true },
+            new SquadVote() { Squad = squads[3], Voter = players[2], Value = false },
+            new SquadVote() { Squad = squads[3], Voter = players[3], Value = true },
+            new SquadVote() { Squad = squads[3], Voter = players[4], Value = false },
 
-            new SquadVote() { Squad = squads[4], Player = players[0], Value = false },
-            new SquadVote() { Squad = squads[4], Player = players[1], Value = true },
-            new SquadVote() { Squad = squads[4], Player = players[2], Value = false },
-            new SquadVote() { Squad = squads[4], Player = players[3], Value = true },
-            new SquadVote() { Squad = squads[4], Player = players[4], Value = true },
+            new SquadVote() { Squad = squads[4], Voter = players[0], Value = false },
+            new SquadVote() { Squad = squads[4], Voter = players[1], Value = true },
+            new SquadVote() { Squad = squads[4], Voter = players[2], Value = false },
+            new SquadVote() { Squad = squads[4], Voter = players[3], Value = true },
+            new SquadVote() { Squad = squads[4], Voter = players[4], Value = true },
 
-            new SquadVote() { Squad = squads[5], Player = players[0], Value = false },
-            new SquadVote() { Squad = squads[5], Player = players[1], Value = true },
-            new SquadVote() { Squad = squads[5], Player = players[2], Value = false },
-            new SquadVote() { Squad = squads[5], Player = players[3], Value = true },
-            new SquadVote() { Squad = squads[5], Player = players[4], Value = true },
+            new SquadVote() { Squad = squads[5], Voter = players[0], Value = false },
+            new SquadVote() { Squad = squads[5], Voter = players[1], Value = true },
+            new SquadVote() { Squad = squads[5], Voter = players[2], Value = false },
+            new SquadVote() { Squad = squads[5], Voter = players[3], Value = true },
+            new SquadVote() { Squad = squads[5], Voter = players[4], Value = true },
 
         ];
     }
