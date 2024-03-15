@@ -3,6 +3,7 @@ using servartur.Services;
 using servartur.RealTimeUpdates;
 using Microsoft.AspNetCore.SignalR;
 using servartur.Models.Incoming;
+using servartur.Utils;
 
 namespace servartur.Controllers;
 
@@ -67,9 +68,9 @@ public class MatchupController : ControllerBase
         }
         _matchupService.StartGame(dto);
 
+        sendStartGame(dto.RoomId);
         refreshPlayersData(dto.RoomId);
         refreshAllSquadsData(dto.RoomId);
-        sendStartGame(dto.RoomId);
         return NoContent();
     }
 
