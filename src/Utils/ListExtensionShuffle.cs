@@ -1,4 +1,4 @@
-﻿namespace servartur.Algorithms;
+﻿namespace servartur.Utils;
 
 public static class ListExtensionShuffle
 {

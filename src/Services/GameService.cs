@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using servartur.Algorithms;
+using servartur.Utils;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
