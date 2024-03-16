@@ -7,7 +7,7 @@ public class SquadInfoDto
 {
     public int SquadId { get; set; }
     public int QuestNumber { get; set; }
-    public int SquadFailsToEvilWinCount { get; set; }
+    public int RejectionsLeftToEvilWin { get; set; }
     public int RequiredPlayersNumber { get; set; }
     public SquadStatus Status { get; set; }
     public PlayerInfoDto Leader { get; set; } = null!;
