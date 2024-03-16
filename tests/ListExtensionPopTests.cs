@@ -1,4 +1,4 @@
-﻿using servartur.Algorithms;
+﻿using servartur.Utils;
 
 namespace servartur.Tests;
 public class ListExtensionPopTests
