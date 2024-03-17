@@ -107,6 +107,7 @@ public class InfoService : BaseService, IInfoService
             .Include(s => s.SquadVotes)
                 .ThenInclude(v => v.Voter)
             .Include(s => s.QuestVotes)
+            .Include(s => s.Leader)
             .FirstOrDefault(p => p.SquadId == squadId)
             ?? throw new SquadNotFoundException(squadId);
 
