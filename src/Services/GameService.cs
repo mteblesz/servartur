@@ -30,8 +30,8 @@ public class GameService : DataUpdatesService, IGameService
             throw new RoomInBadStateException(player.RoomId);
 
         // don't change anythng in db, no new quest can be started,
-        // other must wait for this player to reconnect somehow,
-        // for now others get notified via signalr
+        // other must wait for this player to reconnect somehow (TODO),
+        // for now, others get notified via signalr
 
         roomId = player.RoomId;
         return _mapper.Map<PlayerInfoDto>(player);
