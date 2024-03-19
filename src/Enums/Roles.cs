@@ -4,36 +4,36 @@ namespace servartur.Enums;
 
 public enum Team
 {
-    [EnumMember(Value = "Evil")]
+    [EnumMember(Value = "evil")]
     Evil,
 
-    [EnumMember(Value = "Good")]
+    [EnumMember(Value = "good")]
     Good,
 }
 public enum Role
 {
-    [EnumMember(Value = "GoodKnight")]
+    [EnumMember(Value = "goodKnight")]
     GoodKnight,
 
-    [EnumMember(Value = "EvilEntity")]
+    [EnumMember(Value = "evilEntity")]
     EvilEntity,
 
-    [EnumMember(Value = "Merlin")]
+    [EnumMember(Value = "merlin")]
     Merlin,
 
-    [EnumMember(Value = "Assassin")]
+    [EnumMember(Value = "assassin")]
     Assassin,
 
-    [EnumMember(Value = "Percival")]
+    [EnumMember(Value = "percival")]
     Percival,
 
-    [EnumMember(Value = "Morgana")]
+    [EnumMember(Value = "morgana")]
     Morgana,
 
-    [EnumMember(Value = "Mordred")]
+    [EnumMember(Value = "mordred")]
     Mordred,
 
-    [EnumMember(Value = "Oberon")]
+    [EnumMember(Value = "oberon")]
     Oberon,
 }
 public static class RoleTeamMapping

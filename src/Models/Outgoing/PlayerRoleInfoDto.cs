@@ -1,9 +1,8 @@
-﻿namespace servartur.Models;
+﻿namespace servartur.Models.Outgoing;
 
-public class PlayerInfoDto
+public class PlayerRoleInfoDto
 {
     public int PlayerId { get; set; }
-    public string Nick { get; set; } = null!;
     public string Team { get; set; } = null!;
     public string Role { get; set; } = null!;
 }

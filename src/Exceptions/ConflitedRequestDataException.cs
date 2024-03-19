@@ -9,8 +9,15 @@ public class RoomNotInMatchupException : ConflitedRequestDataException
 {
     /// <param name="roomId">Id of the room that is not in matchup state.</param>
     public RoomNotInMatchupException(int roomId)
-        : base($"Room with id {roomId} is not in matchup and cannot be joined") { }
+        : base($"Room with id {roomId} is not in matchup and this operation can't be done") { }
 }
+public class RoomInBadStateException : ConflitedRequestDataException
+{
+    /// <param name="roomId">Id of the room that is not in matchup state.</param>
+    public RoomInBadStateException(int roomId)
+        : base($"Room with id {roomId}'s state does not allow this operation ") { }
+}
+
 public class RoomIsFullException : ConflitedRequestDataException
 {
     /// <param name="roomId">Id of the room that is full.</param>
@@ -27,4 +34,10 @@ public class PlayerCountInvalidException : ConflitedRequestDataException
 {
     public PlayerCountInvalidException(int roomId)
         : base($"Room with id {roomId} has invalid number of players and game cannot be started") { }
+}
+
+public class PercivalNotInGameException : ConflitedRequestDataException
+{
+    public PercivalNotInGameException(int roomId)
+        : base($"Percival is not present in game of room {roomId}") { }
 }

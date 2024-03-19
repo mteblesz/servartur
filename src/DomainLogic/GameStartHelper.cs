@@ -1,7 +1,7 @@
 ﻿using servartur.Entities;
 using servartur.Exceptions;
 using servartur.Enums;
-using servartur.Algorithms;
+using servartur.Utils;
 using Humanizer;
 
 namespace servartur.DomainLogic;
@@ -11,16 +11,16 @@ public static class GameStartHelper
     public class RoleInfo
     {
         public bool AreMerlinAndAssassinInGame { get; set; }
-        public bool ArePercivalAreMorganaInGame { get; set; }
+        public bool ArePercivalAndMorganaInGame { get; set; }
         public bool AreOberonAndMordredInGame { get; set; }
 
         public RoleInfo(
             bool areMerlinAndAssassinInGame,
-            bool arePercivalAreMorganaInGame,
+            bool arePercivalAndMorganaInGame,
             bool areOberonAndMordredInGame)
         {
             AreMerlinAndAssassinInGame = areMerlinAndAssassinInGame;
-            ArePercivalAreMorganaInGame = arePercivalAreMorganaInGame;
+            ArePercivalAndMorganaInGame = arePercivalAndMorganaInGame;
             AreOberonAndMordredInGame = areOberonAndMordredInGame;
         }
     }
@@ -32,7 +32,7 @@ public static class GameStartHelper
         var roles = new List<Role>();
         if (roleInfo.AreMerlinAndAssassinInGame)
             roles.AddRange([Role.Merlin, Role.Assassin]);
-        if (roleInfo.ArePercivalAreMorganaInGame)
+        if (roleInfo.ArePercivalAndMorganaInGame)
             roles.AddRange([Role.Percival, Role.Morgana]);
         if (roleInfo.AreOberonAndMordredInGame)
             roles.AddRange([Role.Oberon, Role.Mordred]);
@@ -57,13 +57,13 @@ public static class GameStartHelper
             throw new ArgumentException("Invalid number of players given");
 
         var questNumber = 1;
-        var firstSquadSize = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber);
         var firstSquad = new Squad()
         {
             Leader = leader,
             QuestNumber = questNumber,
-            RoundNumber = 1,
-            RequiredPlayersNumber = firstSquadSize,
+            SquadNumber = 1,
+            RequiredPlayersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber),
+            IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, questNumber),
             Status = SquadStatus.SquadVoting,
         };
         return firstSquad;

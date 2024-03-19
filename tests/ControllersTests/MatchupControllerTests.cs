@@ -1,19 +1,23 @@
 ﻿using servartur.Enums;
-using servartur.Models;
 using servartur.Services;
 using servartur.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using servartur.Models.Incoming;
+using Microsoft.AspNetCore.SignalR;
+using servartur.RealTimeUpdates;
 
 namespace servartur.Tests.ControllersTests;
 public class MatchupControllerTests
 {
     private readonly MatchupController _controller;
     private readonly Mock<IMatchupService> _matchupServiceMock;
+    private readonly Mock<IHubContext<UpdatesHub, IUpdatesHubClient>> _hubContextMock;
 
     public MatchupControllerTests()
     {
         _matchupServiceMock = new Mock<IMatchupService>();
-        _controller = new MatchupController(_matchupServiceMock.Object);
+        _hubContextMock = new Mock<IHubContext<UpdatesHub, IUpdatesHubClient>>();
+        _controller = new MatchupController(_matchupServiceMock.Object, _hubContextMock.Object);
     }
 
     [Fact]
@@ -50,7 +54,7 @@ public class MatchupControllerTests
             Nick = "test_nick",
         };
         // Act
-        var result = _controller.SetNicknameAsync(playerNicknameSetDto);
+        var result = _controller.SetNickname(playerNicknameSetDto);
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<NoContentResult>();
@@ -61,9 +65,10 @@ public class MatchupControllerTests
     {
         // Arrange
         var playerId = 1;
+        var roomId = 0;
         //_matchupServiceMock.Setup(m => m.RemovePlayer(It.IsAny<int>()));
         // Act
-        var result = _controller.RemovePlayer(playerId);
+        var result = _controller.RemovePlayer(playerId, roomId);
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<NoContentResult>();
@@ -82,7 +87,7 @@ public class MatchupControllerTests
         {
             RoomId = 1,
             AreMerlinAndAssassinInGame = MnA,
-            ArePercivalAreMorganaInGame = PnM,
+            ArePercivalAndMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM,
         };
 
@@ -106,7 +111,7 @@ public class MatchupControllerTests
         {
             RoomId = 1,
             AreMerlinAndAssassinInGame = MnA,
-            ArePercivalAreMorganaInGame = PnM,
+            ArePercivalAndMorganaInGame = PnM,
             AreOberonAndMordredInGame = OnM
         };
 

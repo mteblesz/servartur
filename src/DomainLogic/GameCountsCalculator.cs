@@ -39,4 +39,13 @@ public static class GameCountsCalculator
         {3, 4, 4, 5, 5}, // 9 players
         {3, 4, 4, 5, 5}, // 10 players
     };
+    public static bool IsQuestDoubleFail(int playersCount, int questNumber)
+    {
+        if (!IsPlayerCountValid(playersCount))
+            throw new ArgumentException("Invalid number of players given");
+        if (!IsQuestNumberValid(questNumber))
+            throw new ArgumentException("Invalid quest number given");
+
+        return playersCount >= 7 && questNumber == 4;
+    }
 }

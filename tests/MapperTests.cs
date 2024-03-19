@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using servartur.Entities;
-using servartur.Models;
 using servartur.Mappings;
 using servartur.Enums;
 using static servartur.DomainLogic.GameStartHelper;
+using servartur.Models.Outgoing;
 
 namespace servartur.Tests;
 public class MappingProfileTests
@@ -19,7 +19,7 @@ public class MappingProfileTests
         {
             SquadId = 1,
             QuestNumber = 1,
-            RoundNumber = 1,
+            SquadNumber = 1,
             RequiredPlayersNumber = 2,
             Status = SquadStatus.Failed,
             LeaderId = leader1.PlayerId,
@@ -34,8 +34,8 @@ public class MappingProfileTests
 
         List<PlayerInfoDto> memberDtos1 =
         [
-            new() { PlayerId = leader1.PlayerId, Nick = "leader", Team = Team.Good.ToString(), Role = Role.GoodKnight.ToString() },
-            new() { PlayerId = evilEntity1.PlayerId, Nick = "evil_entity", Team = Team.Evil.ToString(), Role = Role.EvilEntity.ToString() },
+            new() { PlayerId = leader1.PlayerId, Nick = "leader"},
+            new() { PlayerId = evilEntity1.PlayerId, Nick = "evil_entity"},
         ];
         data.Add(squad1, memberDtos1);
 
@@ -47,9 +47,9 @@ public class MappingProfileTests
         {
             SquadId = 2,
             QuestNumber = 2,
-            RoundNumber = 2,
+            SquadNumber = 1,
             RequiredPlayersNumber = 3,
-            Status = SquadStatus.Successfull,
+            Status = SquadStatus.Successful,
             LeaderId = leader2.PlayerId,
             Leader = leader2,
             RoomId = 100,
@@ -63,9 +63,9 @@ public class MappingProfileTests
 
         List<PlayerInfoDto> memberDtos2 =
         [
-            new PlayerInfoDto { PlayerId = leader2.PlayerId, Nick = "leader", Team = Team.Good.ToString(), Role = Role.Merlin.ToString() },
-            new PlayerInfoDto { PlayerId = goodknight1_2.PlayerId, Nick = "gk_1", Team = Team.Good.ToString(), Role = Role.GoodKnight.ToString() },
-            new PlayerInfoDto { PlayerId = goodknight2_2.PlayerId, Nick = "gk_2", Team = Team.Good.ToString(), Role = Role.GoodKnight.ToString() },
+            new PlayerInfoDto { PlayerId = leader2.PlayerId, Nick = "leader"},
+            new PlayerInfoDto { PlayerId = goodknight1_2.PlayerId, Nick = "gk_1"},
+            new PlayerInfoDto { PlayerId = goodknight2_2.PlayerId, Nick = "gk_2"},
         ];
         data.Add(squad2, memberDtos2);
 
@@ -87,10 +87,9 @@ public class MappingProfileTests
         squadInfoDto.Should().NotBeNull();
         squadInfoDto.SquadId.Should().Be(squad.SquadId);
         squadInfoDto.QuestNumber.Should().Be(squad.QuestNumber);
-        squadInfoDto.RoundNumber.Should().Be(squad.RoundNumber);
         squadInfoDto.RequiredPlayersNumber.Should().Be(squad.RequiredPlayersNumber);
         squadInfoDto.Status.Should().Be(squad.Status);
-        squadInfoDto.LeaderId.Should().Be(squad.LeaderId);
+        squadInfoDto.Leader.Should().NotBeNull();
         squadInfoDto.Members.Should().NotBeNull();
         squadInfoDto.Members.Should().HaveCount(squad.Memberships.Count);
         squadInfoDto.Members.Should().BeEquivalentTo(expectedMemberDtos);

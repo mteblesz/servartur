@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using servartur.Models;
 using servartur.Services;
 using servartur.RealTimeUpdates;
 using Microsoft.AspNetCore.SignalR;
-using servartur.Entities;
+using servartur.Models.Incoming;
+using servartur.Utils;
 
 namespace servartur.Controllers;
-using GameHubContext = IHubContext<GameHub, IGameHubClient>;
 
 [ApiController]
 [Route("api/[controller]")]
 public class MatchupController : ControllerBase
 {
     private readonly IMatchupService _matchupService;
-    private readonly GameHubContext _hubContext;
+    private readonly IHubContext<UpdatesHub, IUpdatesHubClient> _hubContext;
 
-    public MatchupController(IMatchupService matchupService, GameHubContext hubContext)
+    public MatchupController(IMatchupService matchupService, IHubContext<UpdatesHub, IUpdatesHubClient> hubContext)
     {
         this._matchupService = matchupService;
         this._hubContext = hubContext;
@@ -32,9 +31,7 @@ public class MatchupController : ControllerBase
     public ActionResult JoinRoom([FromRoute] int roomId)
     {
         int playerId = _matchupService.JoinRoom(roomId);
-
-        var players = _matchupService.GetUpdatedPlayers(roomId);
-        _ = _hubContext.RefreshPlayers(roomId, players);
+        refreshPlayersData(roomId);
         return Created($"/player/{playerId}", null);
     }
 
@@ -42,9 +39,7 @@ public class MatchupController : ControllerBase
     public ActionResult SetNickname([FromBody] PlayerNicknameSetDto dto)
     {
         _matchupService.SetNickname(dto);
-        var players = _matchupService.GetUpdatedPlayers(dto.RoomId);
-
-        _ = _hubContext.RefreshPlayers(dto.RoomId, players);
+        refreshPlayersData(dto.RoomId);
         return NoContent();
     }
 
@@ -52,10 +47,8 @@ public class MatchupController : ControllerBase
     public ActionResult RemovePlayer([FromRoute] int playerId, [FromRoute] int roomId)
     {
         _matchupService.RemovePlayer(playerId);
-
-        var players = _matchupService.GetUpdatedPlayers(roomId);
-        _ = _hubContext.RefreshPlayers(roomId, players);
-        _ = _hubContext.SendRemovalInfo(roomId, playerId);
+        refreshPlayersData(roomId);
+        sendRemovalInfo(roomId, playerId);
         return NoContent();
     }
 
@@ -63,7 +56,7 @@ public class MatchupController : ControllerBase
     public ActionResult StartGame([FromBody] StartGameDto dto)
     {
         // check game rules
-        if (!(dto.AreMerlinAndAssassinInGame) && dto.ArePercivalAreMorganaInGame)
+        if (!(dto.AreMerlinAndAssassinInGame) && dto.ArePercivalAndMorganaInGame)
         {
             ModelState.AddModelError("", "Morgana and Percival can't be present with Merlin and Assassin missing");
             return BadRequest(ModelState);
@@ -75,9 +68,30 @@ public class MatchupController : ControllerBase
         }
         _matchupService.StartGame(dto);
 
-        var roomId = dto.RoomId;
-        var players = _matchupService.GetUpdatedPlayers(roomId);
-        _ = _hubContext.SendStartGame(roomId, players);
+        sendStartGame(dto.RoomId);
+        refreshPlayersData(dto.RoomId);
+        refreshAllSquadsData(dto.RoomId);
         return NoContent();
+    }
+
+    private void refreshPlayersData(int roomId)
+    {
+        var players = _matchupService.GetUpdatedPlayers(roomId);
+        _ = _hubContext.RefreshPlayers(roomId, players);
+    }
+    private void sendRemovalInfo(int roomId, int playerId)
+    {
+        _ = _hubContext.SendRemovalInfo(roomId, playerId);
+    }
+    private void sendStartGame(int roomId)
+    {
+        _ = _hubContext.SendStartGame(roomId);
+    }
+    private void refreshAllSquadsData(int roomId)
+    {
+        var curentSquad = _matchupService.GetUpdatedCurrentSquad(roomId);
+        var questsSummary = _matchupService.GetUpdatedQuestsSummary(roomId);
+        _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
+        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
     }
 }

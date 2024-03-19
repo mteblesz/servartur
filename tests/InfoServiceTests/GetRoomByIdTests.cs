@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using servartur.Entities;
 using servartur.Enums;
-using servartur.Models;
 using servartur.Services;
 using servartur.Exceptions;
 using Moq.EntityFrameworkCore;
+using servartur.Models.Outgoing;
 
 namespace servartur.Tests.InfoServiceTests;
 public class GetRoomByIdTests

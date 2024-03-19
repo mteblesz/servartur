@@ -27,6 +27,11 @@ public class ErrorHandlingMiddleware : IMiddleware
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             await context.Response.WriteAsync(ex.Message);
         }
+        catch (DatabaseConflictException ex)
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            await context.Response.WriteAsync(ex.Message);
+        }
         catch (DbUpdateException ex)
         {
             _logger.LogError(ex, "{message}", ex.Message);

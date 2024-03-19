@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
-using servartur.Models;
 using servartur.Services;
 using Moq.EntityFrameworkCore;
+using servartur.Models.Outgoing;
 
 namespace servartur.Tests.InfoServiceTests;
 public class GetQuestBySquadIdTests
@@ -16,7 +16,7 @@ public class GetQuestBySquadIdTests
                 .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
     [Fact]
-    public void GetQuestById_ValidSquadId_ReturnsSquadInfoDto()
+    public void GetQuestById_ValidSquadId_ReturnsQuestInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -30,7 +30,7 @@ public class GetQuestBySquadIdTests
         {
             SquadId = 1,
             QuestNumber = 1,
-            RoundNumber = 1,
+            SquadNumber = 1,
             RequiredPlayersNumber = 2,
             Status = SquadStatus.Failed,
             LeaderId = leader.PlayerId,
@@ -45,28 +45,26 @@ public class GetQuestBySquadIdTests
 
         List<PlayerInfoDto> memberDtos =
         [
-            new () { PlayerId = leader.PlayerId, Nick = "leader", Team = Team.Good.ToString(), Role = Role.GoodKnight.ToString() },
-            new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity", Team = Team.Evil.ToString(), Role = Role.EvilEntity.ToString() },
+            new () { PlayerId = leader.PlayerId, Nick = "leader"},
+            new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity"},
         ]; 
-        var expectedSquadInfoDto = new SquadInfoDto
+        var expectedQuestInfoDto = new QuestInfoDto
         {
             SquadId = squad.SquadId,
             QuestNumber = 1,
-            RoundNumber = 1,
             RequiredPlayersNumber = 2,
             Status = SquadStatus.Failed,
-            LeaderId = leader.PlayerId,
             Members = memberDtos,
         };
 
         dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>() { squad });
-        mapperMock.Setup(m => m.Map<SquadInfoDto>(It.IsAny<Squad>())).Returns(expectedSquadInfoDto);
+        mapperMock.Setup(m => m.Map<QuestInfoDto>(It.IsAny<Squad>())).Returns(expectedQuestInfoDto);
 
         // Act
-        var result = infoService.GetSquadById(squad.SquadId);
+        var result = infoService.GetQuestBySquadId(squad.SquadId);
 
         // Assert
-        result.Should().BeEquivalentTo(expectedSquadInfoDto);
+        result.Should().BeEquivalentTo(expectedQuestInfoDto);
     }
 
     [Fact]
@@ -82,7 +80,7 @@ public class GetQuestBySquadIdTests
         dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>());
 
         // Act and Assert
-        Action action = () => infoService.GetSquadById(invalidSquadId);
+        Action action = () => infoService.GetQuestBySquadId(invalidSquadId);
         Assert.Throws<SquadNotFoundException>(action);
     }
 }

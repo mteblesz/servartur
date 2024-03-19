@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using servartur.Entities;
 using servartur.Enums;
-using servartur.Models;
+using servartur.Models.Outgoing;
 using servartur.Services;
 
 namespace servartur.Controllers;
@@ -30,6 +30,13 @@ public class InfoController : ControllerBase
         return Ok(player);
     }
 
+    [HttpGet("player/role/{playerId}")]
+    public ActionResult<PlayerRoleInfoDto> GetRoleByPlayerId([FromRoute] int playerId)
+    {
+        var roleInfo = _infoService.GetRoleByPlayerId(playerId);
+        return Ok(roleInfo);
+    }
+
     [HttpGet("goodplayers/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetGoodPlayers([FromRoute] int roomId)
     {
@@ -46,10 +53,43 @@ public class InfoController : ControllerBase
         return Ok(evilPlayers);
     }
 
-    [HttpGet("quest/{squadId}")]
-    public ActionResult<SquadInfoDto> GetQuestBySquadId([FromRoute] int squadId)
+    [HttpGet("evilknows/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForEvil([FromRoute] int roomId)
     {
-        var squad = _infoService.GetSquadById(squadId);
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
+        Func<Player, Player> obfuscate = p =>
+        {
+            p.Nick = (p.Role == Role.Oberon) ? "<Oberon>" : p.Nick;
+            return p;
+        };
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate, obfuscate);
+        return Ok(evilPlayers);
+    }
+
+    [HttpGet("merlinknows/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForMerlin([FromRoute] int roomId)
+    {
+        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
+        Func<Player, Player> obfuscate = p =>
+        {
+            p.Nick = (p.Role == Role.Mordred) ? "<Mordred>" : p.Nick;
+            return p;
+        };
+        var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate, obfuscate);
+        return Ok(evilPlayers);
+    }
+
+    [HttpGet("percivalknowns/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetKnownByPercivalPlayers([FromRoute] int roomId)
+    {
+        var mmPlayers = _infoService.GetKnownByPercivalPlayers(roomId);
+        return Ok(mmPlayers);
+    }
+
+    [HttpGet("quest/{squadId}")]
+    public ActionResult<QuestInfoDto> GetQuestBySquadId([FromRoute] int squadId)
+    {
+        var squad = _infoService.GetQuestBySquadId(squadId);
         return Ok(squad);
     }
 }
