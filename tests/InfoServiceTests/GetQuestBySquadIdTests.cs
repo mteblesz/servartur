@@ -16,7 +16,7 @@ public class GetQuestBySquadIdTests
                 .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
     [Fact]
-    public void GetQuestById_ValidSquadId_ReturnsSquadInfoDto()
+    public void GetQuestById_ValidSquadId_ReturnsQuestInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -48,7 +48,7 @@ public class GetQuestBySquadIdTests
             new () { PlayerId = leader.PlayerId, Nick = "leader"},
             new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity"},
         ]; 
-        var expectedSquadInfoDto = new SquadInfoDto
+        var expectedQuestInfoDto = new QuestInfoDto
         {
             SquadId = squad.SquadId,
             QuestNumber = 1,
@@ -58,13 +58,13 @@ public class GetQuestBySquadIdTests
         };
 
         dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>() { squad });
-        mapperMock.Setup(m => m.Map<SquadInfoDto>(It.IsAny<Squad>())).Returns(expectedSquadInfoDto);
+        mapperMock.Setup(m => m.Map<QuestInfoDto>(It.IsAny<Squad>())).Returns(expectedQuestInfoDto);
 
         // Act
         var result = infoService.GetQuestBySquadId(squad.SquadId);
 
         // Assert
-        result.Should().BeEquivalentTo(expectedSquadInfoDto);
+        result.Should().BeEquivalentTo(expectedQuestInfoDto);
     }
 
     [Fact]
