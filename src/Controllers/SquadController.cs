@@ -23,24 +23,24 @@ public class SquadController : ControllerBase
     [HttpPost("add/{playerId}")]
     public ActionResult AddMember([FromRoute] int playerId)
     {
-        _squadService.AddMember(playerId);
-        // refreshSquadsData(roomId);
+        _squadService.AddMember(playerId, out int roomId);
+        refreshCurrentSquadsData(roomId);
         return NoContent();
     }
 
     [HttpDelete("remove/{playerId}")]
     public ActionResult RemoveMember([FromRoute] int playerId)
     {
-        _squadService.RemoveMember(playerId);
-        // refreshSquadsData(roomId);
+        _squadService.RemoveMember(playerId, out int roomId);
+        refreshCurrentSquadsData(roomId);
         return NoContent();
     }
 
     [HttpPatch("submit/{squadId}")]
     public ActionResult SubmitSquad([FromRoute] int squadId)
     {
-        _squadService.SubmitSquad(squadId);
-        // refreshSquadsData(roomId);
+        _squadService.SubmitSquad(squadId, out int roomId);
+        refreshCurrentSquadsData(roomId);
         return NoContent();
     }
 
