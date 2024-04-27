@@ -5,9 +5,9 @@ namespace servartur.Models.Incoming;
 public class CastVoteDto
 {
     [Required]
-    public bool Value { get; set; }
+    public required bool Value { get; set; }
     [Required]
-    public int SquadId { get; set; }
+    public required int SquadId { get; set; }
     [Required]
-    public int VoterId { get; set; }
+    public required int VoterId { get; set; }
 }

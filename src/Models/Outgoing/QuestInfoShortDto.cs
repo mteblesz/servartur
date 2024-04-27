@@ -4,9 +4,9 @@ namespace servartur.Models.Outgoing;
 
 public class QuestInfoShortDto
 {
-    public int? SquadId { get; set; }
-    public int QuestNumber { get; set; }
-    public int RequiredPlayersNumber { get; set; }
-    public bool IsDoubleFail { get; set; }
-    public SquadStatus Status { get; set; }
+    public required int? SquadId { get; set; }
+    public required int QuestNumber { get; set; }
+    public required int RequiredPlayersNumber { get; set; }
+    public required bool IsDoubleFail { get; set; }
+    public required SquadStatus Status { get; set; }
 }

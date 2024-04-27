@@ -5,11 +5,11 @@ namespace servartur.Models.Incoming;
 public class StartGameDto
 {
     [Required]
-    public int RoomId { get; set; }
+    public required int RoomId { get; set; }
     [Required]
-    public bool AreMerlinAndAssassinInGame { get; set; }
+    public required bool AreMerlinAndAssassinInGame { get; set; }
     [Required]
-    public bool ArePercivalAndMorganaInGame { get; set; }
+    public required bool ArePercivalAndMorganaInGame { get; set; }
     [Required]
-    public bool AreOberonAndMordredInGame { get; set; }
+    public required bool AreOberonAndMordredInGame { get; set; }
 }
