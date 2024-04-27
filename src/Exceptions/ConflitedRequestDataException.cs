@@ -25,6 +25,21 @@ public class RoomIsFullException : ConflitedRequestDataException
         : base($"Room with id {roomId} is full and cannot be joined") { }
 }
 
+public class SquadIsFullException : ConflitedRequestDataException
+{
+    /// <param name="roomId">Id of the room that is full.</param>
+    public SquadIsFullException(int roomId)
+        : base($"Current squad in room with id {roomId} is full") { }
+}
+
+public class SquadIsEmptyException : ConflitedRequestDataException
+{
+    /// <param name="roomId">Id of the room that is full.</param>
+    public SquadIsEmptyException(int roomId)
+        : base($"Current squad in room with id {roomId} is empty") { }
+}
+
+
 public class TooManyEvilRolesException : ConflitedRequestDataException
 {
     public TooManyEvilRolesException()
