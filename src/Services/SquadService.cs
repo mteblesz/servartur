@@ -49,6 +49,7 @@ public class SquadService : DataUpdatesService, ISquadService
         var player = _dbContext.Players
             .Include(p => p.Room)
                 .ThenInclude(r => r.CurrentSquad)
+                    .ThenInclude(s => s.Memberships)
             .FirstOrDefault(p => p.PlayerId == playerId)
             ?? throw new PlayerNotFoundException(playerId);
         if (player.Room.Status != RoomStatus.Playing)
