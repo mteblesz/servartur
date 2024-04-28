@@ -31,7 +31,7 @@ public class GameService : DataUpdatesService, IGameService
 
         // don't change anythng in db, no new quest can be started,
         // other must wait for this player to reconnect somehow (TODO),
-        // for now, others get notified via signalr
+        // for now, others get notified via signalr from controller
 
         roomId = player.RoomId;
         return _mapper.Map<PlayerInfoDto>(player);

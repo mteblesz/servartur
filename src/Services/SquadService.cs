@@ -36,7 +36,7 @@ public class SquadService : DataUpdatesService, ISquadService
             throw new RoomInBadStateException(player.RoomId);
 
         var currentSquad = player.Room.CurrentSquad;
-        if (currentSquad.Memberships.Count >= currentSquad.RequiredPlayersNumber)
+        if (currentSquad.Memberships.Count >= currentSquad.RequiredMembersNumber)
             throw new SquadIsFullException(player.RoomId);
 
         _dbContext.Memberships.Add(new Membership { Player = player, Squad = currentSquad });
@@ -49,6 +49,7 @@ public class SquadService : DataUpdatesService, ISquadService
         var player = _dbContext.Players
             .Include(p => p.Room)
                 .ThenInclude(r => r.CurrentSquad)
+                    .ThenInclude(s => s.Memberships)
             .FirstOrDefault(p => p.PlayerId == playerId)
             ?? throw new PlayerNotFoundException(playerId);
         if (player.Room.Status != RoomStatus.Playing)

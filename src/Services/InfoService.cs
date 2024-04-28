@@ -78,6 +78,8 @@ public class InfoService : BaseService, IInfoService
         var result = obfuscatedPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
         return result;
     }
+
+
     public List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId)
     {
         var room = _dbContext.Rooms

@@ -5,11 +5,11 @@ namespace servartur.Models.Incoming;
 public class PlayerNicknameSetDto
 {
     [Required]
-    public int RoomId { get; set; }
+    public required int RoomId { get; set; }
     [Required]
-    public int PlayerId { get; set; }
+    public required int PlayerId { get; set; }
 
     [Required]
     [StringLength(20, MinimumLength = 3)]
-    public string Nick { get; set; } = null!;
+    public required string Nick { get; set; }
 }

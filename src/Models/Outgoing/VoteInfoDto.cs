@@ -2,6 +2,6 @@
 
 public class VoteInfoDto
 {
-    public string VoterNick { get; set; } = null!;
-    public bool Value { get; set; }
+    public required string VoterNick { get; set; }
+    public required bool Value { get; set; }
 }

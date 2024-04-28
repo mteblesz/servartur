@@ -16,7 +16,7 @@ public class GetQuestBySquadIdTests
                 .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
     [Fact]
-    public void GetQuestById_ValidSquadId_ReturnsQuestInfoDto()
+    public void GetQuestById_ValidSquadId_ReturnsSquadInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -31,7 +31,7 @@ public class GetQuestBySquadIdTests
             SquadId = 1,
             QuestNumber = 1,
             SquadNumber = 1,
-            RequiredPlayersNumber = 2,
+            RequiredMembersNumber = 2,
             Status = SquadStatus.Failed,
             LeaderId = leader.PlayerId,
             Leader = leader,
@@ -43,28 +43,31 @@ public class GetQuestBySquadIdTests
                 new Membership { SquadId = 1, Squad = squad, PlayerId = evilEntity.PlayerId, Player =  evilEntity },
             ];
 
+        PlayerInfoDto leaderDto = new PlayerInfoDto{ PlayerId = leader.PlayerId, Nick = "leader" };
         List<PlayerInfoDto> memberDtos =
         [
-            new () { PlayerId = leader.PlayerId, Nick = "leader"},
+            leaderDto,
             new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity"},
         ]; 
-        var expectedQuestInfoDto = new QuestInfoDto
+        var expectedSquadInfoDto = new SquadInfoDto
         {
             SquadId = squad.SquadId,
             QuestNumber = 1,
-            RequiredPlayersNumber = 2,
+            RequiredMembersNumber = 2,
+            RejectionsLeftToEvilWin = 5,
+            Leader = leaderDto,
             Status = SquadStatus.Failed,
             Members = memberDtos,
         };
 
         dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>() { squad });
-        mapperMock.Setup(m => m.Map<QuestInfoDto>(It.IsAny<Squad>())).Returns(expectedQuestInfoDto);
+        mapperMock.Setup(m => m.Map<SquadInfoDto>(It.IsAny<Squad>())).Returns(expectedSquadInfoDto);
 
         // Act
         var result = infoService.GetQuestBySquadId(squad.SquadId);
 
         // Assert
-        result.Should().BeEquivalentTo(expectedQuestInfoDto);
+        result.Should().BeEquivalentTo(expectedSquadInfoDto);
     }
 
     [Fact]

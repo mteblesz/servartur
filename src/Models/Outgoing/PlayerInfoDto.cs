@@ -2,6 +2,6 @@
 
 public class PlayerInfoDto
 {
-    public int PlayerId { get; set; }
-    public string Nick { get; set; } = null!;
+    public required int PlayerId { get; set; }
+    public required string Nick { get; set; }
 }

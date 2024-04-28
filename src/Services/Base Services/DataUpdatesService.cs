@@ -80,7 +80,7 @@ public abstract class DataUpdatesService : BaseService
             {
                 SquadId = null,
                 QuestNumber = i,
-                RequiredPlayersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, i),
+                RequiredMembersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, i),
                 IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, i),
                 Status = SquadStatus.Upcoming,
             });

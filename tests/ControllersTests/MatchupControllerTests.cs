@@ -50,6 +50,7 @@ public class MatchupControllerTests
         var playerId = 1;
         var playerNicknameSetDto = new PlayerNicknameSetDto()
         {
+            RoomId = -1,
             PlayerId = playerId,
             Nick = "test_nick",
         };
