@@ -6,6 +6,7 @@ using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Outgoing;
+using System.Numerics;
 
 namespace servartur.Services;
 
@@ -71,6 +72,17 @@ public class SquadService : DataUpdatesService, ISquadService
 
     public void SubmitSquad(int squadId, out int roomId)
     {
-        throw new NotImplementedException();
+        var squad = _dbContext.Squads
+            .Include(s => s.Memberships)
+            .FirstOrDefault(s => s.SquadId == squadId)
+            ?? throw new SquadInWrongStateException(squadId);
+        if (squad.Memberships.Count != squad.RequiredMembersNumber)
+            throw new SquadIsNotFullException(squadId);
+
+        squad.Status = SquadStatus.Submitted;
+
+        _dbContext.SaveChanges();
+        roomId = squad.RoomId;
+        _dbContext.SaveChanges();
     }
 }

@@ -13,7 +13,7 @@ public class RoomNotInMatchupException : ConflitedRequestDataException
 }
 public class RoomInBadStateException : ConflitedRequestDataException
 {
-    /// <param name="roomId">Id of the room that is not in matchup state.</param>
+    /// <param name="roomId">Id of the room that is not in bad state.</param>
     public RoomInBadStateException(int roomId)
         : base($"Room with id {roomId}'s state does not allow this operation ") { }
 }
@@ -27,17 +27,32 @@ public class RoomIsFullException : ConflitedRequestDataException
 
 public class SquadIsFullException : ConflitedRequestDataException
 {
-    /// <param name="roomId">Id of the room that is full.</param>
+    /// <param name="roomId">Id of the room that's current squad is full.</param>
     public SquadIsFullException(int roomId)
         : base($"Current squad in room with id {roomId} is full") { }
 }
 
 public class SquadIsEmptyException : ConflitedRequestDataException
 {
-    /// <param name="roomId">Id of the room that is full.</param>
+    /// <param name="roomId">Id of the room  that's current squad is empty.</param>
     public SquadIsEmptyException(int roomId)
         : base($"Current squad in room with id {roomId} is empty") { }
 }
+
+public class SquadInWrongStateException : ConflitedRequestDataException
+{
+    /// <param name="squadId">Id of the squad that is full.</param>
+    public SquadInWrongStateException(int squadId)
+        : base($"Squad with id {squadId} is in wrong state for this operation") { }
+}
+
+public class SquadIsNotFullException : ConflitedRequestDataException
+{
+    /// <param name="squadId">Id of the squad that is full.</param>
+    public SquadIsNotFullException(int squadId)
+        : base($"Squad with id {squadId} is not filled and can't be submitted") { }
+}
+
 
 
 public class TooManyEvilRolesException : ConflitedRequestDataException

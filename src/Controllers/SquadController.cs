@@ -49,9 +49,9 @@ public class SquadController : ControllerBase
         var curentSquad = _squadService.GetUpdatedCurrentSquad(roomId);
         _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
     }
-    private void refreshQuestsSummaryData(int roomId)
-    {
-        var questsSummary = _squadService.GetUpdatedQuestsSummary(roomId);
-        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
-    }
+    //private void refreshQuestsSummaryData(int roomId)
+    //{
+    //    var questsSummary = _squadService.GetUpdatedQuestsSummary(roomId);
+    //    _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
+    //}
 }
