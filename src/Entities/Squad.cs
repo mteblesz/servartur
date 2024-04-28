@@ -13,10 +13,13 @@ public class Squad
     /// </summary>
     public int QuestNumber { get; set; }
     /// <summary>
-    /// number of squads that failed Squad Voting for this quest + 1
+    /// Number assigned to (this) squad for it's quest. Starts from 1
     /// </summary>
     public int SquadNumber { get; set; }
-    public int RejectionsLeftToEvilWin => 5 - SquadNumber;
+    /// <summary>
+    /// number of squads that failed Squad Voting for this quest
+    /// </summary>
+    public int PrevRejectionCount => SquadNumber - 1;
     public int RequiredMembersNumber { get; set; }
     public bool IsDoubleFail { get; set; }
     public SquadStatus Status { get; set; }
