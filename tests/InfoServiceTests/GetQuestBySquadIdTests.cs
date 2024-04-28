@@ -43,9 +43,10 @@ public class GetQuestBySquadIdTests
                 new Membership { SquadId = 1, Squad = squad, PlayerId = evilEntity.PlayerId, Player =  evilEntity },
             ];
 
+        PlayerInfoDto leaderDto = new PlayerInfoDto{ PlayerId = leader.PlayerId, Nick = "leader" };
         List<PlayerInfoDto> memberDtos =
         [
-            new () { PlayerId = leader.PlayerId, Nick = "leader"},
+            leaderDto,
             new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity"},
         ]; 
         var expectedSquadInfoDto = new SquadInfoDto
@@ -53,6 +54,8 @@ public class GetQuestBySquadIdTests
             SquadId = squad.SquadId,
             QuestNumber = 1,
             RequiredPlayersNumber = 2,
+            RejectionsLeftToEvilWin = 5,
+            Leader = leaderDto,
             Status = SquadStatus.Failed,
             Members = memberDtos,
         };
