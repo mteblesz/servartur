@@ -134,7 +134,7 @@ public class DbSeeder
             {
                 QuestNumber = 1,
                 SquadNumber = 1,
-                RequiredPlayersNumber = 2,
+                RequiredMembersNumber = 2,
                 Status = SquadStatus.Rejected,
                 Leader = players[0],
                 RoomId = rooms[0].RoomId,
@@ -143,7 +143,7 @@ public class DbSeeder
             {
                 QuestNumber = 1,
                 SquadNumber = 1,
-                RequiredPlayersNumber = 2,
+                RequiredMembersNumber = 2,
                 Status = SquadStatus.Successful,
                 Leader = players[1],
                 RoomId = rooms[0].RoomId,
@@ -152,7 +152,7 @@ public class DbSeeder
             {
                 QuestNumber = 2,
                 SquadNumber = 1,
-                RequiredPlayersNumber = 3,
+                RequiredMembersNumber = 3,
                 Status = SquadStatus.Failed,
                 Leader = players[2],
                 RoomId = rooms[0].RoomId,
@@ -161,7 +161,7 @@ public class DbSeeder
             {
                 QuestNumber = 3,
                 SquadNumber = 1,
-                RequiredPlayersNumber = 2,
+                RequiredMembersNumber = 2,
                 Status = SquadStatus.Failed,
                 Leader = players[3],
                 RoomId = rooms[0].RoomId,
@@ -170,7 +170,7 @@ public class DbSeeder
             {
                 QuestNumber = 4,
                 SquadNumber = 1,
-                RequiredPlayersNumber = 2,
+                RequiredMembersNumber = 2,
                 Status = SquadStatus.Successful,
                 Leader = players[4],
                 RoomId = rooms[0].RoomId,
@@ -179,7 +179,7 @@ public class DbSeeder
             {
                 QuestNumber = 5,
                 SquadNumber = 1,
-                RequiredPlayersNumber = 3,
+                RequiredMembersNumber = 3,
                 Status = SquadStatus.Successful,
                 Leader = players[0],
                 RoomId = rooms[0].RoomId,

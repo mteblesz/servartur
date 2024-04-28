@@ -36,7 +36,7 @@ public class SquadService : DataUpdatesService, ISquadService
             throw new RoomInBadStateException(player.RoomId);
 
         var currentSquad = player.Room.CurrentSquad;
-        if (currentSquad.Memberships.Count >= currentSquad.RequiredPlayersNumber)
+        if (currentSquad.Memberships.Count >= currentSquad.RequiredMembersNumber)
             throw new SquadIsFullException(player.RoomId);
 
         _dbContext.Memberships.Add(new Membership { Player = player, Squad = currentSquad });

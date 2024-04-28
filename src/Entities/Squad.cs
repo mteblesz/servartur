@@ -17,7 +17,7 @@ public class Squad
     /// </summary>
     public int SquadNumber { get; set; }
     public int RejectionsLeftToEvilWin => 5 - SquadNumber;
-    public int RequiredPlayersNumber { get; set; }
+    public int RequiredMembersNumber { get; set; }
     public bool IsDoubleFail { get; set; }
     public SquadStatus Status { get; set; }
 

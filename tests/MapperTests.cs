@@ -20,7 +20,7 @@ public class MappingProfileTests
             SquadId = 1,
             QuestNumber = 1,
             SquadNumber = 1,
-            RequiredPlayersNumber = 2,
+            RequiredMembersNumber = 2,
             Status = SquadStatus.Failed,
             LeaderId = leader1.PlayerId,
             Leader = leader1,
@@ -48,7 +48,7 @@ public class MappingProfileTests
             SquadId = 2,
             QuestNumber = 2,
             SquadNumber = 1,
-            RequiredPlayersNumber = 3,
+            RequiredMembersNumber = 3,
             Status = SquadStatus.Successful,
             LeaderId = leader2.PlayerId,
             Leader = leader2,
@@ -87,7 +87,7 @@ public class MappingProfileTests
         squadInfoDto.Should().NotBeNull();
         squadInfoDto.SquadId.Should().Be(squad.SquadId);
         squadInfoDto.QuestNumber.Should().Be(squad.QuestNumber);
-        squadInfoDto.RequiredPlayersNumber.Should().Be(squad.RequiredPlayersNumber);
+        squadInfoDto.RequiredPlayersNumber.Should().Be(squad.RequiredMembersNumber);
         squadInfoDto.Status.Should().Be(squad.Status);
         squadInfoDto.Leader.Should().NotBeNull();
         squadInfoDto.Members.Should().NotBeNull();

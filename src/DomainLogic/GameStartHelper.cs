@@ -62,9 +62,9 @@ public static class GameStartHelper
             Leader = leader,
             QuestNumber = questNumber,
             SquadNumber = 1,
-            RequiredPlayersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber),
+            RequiredMembersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber),
             IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, questNumber),
-            Status = SquadStatus.SquadVoting,
+            Status = SquadStatus.SquadChoice,
         };
         return firstSquad;
     }
