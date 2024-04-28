@@ -53,7 +53,7 @@ public class GetQuestBySquadIdTests
         {
             SquadId = squad.SquadId,
             QuestNumber = 1,
-            RequiredPlayersNumber = 2,
+            RequiredMembersNumber = 2,
             RejectionsLeftToEvilWin = 5,
             Leader = leaderDto,
             Status = SquadStatus.Failed,

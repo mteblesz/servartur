@@ -87,7 +87,7 @@ public class MappingProfileTests
         squadInfoDto.Should().NotBeNull();
         squadInfoDto.SquadId.Should().Be(squad.SquadId);
         squadInfoDto.QuestNumber.Should().Be(squad.QuestNumber);
-        squadInfoDto.RequiredPlayersNumber.Should().Be(squad.RequiredMembersNumber);
+        squadInfoDto.RequiredMembersNumber.Should().Be(squad.RequiredMembersNumber);
         squadInfoDto.Status.Should().Be(squad.Status);
         squadInfoDto.Leader.Should().NotBeNull();
         squadInfoDto.Members.Should().NotBeNull();
