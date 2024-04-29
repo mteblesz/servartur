@@ -48,4 +48,5 @@ public static class GameCountsCalculator
 
         return playersCount >= 7 && questNumber == 4;
     }
+    public static int MaxNumberOfPrevRejection { get => 5; }
 }

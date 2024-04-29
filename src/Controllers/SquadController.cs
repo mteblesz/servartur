@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using servartur.Entities;
 using servartur.Models;
+using servartur.Models.Incoming;
 using servartur.RealTimeUpdates;
 using servartur.Services;
 
