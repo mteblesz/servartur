@@ -32,6 +32,13 @@ public class VoteService : DataUpdatesService, IVoteService
         if (squad.Status != SquadStatus.Submitted)
             throw new SquadInWrongStateException(voteDto.SquadId);
 
+        if (squad.SquadVotes.Any(v => v.VoterId == voteDto.VoterId))
+        {
+            roomId = squad.RoomId;
+            votingEnded = false;
+            return;
+        }
+
         var vote = _mapper.Map<SquadVote>(voteDto);
         squad.SquadVotes.Add(vote);
         _dbContext.SaveChanges();
