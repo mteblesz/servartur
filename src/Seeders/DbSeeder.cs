@@ -201,13 +201,11 @@ public class DbSeeder
         if (rooms.Count == 2)
         {
             rooms[0].Status = RoomStatus.Result;
-            rooms[0].LastRoundWithSquadOnQuest = 5;
             rooms[0].CurrentSquad = squads[4];
             rooms[0].CurrentSquadId = squads[4].SquadId;
             rooms[0].Assassination = new Assassination() { Assassin = players[0], Target = players[1], Result = true };
 
             rooms[1].Status = RoomStatus.Matchup;
-            rooms[1].LastRoundWithSquadOnQuest = -1;
             rooms[1].CurrentSquad = null;
         }
         return rooms;
