@@ -51,11 +51,12 @@ public class VoteService : DataUpdatesService, IVoteService
     }
     private void recountSquadVotes(Squad squad, out bool votingEnded)
     {
-        votingEnded = squad.Room.Players.Count == squad.SquadVotes.Count;
+        int playerCount = squad.Room.Players.Count;
+        votingEnded = playerCount == squad.SquadVotes.Count;
         if (!votingEnded) return;
 
-        var positiveVotesCount = squad.SquadVotes.Select(v => v.Value == true).Count();
-        if (positiveVotesCount > squad.RequiredMembersNumber / 2)
+        var positiveVotesCount = squad.SquadVotes.Where(v => v.Value == true).Count();
+        if (positiveVotesCount > playerCount / 2)
         {
             squad.Status = SquadStatus.Approved;
             _dbContext.SaveChanges();
