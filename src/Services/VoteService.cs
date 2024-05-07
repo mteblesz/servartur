@@ -27,6 +27,8 @@ public class VoteService : DataUpdatesService, IVoteService
     {
         var squad = _dbContext.Squads
             .Include(s => s.SquadVotes)
+            .Include(s => s.Room)
+                .ThenInclude(r => r.Players)
             .FirstOrDefault(s => s.SquadId == voteDto.SquadId)
             ?? throw new SquadNotFoundException(voteDto.SquadId);
         if (squad.Status != SquadStatus.Submitted)
@@ -49,7 +51,7 @@ public class VoteService : DataUpdatesService, IVoteService
     }
     private void recountSquadVotes(Squad squad, out bool votingEnded)
     {
-        votingEnded = squad.RequiredMembersNumber == squad.SquadVotes.Count;
+        votingEnded = squad.Room.Players.Count == squad.SquadVotes.Count;
         if (!votingEnded) return;
 
         var positiveVotesCount = squad.SquadVotes.Select(v => v.Value == true).Count();
