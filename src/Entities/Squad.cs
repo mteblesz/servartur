@@ -27,7 +27,10 @@ public class Squad
     public int LeaderId { get; set; }
     public virtual Player Leader { get; set; } = null!;
 
-    public int RoomId { get; set; } // Required foreign key property
+    public int RoomId { get; set; }
+    public virtual Room Room { get; set; } = null!;
+
+
 
     public virtual List<Membership> Memberships { get; set; } = [];
     public virtual List<SquadVote> SquadVotes { get; set; } = [];
