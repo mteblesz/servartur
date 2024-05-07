@@ -37,10 +37,10 @@ public class VoteService : DataUpdatesService, IVoteService
         _dbContext.SaveChanges();
         _dbContext.Entry(squad).Reload();
 
-        countSquadVotes(squad, out votingEnded);
+        recountSquadVotes(squad, out votingEnded);
         roomId = squad.RoomId;
     }
-    private void countSquadVotes(Squad squad, out bool votingEnded)
+    private void recountSquadVotes(Squad squad, out bool votingEnded)
     {
         votingEnded = squad.RequiredMembersNumber == squad.SquadVotes.Count;
         if (!votingEnded) return;
@@ -105,7 +105,7 @@ public class VoteService : DataUpdatesService, IVoteService
     {
         throw new NotImplementedException();
     }
-    private void goodEvil(Room room)
+    private void winGood(Room room)
     {
         throw new NotImplementedException();
     }
