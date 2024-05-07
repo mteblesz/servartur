@@ -48,26 +48,28 @@ public class GetQuestBySquadIdTests
         [
             leaderDto,
             new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity"},
-        ]; 
-        var expectedSquadInfoDto = new SquadInfoDto
+        ];
+        var expectedQuestInfoDto = new QuestInfoDto
         {
             SquadId = squad.SquadId,
             QuestNumber = 1,
+            SquadNumber = 1,
             RequiredMembersNumber = 2,
-            RejectionsLeftToEvilWin = 5,
             Leader = leaderDto,
             Status = SquadStatus.Failed,
             Members = memberDtos,
+            SquadVoteInfo = [],
+            QuestVoteSuccessCount = 0,
         };
 
         dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>() { squad });
-        mapperMock.Setup(m => m.Map<SquadInfoDto>(It.IsAny<Squad>())).Returns(expectedSquadInfoDto);
+        mapperMock.Setup(m => m.Map<QuestInfoDto>(It.IsAny<Squad>())).Returns(expectedQuestInfoDto);
 
         // Act
         var result = infoService.GetQuestBySquadId(squad.SquadId);
 
         // Assert
-        result.Should().BeEquivalentTo(expectedSquadInfoDto);
+        result.Should().BeEquivalentTo(expectedQuestInfoDto);
     }
 
     [Fact]
