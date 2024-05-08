@@ -51,7 +51,7 @@ public class VoteService : DataUpdatesService, IVoteService
     }
     private void recountSquadVotes(Squad squad, out bool votingEnded)
     {
-        int playerCount = squad.Room.Players.Count;
+        int playerCount = squad.Room.Players.Count; // TODO add this as a squad field
         votingEnded = playerCount == squad.SquadVotes.Count;
         if (!votingEnded) return;
 
