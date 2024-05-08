@@ -32,16 +32,15 @@ public abstract class DataUpdatesService : BaseService
     public SquadInfoDto GetUpdatedCurrentSquad(int roomId)
     {
         var room = _dbContext.Rooms
+            .Include(r => r.CurrentSquad)
+                .ThenInclude(s => s.Leader)
+            .Include(r => r.CurrentSquad)
+                .ThenInclude(s => s.Memberships)
+                    .ThenInclude(m => m.Player)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
-        var squadId = room.CurrentSquadId;
-        var squad = _dbContext.Squads
-             .Include(s => s.Leader)
-             .Include(s => s.Memberships)
-                .ThenInclude(m => m.Player)
-            .FirstOrDefault(r => r.RoomId == roomId)
-            ?? throw new RoomNotFoundException(roomId);
+        var squad = room.CurrentSquad ?? throw new SquadNotFoundException(roomId);
 
         var result = _mapper.Map<SquadInfoDto>(squad);
         return result;
