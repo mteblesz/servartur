@@ -71,28 +71,11 @@ public class VoteService : DataUpdatesService, IVoteService
     }
     private void handleSquadRejection(Squad squad)
     {
-        var room = _dbContext.Rooms
-            .Include(r => r.Players)
-            .Include(r => r.Squads)
-            .FirstOrDefault(r => r.RoomId == squad.RoomId)
-            ?? throw new RoomNotFoundException(squad.RoomId);
-
-        int leaderIndex = room.Players.IndexOf(squad.Leader);
-        int nextLeaderIndex = (leaderIndex + 1) % room.Players.Count;
-        var nextLeader = room.Players[nextLeaderIndex];
-        Squad nextSquad = new Squad()
-        {
-            QuestNumber = squad.QuestNumber,
-            SquadNumber = squad.SquadNumber + 1,
-            RequiredMembersNumber = squad.RequiredMembersNumber,
-            IsDoubleFail = squad.IsDoubleFail,
-            Status = SquadStatus.SquadChoice,
-            Leader = nextLeader,
-        };
+        Squad nextSquad = makeNextSquad(squad.RoomId, out Room room);
 
         if (nextSquad.PrevRejectionCount < GameCountsCalculator.MaxNumberOfPrevRejection)
         {
-            room.Squads.Add(nextSquad);
+            _dbContext.Squads.Add(nextSquad);
             room.CurrentSquad = nextSquad;
             _dbContext.SaveChanges();
         }
@@ -102,12 +85,36 @@ public class VoteService : DataUpdatesService, IVoteService
         }
 
     }
+    private Squad makeNextSquad(int roomId, out Room room)
+    {
+        room = _dbContext.Rooms
+             .Include(r => r.Players)
+             .Include(r => r.Squads)
+             .Include(r => r.CurrentSquad)
+             .FirstOrDefault(r => r.RoomId == roomId)
+             ?? throw new RoomNotFoundException(roomId);
+
+        Squad prevSquad = room.CurrentSquad
+            ?? throw new SquadNotFoundException(roomId);
+
+        int leaderIndex = room.Players.IndexOf(prevSquad.Leader);
+        int nextLeaderIndex = (leaderIndex + 1) % room.Players.Count;
+        var nextLeader = room.Players[nextLeaderIndex];
+        Squad nextSquad = new Squad()
+        {
+            QuestNumber = prevSquad.QuestNumber,
+            SquadNumber = prevSquad.SquadNumber + 1,
+            RequiredMembersNumber = prevSquad.RequiredMembersNumber,
+            IsDoubleFail = prevSquad.IsDoubleFail,
+            Status = SquadStatus.SquadChoice,
+            Leader = nextLeader,
+        };
+
+        return nextSquad;
+
+    }
 
     public void VoteQuest(CastVoteDto voteDto, out bool votingEnded, out int roomId)
-    {
-        throw new NotImplementedException();
-    }
-    private void nextQuest(int roomId)
     {
         throw new NotImplementedException();
     }

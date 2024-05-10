@@ -33,7 +33,7 @@ public class VoteController : ControllerBase
     [HttpPost("quest")]
     public ActionResult VoteQuest([FromBody] CastVoteDto voteDto)
     {
-        _voteService.VoteSquad(voteDto, out bool votingEnded, out int roomId);
+        _voteService.VoteQuest(voteDto, out bool votingEnded, out int roomId);
         if (votingEnded)
         {
             refreshCurrentSquadData(roomId);
