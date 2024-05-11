@@ -34,21 +34,21 @@ public class SquadIsFullException : ConflitedRequestDataException
 
 public class SquadIsEmptyException : ConflitedRequestDataException
 {
-    /// <param name="roomId">Id of the room  that's current squad is empty.</param>
+    /// <param name="roomId">Id of the room that's current squad is empty.</param>
     public SquadIsEmptyException(int roomId)
         : base($"Current squad in room with id {roomId} is empty") { }
 }
 
 public class SquadInWrongStateException : ConflitedRequestDataException
 {
-    /// <param name="squadId">Id of the squad that is full.</param>
+    /// <param name="squadId">Id of the squad that is in wrong state.</param>
     public SquadInWrongStateException(int squadId)
         : base($"Squad with id {squadId} is in wrong state for this operation") { }
 }
 
 public class SquadIsNotFullException : ConflitedRequestDataException
 {
-    /// <param name="squadId">Id of the squad that is full.</param>
+    /// <param name="squadId">Id of the squad that is not full.</param>
     public SquadIsNotFullException(int squadId)
         : base($"Squad with id {squadId} is not filled and can't be submitted") { }
 }
