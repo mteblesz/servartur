@@ -68,11 +68,11 @@ public class VoteService : DataUpdatesService, IVoteService
     }
     private void handleSquadRejection(int roomId)
     {
-        Squad nextSquad = makeNextSquad(roomId, out Room room);
+        Squad nextSquad = makeNextSquadOnRejection(roomId, out Room room);
 
         if (nextSquad.PrevRejectionCount < GameCountsCalculator.MaxNumberOfPrevRejection)
         {
-            _dbContext.Squads.Add(nextSquad);
+            room.Squads.Add(nextSquad);
             room.CurrentSquad = nextSquad;
             _dbContext.SaveChanges();
         }
@@ -81,6 +81,33 @@ public class VoteService : DataUpdatesService, IVoteService
             winEvil(roomId);
         }
 
+    }
+    private Squad makeNextSquadOnRejection(int roomId, out Room room)
+    {
+        room = _dbContext.Rooms
+             .Include(r => r.Players)
+             .Include(r => r.Squads)
+             .Include(r => r.CurrentSquad)
+             .FirstOrDefault(r => r.RoomId == roomId)
+             ?? throw new RoomNotFoundException(roomId);
+
+        Squad prevSquad = room.CurrentSquad
+            ?? throw new SquadNotFoundException(roomId);
+
+        int leaderIndex = room.Players.IndexOf(prevSquad.Leader);
+        int nextLeaderIndex = (leaderIndex + 1) % room.Players.Count;
+        var nextLeader = room.Players[nextLeaderIndex];
+        Squad nextSquad = new Squad()
+        {
+            QuestNumber = prevSquad.QuestNumber,
+            SquadNumber = prevSquad.SquadNumber + 1,
+            RequiredMembersNumber = prevSquad.RequiredMembersNumber,
+            IsDoubleFail = prevSquad.IsDoubleFail,
+            Status = SquadStatus.SquadChoice,
+            Leader = nextLeader,
+        };
+
+        return nextSquad;
     }
 
     public void VoteQuest(CastVoteDto voteDto, out bool votingEnded, out int roomId)
@@ -91,7 +118,7 @@ public class VoteService : DataUpdatesService, IVoteService
                .ThenInclude(r => r.Players)
            .FirstOrDefault(s => s.SquadId == voteDto.SquadId)
            ?? throw new SquadNotFoundException(voteDto.SquadId);
-        if (squad.Status != SquadStatus.Submitted)
+        if (squad.Status != SquadStatus.Approved)
             throw new SquadInWrongStateException(voteDto.SquadId);
 
         if (squad.QuestVotes.Any(v => v.VoterId == voteDto.VoterId))
@@ -140,16 +167,16 @@ public class VoteService : DataUpdatesService, IVoteService
         }
         else
         {
-            var nextSquad = makeNextSquad(roomId, out Room room);
+            var nextSquad = makeNextSquadOnQuestFinished(roomId, out Room room);
 
-            _dbContext.Squads.Add(nextSquad);
+            room.Squads.Add(nextSquad);
             room.CurrentSquad = nextSquad;
             _dbContext.SaveChanges();
         }
 
     }
 
-    private Squad makeNextSquad(int roomId, out Room room)
+    private Squad makeNextSquadOnQuestFinished(int roomId, out Room room)
     {
         room = _dbContext.Rooms
              .Include(r => r.Players)
@@ -161,22 +188,27 @@ public class VoteService : DataUpdatesService, IVoteService
         Squad prevSquad = room.CurrentSquad
             ?? throw new SquadNotFoundException(roomId);
 
+        int playerCount = room.Players.Count;
         int leaderIndex = room.Players.IndexOf(prevSquad.Leader);
-        int nextLeaderIndex = (leaderIndex + 1) % room.Players.Count;
+        int nextLeaderIndex = (leaderIndex + 1) % playerCount;
         var nextLeader = room.Players[nextLeaderIndex];
+
+        int nextQuestNumber = prevSquad.QuestNumber + 1;
         Squad nextSquad = new Squad()
         {
-            QuestNumber = prevSquad.QuestNumber,
-            SquadNumber = prevSquad.SquadNumber + 1,
-            RequiredMembersNumber = prevSquad.RequiredMembersNumber,
-            IsDoubleFail = prevSquad.IsDoubleFail,
+            QuestNumber = nextQuestNumber,
+            SquadNumber = 1,
+            RequiredMembersNumber = GameCountsCalculator
+                                    .GetSquadRequiredSize(playerCount, nextQuestNumber),
+            IsDoubleFail = GameCountsCalculator
+                                    .IsQuestDoubleFail(playerCount, nextQuestNumber),
             Status = SquadStatus.SquadChoice,
             Leader = nextLeader,
         };
 
         return nextSquad;
-
     }
+
     private void winEvil(int roomId)
     {
         var room = _dbContext.Rooms
