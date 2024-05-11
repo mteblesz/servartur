@@ -53,6 +53,12 @@ public class SquadIsNotFullException : ConflitedRequestDataException
         : base($"Squad with id {squadId} is not filled and can't be submitted") { }
 }
 
+public class PlayerHasAlreadyVotedException : ConflitedRequestDataException
+{
+    /// <param name="squadId">Id of the squad that ha ongoing voting.</param>
+    public PlayerHasAlreadyVotedException(int squadId)
+        : base($"Squad with id {squadId} already received vote from this player") { }
+}
 
 
 public class TooManyEvilRolesException : ConflitedRequestDataException

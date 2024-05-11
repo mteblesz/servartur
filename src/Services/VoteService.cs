@@ -36,11 +36,7 @@ public class VoteService : DataUpdatesService, IVoteService
             throw new SquadInWrongStateException(voteDto.SquadId);
 
         if (squad.SquadVotes.Any(v => v.VoterId == voteDto.VoterId))
-        {
-            roomId = squad.RoomId;
-            votingEnded = false;
-            return;
-        }
+            throw new PlayerHasAlreadyVotedException(voteDto.SquadId);
 
         var vote = _mapper.Map<SquadVote>(voteDto);
         squad.SquadVotes.Add(vote);
@@ -99,11 +95,7 @@ public class VoteService : DataUpdatesService, IVoteService
             throw new SquadInWrongStateException(voteDto.SquadId);
 
         if (squad.QuestVotes.Any(v => v.VoterId == voteDto.VoterId))
-        {
-            roomId = squad.RoomId;
-            votingEnded = false;
-            return;
-        }
+            throw new PlayerHasAlreadyVotedException(voteDto.SquadId);
 
         var vote = _mapper.Map<QuestVote>(voteDto);
         squad.QuestVotes.Add(vote);
