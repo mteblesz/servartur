@@ -70,7 +70,7 @@ public abstract class DataUpdatesService : BaseService
         // return (finished + current + future) quest info
         return summary.OrderBy(s => s.QuestNumber).ToList();
     }
-    private static List<QuestInfoShortDto> getUpcomingQuestsInfo(int playersCount, int curentQuestNumber)
+    private static List<QuestInfoShortDto> getUpcomingQuestsInfo(int playerCount, int curentQuestNumber)
     {
         List<QuestInfoShortDto> result = [];
         for (int i = curentQuestNumber + 1; i <= 5; i++)
@@ -79,8 +79,8 @@ public abstract class DataUpdatesService : BaseService
             {
                 SquadId = null,
                 QuestNumber = i,
-                RequiredMembersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, i),
-                IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, i),
+                RequiredMembersNumber = GameCountsCalculator.GetSquadRequiredSize(playerCount, i),
+                IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playerCount, i),
                 Status = SquadStatus.Upcoming,
             });
         }

@@ -24,9 +24,9 @@ public static class GameStartHelper
             AreOberonAndMordredInGame = areOberonAndMordredInGame;
         }
     }
-    public static List<Role> MakeRoleDeck(int playersCount, RoleInfo roleInfo, out bool tooManyEvilRoles)
+    public static List<Role> MakeRoleDeck(int playerCount, RoleInfo roleInfo, out bool tooManyEvilRoles)
     {
-        if (!GameCountsCalculator.IsPlayerCountValid(playersCount))
+        if (!GameCountsCalculator.IsPlayerCountValid(playerCount))
             throw new ArgumentException("Invalid number of players given");
 
         var roles = new List<Role>();
@@ -39,8 +39,8 @@ public static class GameStartHelper
 
         int evilRolesCount = roles.Count(r => RoleTeamMapping.Map(r) == Team.Evil);
         int goodRolesCount = roles.Count(r => RoleTeamMapping.Map(r) == Team.Good);
-        int evilPlayersTargetCount = GameCountsCalculator.GetEvilPlayersCount(playersCount);
-        int goodPlayersTargetCount = playersCount - evilPlayersTargetCount;
+        int evilPlayersTargetCount = GameCountsCalculator.GetEvilPlayerCount(playerCount);
+        int goodPlayersTargetCount = playerCount - evilPlayersTargetCount;
 
         tooManyEvilRoles = evilRolesCount > evilPlayersTargetCount;
         if (tooManyEvilRoles) return [];

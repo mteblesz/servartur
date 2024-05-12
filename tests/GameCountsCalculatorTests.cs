@@ -12,11 +12,11 @@ public class GameCountsCalculatorTests
     [InlineData(9, 4)]
     [InlineData(10, 4)]
     public void GetEvilPlayersNumber_ValidInput_ReturnsCorrectResult
-        (int playersCount, int expected)
+        (int playerCount, int expected)
     {
         // Arrange
         // Act
-        var result = GameCountsCalculator.GetEvilPlayersCount(playersCount);
+        var result = GameCountsCalculator.GetEvilPlayerCount(playerCount);
         // Assert
         Assert.Equal(expected, result);
     }
@@ -32,7 +32,7 @@ public class GameCountsCalculatorTests
     {
         // Arrange
         // Act
-        Action action = () => GameCountsCalculator.GetEvilPlayersCount(invalidPlayerCount);
+        Action action = () => GameCountsCalculator.GetEvilPlayerCount(invalidPlayerCount);
         // Assert
         Assert.Throws<ArgumentException>(action);
     }
@@ -49,11 +49,11 @@ public class GameCountsCalculatorTests
     [InlineData(8, 4, 5)]
     [InlineData(9, 5, 5)]
     [InlineData(10, 3, 4)]
-    public void GetSquadRequiredSize_ValidInput_ReturnsCorrectResult(int playersCount, int questNumber, int expected)
+    public void GetSquadRequiredSize_ValidInput_ReturnsCorrectResult(int playerCount, int questNumber, int expected)
     {
         // Arrange
         // Act
-        var result = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber);
+        var result = GameCountsCalculator.GetSquadRequiredSize(playerCount, questNumber);
         // Assert
         Assert.Equal(expected, result);
     }
@@ -63,11 +63,11 @@ public class GameCountsCalculatorTests
     [InlineData(11, 5)]
     [InlineData(6, 0)]
     [InlineData(7, 6)]
-    public void GetSquadRequiredSize_InvalidInput_ThrowsArgumentException(int questNumber, int playersCount)
+    public void GetSquadRequiredSize_InvalidInput_ThrowsArgumentException(int questNumber, int playerCount)
     {
         // Arrange
         // Act
-        Action action = () => GameCountsCalculator.GetSquadRequiredSize(questNumber, playersCount);
+        Action action = () => GameCountsCalculator.GetSquadRequiredSize(questNumber, playerCount);
         // Assert
         Assert.Throws<ArgumentException>(action);
     }

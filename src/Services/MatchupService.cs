@@ -87,14 +87,14 @@ public class MatchupService : DataUpdatesService, IMatchupService
             .FirstOrDefault(r => r.RoomId == dto.RoomId)
             ?? throw new RoomNotFoundException(dto.RoomId);
 
-        int playersCount = room.Players.Count;
-        if (!GameCountsCalculator.IsPlayerCountValid(playersCount))
+        int playerCount = room.Players.Count;
+        if (!GameCountsCalculator.IsPlayerCountValid(playerCount))
             throw new PlayerCountInvalidException(dto.RoomId);
         if (room.Status != RoomStatus.Matchup)
             throw new RoomNotInMatchupException(dto.RoomId);
 
         var roleInfo = _mapper.Map<GameStartHelper.RoleInfo>(dto);
-        var roles = GameStartHelper.MakeRoleDeck(playersCount, roleInfo, out bool tooManyEvilRoles);
+        var roles = GameStartHelper.MakeRoleDeck(playerCount, roleInfo, out bool tooManyEvilRoles);
         if (tooManyEvilRoles)
             throw new TooManyEvilRolesException();
 
