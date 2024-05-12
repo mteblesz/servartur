@@ -108,7 +108,7 @@ public class JoinRoomTests
     [InlineData(RoomStatus.Unknown)]
     [InlineData(RoomStatus.Playing)]
     [InlineData(RoomStatus.Assassination)]
-    [InlineData(RoomStatus.Result)]
+    [InlineData(RoomStatus.ResultEvilWin)]
     public void JoinRoom_RoomNotInMatchup_ThrowsRoomNotInMatchupException(RoomStatus status)
     {
         // Arrange

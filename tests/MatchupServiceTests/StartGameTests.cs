@@ -111,7 +111,7 @@ public class StartGameTests
     [InlineData(RoomStatus.Unknown)]
     [InlineData(RoomStatus.Playing)]
     [InlineData(RoomStatus.Assassination)]
-    [InlineData(RoomStatus.Result)]
+    [InlineData(RoomStatus.ResultGoodWin)]
     public void StartGame_RoomNotInMatchup_ThrowsRoomNotInMatchupException(RoomStatus roomStatus)
     {
         // Arrange
