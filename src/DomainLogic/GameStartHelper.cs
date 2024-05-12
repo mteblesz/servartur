@@ -51,21 +51,4 @@ public static class GameStartHelper
         roles.Shuffle();
         return roles;
     }
-    public static Squad MakeFirstSquad(Player leader, int playersCount)
-    {
-        if (!GameCountsCalculator.IsPlayerCountValid(playersCount))
-            throw new ArgumentException("Invalid number of players given");
-
-        var questNumber = 1;
-        var firstSquad = new Squad()
-        {
-            Leader = leader,
-            QuestNumber = questNumber,
-            SquadNumber = 1,
-            RequiredMembersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, questNumber),
-            IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, questNumber),
-            Status = SquadStatus.SquadChoice,
-        };
-        return firstSquad;
-    }
 }

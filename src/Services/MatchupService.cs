@@ -106,9 +106,7 @@ public class MatchupService : DataUpdatesService, IMatchupService
         }
 
         // Create first Squad
-        Random random = new Random();
-        var leader = room.Players[random.Next(room.Players.Count)];
-        var firstSquad = GameStartHelper.MakeFirstSquad(leader, playersCount);
+        var firstSquad = SquadFactory.OnGameStart(room.Players);
         room.Squads.Add(firstSquad);
         room.CurrentSquad = firstSquad;
 

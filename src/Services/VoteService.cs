@@ -6,7 +6,6 @@ using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Incoming;
 using servartur.Models.Outgoing;
-using System.Reflection.Metadata;
 
 namespace servartur.Services;
 
@@ -44,31 +43,45 @@ public class VoteService : DataUpdatesService, IVoteService
         _dbContext.Entry(squad).Reload();
 
         recountSquadVotes(squad, out votingEnded);
+
         roomId = squad.RoomId;
     }
     private void recountSquadVotes(Squad squad, out bool votingEnded)
     {
-        int playerCount = squad.Room.Players.Count; // TODO add this as a squad field
-        votingEnded = playerCount == squad.SquadVotes.Count;
-        if (!votingEnded) return;
-
-        int positiveVotesCount = squad.SquadVotes.Where(v => v.Value == true).Count();
-        if (positiveVotesCount > playerCount / 2)
+        votingEnded = true;
+        var votingResult = ResultsCalculator.CountSquadVotes(squad.Room.Players.Count, squad.SquadVotes);
+        switch (votingResult)
         {
-            squad.Status = SquadStatus.Approved;
-            _dbContext.SaveChanges();
-        }
-        else
-        {
-            squad.Status = SquadStatus.Rejected;
-            _dbContext.SaveChanges();
+            case ResultsCalculator.SquadVotingResult.Unfinished:
+                votingEnded = false;
+                break;
 
-            handleSquadRejection(squad.RoomId);
+            case ResultsCalculator.SquadVotingResult.Approved:
+                squad.Status = SquadStatus.Approved;
+                _dbContext.SaveChanges();
+                break;
+
+            case ResultsCalculator.SquadVotingResult.Rejected:
+                squad.Status = SquadStatus.Rejected;
+                _dbContext.SaveChanges();
+
+                handleSquadRejection(squad.RoomId);
+                break;
         }
     }
     private void handleSquadRejection(int roomId)
     {
-        Squad nextSquad = makeNextSquadOnRejection(roomId, out Room room);
+        var room = _dbContext.Rooms
+              .Include(r => r.Players)
+              .Include(r => r.Squads)
+              .Include(r => r.CurrentSquad)
+              .FirstOrDefault(r => r.RoomId == roomId)
+              ?? throw new RoomNotFoundException(roomId);
+
+        var prevSquad = room.CurrentSquad
+            ?? throw new SquadNotFoundException(roomId);
+
+        var nextSquad = SquadFactory.OnRejection(room.Players, prevSquad, prevSquad.Leader);
 
         if (nextSquad.PrevRejectionCount < GameCountsCalculator.MaxNumberOfPrevRejection)
         {
@@ -78,37 +91,11 @@ public class VoteService : DataUpdatesService, IVoteService
         }
         else
         {
-            winEvil(roomId);
+            endGame(roomId, false);
         }
 
     }
-    private Squad makeNextSquadOnRejection(int roomId, out Room room)
-    {
-        room = _dbContext.Rooms
-             .Include(r => r.Players)
-             .Include(r => r.Squads)
-             .Include(r => r.CurrentSquad)
-             .FirstOrDefault(r => r.RoomId == roomId)
-             ?? throw new RoomNotFoundException(roomId);
-
-        Squad prevSquad = room.CurrentSquad
-            ?? throw new SquadNotFoundException(roomId);
-
-        int leaderIndex = room.Players.IndexOf(prevSquad.Leader);
-        int nextLeaderIndex = (leaderIndex + 1) % room.Players.Count;
-        var nextLeader = room.Players[nextLeaderIndex];
-        Squad nextSquad = new Squad()
-        {
-            QuestNumber = prevSquad.QuestNumber,
-            SquadNumber = prevSquad.SquadNumber + 1,
-            RequiredMembersNumber = prevSquad.RequiredMembersNumber,
-            IsDoubleFail = prevSquad.IsDoubleFail,
-            Status = SquadStatus.SquadChoice,
-            Leader = nextLeader,
-        };
-
-        return nextSquad;
-    }
+    
 
     public void VoteQuest(CastVoteDto voteDto, out bool votingEnded, out int roomId)
     {
@@ -134,104 +121,77 @@ public class VoteService : DataUpdatesService, IVoteService
     }
     private void recountQuestVotes(Squad squad, out bool votingEnded)
     {
-        votingEnded = squad.RequiredMembersNumber == squad.QuestVotes.Count;
-        if (!votingEnded) return;
+        votingEnded = true;
+        var votingResult = ResultsCalculator.CountQuestVotes(squad.RequiredMembersNumber, squad.QuestVotes, squad.IsDoubleFail);
+        switch (votingResult)
+        {
+            case ResultsCalculator.QuestVotingResult.Unfinished:
+                votingEnded = false;
+                break;
 
-        int negativeVotesCount = squad.QuestVotes.Where(v => v.Value == false).Count();
-        if (negativeVotesCount < (squad.IsDoubleFail ? 2 : 1))
-        {
-            squad.Status = SquadStatus.Successful;
+            case ResultsCalculator.QuestVotingResult.Successful:
+                squad.Status = SquadStatus.Successful;
+                _dbContext.SaveChanges();
+
+                handleQuestFinished(squad.RoomId);
+                break;
+
+            case ResultsCalculator.QuestVotingResult.Failed:
+                squad.Status = SquadStatus.Failed;
+                _dbContext.SaveChanges();
+
+                handleQuestFinished(squad.RoomId);
+                break;
         }
-        else
-        {
-            squad.Status = SquadStatus.Failed;
-        }
-        _dbContext.SaveChanges();
-        handleQuestFinished(squad.RoomId);
     }
     private void handleQuestFinished(int roomId)
     {
-        var squads = _dbContext.Squads.Where(r => r.RoomId == roomId);
+        var squads = _dbContext.Squads.Where(r => r.RoomId == roomId).ToList();
+        var gameResult = ResultsCalculator.EvaluateGame(squads);
 
-        // TODO move this logic to DomainLogic (?)
-        int successfulQuestsCount = squads.Where(s => s.Status == SquadStatus.Successful).Count();
-        int failedQuestsCount = squads.Where(s => s.Status == SquadStatus.Failed).Count();
+        if (gameResult == ResultsCalculator.GameResult.Unfinished)
+        {
+            var room = _dbContext.Rooms
+                 .Include(r => r.Players)
+                 .Include(r => r.Squads)
+                 .Include(r => r.CurrentSquad)
+                 .FirstOrDefault(r => r.RoomId == roomId)
+                 ?? throw new RoomNotFoundException(roomId);
 
-        if (successfulQuestsCount > 3)
-        {
-            winGood(roomId);
-        }
-        else if (successfulQuestsCount > 3)
-        {
-            winEvil(roomId);
-        }
-        else
-        {
-            var nextSquad = makeNextSquadOnQuestFinished(roomId, out Room room);
+            Squad prevSquad = room.CurrentSquad
+                ?? throw new SquadNotFoundException(roomId);
+
+            Squad nextSquad = SquadFactory.OnQuestFinished(room.Players, prevSquad, prevSquad.Leader);
 
             room.Squads.Add(nextSquad);
             room.CurrentSquad = nextSquad;
             _dbContext.SaveChanges();
         }
-
-    }
-
-    private Squad makeNextSquadOnQuestFinished(int roomId, out Room room)
-    {
-        room = _dbContext.Rooms
-             .Include(r => r.Players)
-             .Include(r => r.Squads)
-             .Include(r => r.CurrentSquad)
-             .FirstOrDefault(r => r.RoomId == roomId)
-             ?? throw new RoomNotFoundException(roomId);
-
-        Squad prevSquad = room.CurrentSquad
-            ?? throw new SquadNotFoundException(roomId);
-
-        int playerCount = room.Players.Count;
-        int leaderIndex = room.Players.IndexOf(prevSquad.Leader);
-        int nextLeaderIndex = (leaderIndex + 1) % playerCount;
-        var nextLeader = room.Players[nextLeaderIndex];
-
-        int nextQuestNumber = prevSquad.QuestNumber + 1;
-        Squad nextSquad = new Squad()
+        else
         {
-            QuestNumber = nextQuestNumber,
-            SquadNumber = 1,
-            RequiredMembersNumber = GameCountsCalculator
-                                    .GetSquadRequiredSize(playerCount, nextQuestNumber),
-            IsDoubleFail = GameCountsCalculator
-                                    .IsQuestDoubleFail(playerCount, nextQuestNumber),
-            Status = SquadStatus.SquadChoice,
-            Leader = nextLeader,
-        };
-
-        return nextSquad;
+            endGame(roomId, gameResult == ResultsCalculator.GameResult.GoodWin);
+        }
     }
 
-    private void winEvil(int roomId)
-    {
-        var room = _dbContext.Rooms
-             .FirstOrDefault(r => r.RoomId == roomId)
-             ?? throw new RoomNotFoundException(roomId);
-
-        room.Status = RoomStatus.Result;
-        _dbContext.SaveChanges();
-        // TODO UPDATE room INFO
-    }
-    private void winGood(int roomId)
+    private void endGame(int roomId, bool goodPlayersWon)
     {
         var room = _dbContext.Rooms
             .Include(r => r.Players)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
-        if (room.Players.Any(p => p.Role == Role.Assassin))
-            room.Status = RoomStatus.Assassination;
+        if (goodPlayersWon == true)
+        {
+            if (room.Players.Any(p => p.Role == Role.Assassin))
+                room.Status = RoomStatus.Assassination;
+            else
+                room.Status = RoomStatus.ResultGoodWin;
+        }
         else
-            room.Status = RoomStatus.Result;
+            room.Status = RoomStatus.ResultEvilWin;
 
         _dbContext.SaveChanges();
         // TODO UPDATE Room INFO
+        // TODO Assassination
     }
 }
