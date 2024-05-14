@@ -77,3 +77,8 @@ public class PercivalNotInGameException : ConflitedRequestDataException
     public PercivalNotInGameException(int roomId)
         : base($"Percival is not present in game of room {roomId}") { }
 }
+public class PlayerIsNotAssassinException : ConflitedRequestDataException
+{
+    public PlayerIsNotAssassinException(int playerId)
+        : base($"Player with id {playerId} is not an Assassin") { }
+}

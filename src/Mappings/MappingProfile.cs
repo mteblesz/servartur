@@ -43,5 +43,6 @@ public class MappingProfile : Profile
 
 
         CreateMap<Room, EndGameInfoDto>();
+        CreateMap<KillPlayerDto, Assassination>();
     }
 }
