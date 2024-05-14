@@ -6,6 +6,7 @@ namespace servartur.RealTimeUpdates;
 public interface IUpdatesHubClient
 {
     Task ReceiveMessage(string message);
+
     Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayers);
     Task ReceiveRemoval(string playerId);
     Task ReceiveStartGame();
@@ -14,6 +15,7 @@ public interface IUpdatesHubClient
     Task ReceiveSquadsSummary(List<QuestInfoShortDto> updatedQuestsSummary);
 
     Task ReceivePlayerLeft(PlayerInfoDto playerInfoDto);
+    Task ReceiveEndGameInfo(EndGameInfoDto updatedEndGameInfo);
 }
 
 public class UpdatesHub : Hub<IUpdatesHubClient>
@@ -29,6 +31,8 @@ public class UpdatesHub : Hub<IUpdatesHubClient>
     {
         // Group membership isn't preserved when a connection reconnects.  !!! https://learn.microsoft.com/en-us/aspnet/core/signalr/groups?view=aspnetcore-8.0
         await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-        await Clients.Group(groupName).ReceiveMessage($"{Context.ConnectionId} has joined the group {groupName}.");
+
+        // uncomment line below for debugging groups
+        // await Clients.Group(groupName).ReceiveMessage($"{Context.ConnectionId} has joined the group {groupName}.");
     }
 }

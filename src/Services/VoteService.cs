@@ -13,6 +13,7 @@ public interface IVoteService
 {
     SquadInfoDto GetUpdatedCurrentSquad(int roomId);
     List<QuestInfoShortDto> GetUpdatedQuestsSummary(int roomId);
+    EndGameInfoDto GetUpdatedEndGameInfo(int roomId);
     void VoteSquad(CastVoteDto voteDto, out bool votingEnded, out int roomId);
     void VoteQuest(CastVoteDto voteDto, out bool votingEnded, out int roomId);
 
@@ -191,7 +192,6 @@ public class VoteService : DataUpdatesService, IVoteService
             room.Status = RoomStatus.ResultEvilWin;
 
         _dbContext.SaveChanges();
-        // TODO UPDATE Room INFO
         // TODO Assassination
     }
 }

@@ -24,8 +24,7 @@ public class VoteController : ControllerBase
         _voteService.VoteSquad(voteDto, out bool votingEnded, out int roomId);
         if (votingEnded)
         {
-            refreshCurrentSquadData(roomId);
-            refreshQuestsSummaryData(roomId);
+            refreshData(roomId);
         }
         return NoContent();
     }
@@ -36,20 +35,20 @@ public class VoteController : ControllerBase
         _voteService.VoteQuest(voteDto, out bool votingEnded, out int roomId);
         if (votingEnded)
         {
-            refreshCurrentSquadData(roomId);
-            refreshQuestsSummaryData(roomId);
+            refreshData(roomId);
         }
         return NoContent();
     }
 
-    private void refreshCurrentSquadData(int roomId)
+    private void refreshData(int roomId)
     {
         var curentSquad = _voteService.GetUpdatedCurrentSquad(roomId);
         _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
-    }
-    private void refreshQuestsSummaryData(int roomId)
-    {
+
         var questsSummary = _voteService.GetUpdatedQuestsSummary(roomId);
         _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
+
+        var endGameInfo = _voteService.GetUpdatedEndGameInfo(roomId);
+        _ = _hubContext.RefreshEndGameInfo(roomId, endGameInfo);
     }
 }

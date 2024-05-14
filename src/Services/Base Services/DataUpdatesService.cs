@@ -86,4 +86,14 @@ public abstract class DataUpdatesService : BaseService
         }
         return result;
     }
+
+    public EndGameInfoDto GetUpdatedEndGameInfo(int roomId)
+    {
+        var room = _dbContext.Rooms
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
+
+        var result = _mapper.Map<EndGameInfoDto>(room);
+        return result;
+    }
 }
