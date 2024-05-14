@@ -38,5 +38,7 @@ public class KillService : DataUpdatesService, IKillService
         assassination.Result = target.Role == Enums.Role.Merlin;
         room.Assassination = assassination;
         _dbContext.SaveChanges();
+
+        roomId = room.RoomId;
     }
 }
