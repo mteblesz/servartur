@@ -189,9 +189,10 @@ public class VoteService : DataUpdatesService, IVoteService
                 room.Status = RoomStatus.ResultGoodWin;
         }
         else
+        {
             room.Status = RoomStatus.ResultEvilWin;
+        }
 
         _dbContext.SaveChanges();
-        // TODO Assassination
     }
 }

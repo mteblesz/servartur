@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using servartur.Entities;
 using servartur.Models.Incoming;
 using servartur.RealTimeUpdates;
 using servartur.Services;
@@ -24,7 +25,7 @@ public class VoteController : ControllerBase
         _voteService.VoteSquad(voteDto, out bool votingEnded, out int roomId);
         if (votingEnded)
         {
-            refreshData(roomId);
+            refreshDataAfterSquadVoting(roomId);
         }
         return NoContent();
     }
@@ -35,20 +36,25 @@ public class VoteController : ControllerBase
         _voteService.VoteQuest(voteDto, out bool votingEnded, out int roomId);
         if (votingEnded)
         {
-            refreshData(roomId);
+            refreshDataAfterQuestVoting(roomId);
         }
         return NoContent();
     }
 
-    private void refreshData(int roomId)
+    private void refreshDataAfterSquadVoting(int roomId)
     {
         var curentSquad = _voteService.GetUpdatedCurrentSquad(roomId);
-        _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
-
-        var questsSummary = _voteService.GetUpdatedQuestsSummary(roomId);
-        _ = _hubContext.RefreshQuestsSummary(roomId, questsSummary);
-
         var endGameInfo = _voteService.GetUpdatedEndGameInfo(roomId);
-        _ = _hubContext.RefreshEndGameInfo(roomId, endGameInfo);
+        _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
+        //_ = _hubContext.RefreshEndGameInfo(roomId, endGameInfo);
+    }
+    private void refreshDataAfterQuestVoting(int roomId)
+    {
+        var curentSquad = _voteService.GetUpdatedCurrentSquad(roomId);
+        var questsSummary = _voteService.GetUpdatedQuestsSummary(roomId);
+        var endGameInfo = _voteService.GetUpdatedEndGameInfo(roomId);
+        _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
+        _ = _hubContext.RefreshQuestsSummary(roomId, questsSummary);
+        //_ = _hubContext.RefreshEndGameInfo(roomId, endGameInfo);
     }
 }
