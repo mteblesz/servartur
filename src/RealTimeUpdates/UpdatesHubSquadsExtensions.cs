@@ -12,9 +12,9 @@ public static class UpdatesHubSquadsExtensions
         var groupName = roomId.ToString();
         await context.Clients.Group(groupName).ReceiveCurrentSquad(updatedCurrentSquad);
     }
-    public static async Task RefreshSquadsSummary(this UpdatesHubContext context, int roomId, List<QuestInfoShortDto> updatedQuestsSummary)
+    public static async Task RefreshQuestsSummary(this UpdatesHubContext context, int roomId, List<QuestInfoShortDto> updatedQuestsSummary)
     {
         var groupName = roomId.ToString();
-        await context.Clients.Group(groupName).ReceiveSquadsSummary(updatedQuestsSummary);
+        await context.Clients.Group(groupName).ReceiveQuestsSummary(updatedQuestsSummary);
     }
 }

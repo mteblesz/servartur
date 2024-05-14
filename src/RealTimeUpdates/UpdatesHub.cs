@@ -12,7 +12,7 @@ public interface IUpdatesHubClient
     Task ReceiveStartGame();
 
     Task ReceiveCurrentSquad(SquadInfoDto updatedCurrentSquad);
-    Task ReceiveSquadsSummary(List<QuestInfoShortDto> updatedQuestsSummary);
+    Task ReceiveQuestsSummary(List<QuestInfoShortDto> updatedQuestsSummary);
 
     Task ReceivePlayerLeft(PlayerInfoDto playerInfoDto);
     Task ReceiveEndGameInfo(EndGameInfoDto updatedEndGameInfo);

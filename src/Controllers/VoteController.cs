@@ -46,7 +46,7 @@ public class VoteController : ControllerBase
         _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
 
         var questsSummary = _voteService.GetUpdatedQuestsSummary(roomId);
-        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
+        _ = _hubContext.RefreshQuestsSummary(roomId, questsSummary);
 
         var endGameInfo = _voteService.GetUpdatedEndGameInfo(roomId);
         _ = _hubContext.RefreshEndGameInfo(roomId, endGameInfo);

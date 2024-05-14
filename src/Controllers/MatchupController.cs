@@ -101,7 +101,7 @@ public class MatchupController : ControllerBase
         var curentSquad = _matchupService.GetUpdatedCurrentSquad(roomId);
         var questsSummary = _matchupService.GetUpdatedQuestsSummary(roomId);
         _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
-        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
+        _ = _hubContext.RefreshQuestsSummary(roomId, questsSummary);
     }
     private void sendPlayerLeftInfo(int roomId, PlayerInfoDto playerInfoDto)
     {
