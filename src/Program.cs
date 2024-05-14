@@ -35,7 +35,6 @@ try
     builder.Services.AddScoped<IVoteService, VoteService>();
     builder.Services.AddScoped<IKillService, KillService>();
     builder.Services.AddScoped<ISquadService, SquadService>();
-    builder.Services.AddScoped<IGameService, GameService>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
     builder.Services.AddScoped<FirebaseAuthMiddleware>();
     builder.Services.AddScoped<RequestTimingMiddleware>();

@@ -21,6 +21,7 @@ public interface IMatchupService
     List<PlayerInfoDto> GetUpdatedPlayers(int roomId);
     SquadInfoDto GetUpdatedCurrentSquad(int roomId);
     List<QuestInfoShortDto> GetUpdatedQuestsSummary(int roomId);
+    PlayerInfoDto LeaveGame(int playerId, out int roomId);
 }
 
 public class MatchupService : DataUpdatesService, IMatchupService
@@ -113,5 +114,23 @@ public class MatchupService : DataUpdatesService, IMatchupService
         // Update room
         room.Status = RoomStatus.Playing;
         _dbContext.SaveChanges();
+    }
+    public PlayerInfoDto LeaveGame(int playerId, out int roomId)
+    {
+        var player = _dbContext.Players
+            .Include(p => p.Room)
+            .FirstOrDefault(p => p.PlayerId == playerId)
+            ?? throw new PlayerNotFoundException(playerId);
+
+        var room = player.Room;
+        if (room!.Status == RoomStatus.Unknown)
+            throw new RoomInBadStateException(player.RoomId);
+
+        // don't change anythng in db, no new quest can be started,
+        // other must wait for this player to reconnect somehow (TODO),
+        // for now, others get notified via signalr from controller
+
+        roomId = player.RoomId;
+        return _mapper.Map<PlayerInfoDto>(player);
     }
 }
