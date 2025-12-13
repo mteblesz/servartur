@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+    <File Path="src/firebase_private_key.json" />
+  </Folder>
+  <Project Path="src/servartur.csproj" />
+  <Project Path="tests/servartur.Tests.csproj" />
+</Solution>
