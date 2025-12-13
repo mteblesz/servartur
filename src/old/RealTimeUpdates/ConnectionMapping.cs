@@ -1,4 +1,4 @@
-﻿//namespace servartur.RealTimeUpdates;
+//namespace servartur.RealTimeUpdates;
 
 //public interface IConnectionMapping
 //{

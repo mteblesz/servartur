@@ -1,18 +1,17 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using servartur.DomainLogic;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Outgoing;
-using System.Collections.Generic;
 
 namespace servartur.Services;
 
 /// <summary>
 /// Exposes methods for getting updated data for Refreshes
 /// </summary>
-public abstract class DataUpdatesService : BaseService
+internal abstract class DataUpdatesService : BaseService
 {
     protected DataUpdatesService(GameDbContext dbContext, IMapper mapper, ILogger logger)
         : base(dbContext, mapper, logger)
@@ -26,7 +25,7 @@ public abstract class DataUpdatesService : BaseService
             ?? throw new RoomNotFoundException(roomId);
 
         var players = _mapper.Map<List<PlayerInfoDto>>(room.Players);
-        return players.OrderBy(player => player.PlayerId).ToList();
+        return [.. players.OrderBy(player => player.PlayerId)];
     }
 
     public SquadInfoDto GetUpdatedCurrentSquad(int roomId)
@@ -68,12 +67,12 @@ public abstract class DataUpdatesService : BaseService
         summary.AddRange(getUpcomingQuestsInfo(room.Players.Count, squads.Count));
 
         // return (finished + current + future) quest info
-        return summary.OrderBy(s => s.QuestNumber).ToList();
+        return [.. summary.OrderBy(s => s.QuestNumber)];
     }
     private static List<QuestInfoShortDto> getUpcomingQuestsInfo(int playerCount, int curentQuestNumber)
     {
         List<QuestInfoShortDto> result = [];
-        for (int i = curentQuestNumber + 1; i <= 5; i++)
+        for (var i = curentQuestNumber + 1; i <= 5; i++)
         {
             result.Add(new QuestInfoShortDto
             {

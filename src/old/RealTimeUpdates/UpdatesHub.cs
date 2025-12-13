@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using servartur.Models.Outgoing;
 
 namespace servartur.RealTimeUpdates;
 
-public interface IUpdatesHubClient
+internal interface IUpdatesHubClient
 {
     Task ReceiveMessage(string message);
 
@@ -20,7 +20,7 @@ public interface IUpdatesHubClient
     Task ReceiveVotingQuestEndedInfo(VotingQuestEndedInfoDto votingQuestEndedInfoDto);
 }
 
-public class UpdatesHub : Hub<IUpdatesHubClient>
+internal class UpdatesHub : Hub<IUpdatesHubClient>
 {
     //https://learn.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections#in-memory-storage
     // private readonly static ConnectionMapping _connections =  new ConnectionMapping();

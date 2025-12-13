@@ -1,10 +1,10 @@
-﻿namespace servartur.Entities;
+namespace servartur.Entities;
 
-public class Membership
+internal class Membership
 {
     public int SquadId { get; set; }
-    public required virtual Squad Squad { get; set; }
+    public virtual required Squad Squad { get; set; }
 
     public int PlayerId { get; set; }
-    public required virtual Player Player { get; set; }
+    public virtual required Player Player { get; set; }
 }

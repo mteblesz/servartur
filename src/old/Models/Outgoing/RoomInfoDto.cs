@@ -1,6 +1,6 @@
-﻿namespace servartur.Models.Outgoing;
+namespace servartur.Models.Outgoing;
 
-public class RoomInfoDto
+internal class RoomInfoDto
 {
     public required int RoomId { get; set; }
     public required string Status { get; set; }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using servartur.DomainLogic;
 using servartur.Entities;
@@ -10,15 +10,15 @@ using servartur.Services.Base_Services;
 
 namespace servartur.Services;
 
-public interface IVoteService
+internal interface IVoteService
 {
-    public VotingSquadEndedInfoDto GetUpdatedSquadVotingEnded(int roomId);
-    public VotingQuestEndedInfoDto GetUpdatedQuestVotingEnded(int roomId);
+    VotingSquadEndedInfoDto GetUpdatedSquadVotingEnded(int roomId);
+    VotingQuestEndedInfoDto GetUpdatedQuestVotingEnded(int roomId);
     void VoteSquad(CastVoteDto voteDto, out bool votingEnded, out int roomId);
     void VoteQuest(CastVoteDto voteDto, out bool votingEnded, out int roomId);
 
 }
-public class VoteService : VotingUpdates, IVoteService
+internal class VoteService : VotingUpdates, IVoteService
 {
     public VoteService(GameDbContext dbContext, IMapper mapper, ILogger<VoteService> logger)
         : base(dbContext, mapper, logger) { }
@@ -33,10 +33,14 @@ public class VoteService : VotingUpdates, IVoteService
             .FirstOrDefault(s => s.SquadId == voteDto.SquadId)
             ?? throw new SquadNotFoundException(voteDto.SquadId);
         if (squad.Status != SquadStatus.Submitted)
+        {
             throw new SquadInWrongStateException(voteDto.SquadId);
+        }
 
         if (squad.SquadVotes.Any(v => v.VoterId == voteDto.VoterId))
+        {
             throw new PlayerHasAlreadyVotedException(voteDto.SquadId);
+        }
 
         var vote = _mapper.Map<SquadVote>(voteDto);
         squad.SquadVotes.Add(vote);
@@ -107,10 +111,14 @@ public class VoteService : VotingUpdates, IVoteService
            .FirstOrDefault(s => s.SquadId == voteDto.SquadId)
            ?? throw new SquadNotFoundException(voteDto.SquadId);
         if (squad.Status != SquadStatus.Approved)
+        {
             throw new SquadInWrongStateException(voteDto.SquadId);
+        }
 
         if (squad.QuestVotes.Any(v => v.VoterId == voteDto.VoterId))
+        {
             throw new PlayerHasAlreadyVotedException(voteDto.SquadId);
+        }
 
         var vote = _mapper.Map<QuestVote>(voteDto);
         squad.QuestVotes.Add(vote);
@@ -181,12 +189,16 @@ public class VoteService : VotingUpdates, IVoteService
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
-        if (goodPlayersWon == true)
+        if (goodPlayersWon)
         {
             if (room.Players.Any(p => p.Role == Role.Assassin))
+            {
                 room.Status = RoomStatus.Assassination;
+            }
             else
+            {
                 room.Status = RoomStatus.ResultGoodWin;
+            }
         }
         else
         {

@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Reflection.Metadata;
+using Microsoft.EntityFrameworkCore;
 
 namespace servartur.Entities;
 
-public class GameDbContext : DbContext
+internal class GameDbContext : DbContext
 {
     private readonly string _connectionString =
         "Data Source=.\\SQLEXPRESS;Initial Catalog=DatarturDb;Integrated Security=True;TrustServerCertificate=true";

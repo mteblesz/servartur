@@ -1,28 +1,30 @@
-﻿using Microsoft.EntityFrameworkCore;
-using servartur.Entities;
-using Moq.EntityFrameworkCore;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using servartur.Enums;
-using servartur.Services;
+using Moq.EntityFrameworkCore;
 using servartur.DomainLogic;
+using servartur.Entities;
+using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Incoming;
+using servartur.Services;
 
 namespace servartur.Tests.MatchupServiceTests;
 
-public class StartGameTests
+internal class StartGameTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-                .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                    .Options;
+    }
 
     [Theory]
     [InlineData(5, false, false, false)]
     [InlineData(7, true, true, false)]
     [InlineData(10, true, true, true)]
-    public void StartGame_ValidInput_StartsGameCreatesFirstSquad(int numberOfPlayers, bool MnA, bool PnM, bool OnM)
+    public void StartGameValidInputStartsGameCreatesFirstSquad(int numberOfPlayers, bool MnA, bool PnM, bool OnM)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -41,8 +43,11 @@ public class StartGameTests
         };
 
         List<Player> players = [];
-        for (int i = 1; i < 1 + numberOfPlayers; i++)
+        for (var i = 1; i < 1 + numberOfPlayers; i++)
+        {
             players.Add(new Player() { PlayerId = i, Nick = $"test_nick_{i}", RoomId = roomId });
+        }
+
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup, Players = players };
         List<Room> rooms = [room];
 
@@ -72,7 +77,7 @@ public class StartGameTests
     [InlineData(0)]
     [InlineData(4)]
     [InlineData(11)]
-    public void StartGame_InvalidPlayerCount_ThrowsPlayerCountInvalidException(int numberOfPlayers)
+    public void StartGameInvalidPlayerCountThrowsPlayerCountInvalidException(int numberOfPlayers)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -91,8 +96,11 @@ public class StartGameTests
         };
 
         List<Player> players = [];
-        for (int i = 1; i < 1 + numberOfPlayers; i++)
+        for (var i = 1; i < 1 + numberOfPlayers; i++)
+        {
             players.Add(new Player() { PlayerId = i, Nick = $"test_nick_{i}", RoomId = roomId });
+        }
+
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup, Players = players };
         List<Room> rooms = [room];
 
@@ -112,7 +120,7 @@ public class StartGameTests
     [InlineData(RoomStatus.Playing)]
     [InlineData(RoomStatus.Assassination)]
     [InlineData(RoomStatus.ResultGoodWin)]
-    public void StartGame_RoomNotInMatchup_ThrowsRoomNotInMatchupException(RoomStatus roomStatus)
+    public void StartGameRoomNotInMatchupThrowsRoomNotInMatchupException(RoomStatus roomStatus)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -132,8 +140,11 @@ public class StartGameTests
         };
 
         List<Player> players = [];
-        for (int i = 1; i < 1 + numberOfPlayers; i++)
+        for (var i = 1; i < 1 + numberOfPlayers; i++)
+        {
             players.Add(new Player() { PlayerId = i, Nick = $"test_nick_{i}", RoomId = roomId });
+        }
+
         var room = new Room() { RoomId = roomId, Status = roomStatus, Players = players };
         List<Room> rooms = [room];
 
@@ -153,7 +164,7 @@ public class StartGameTests
     [InlineData(6, true, false, true)]
     [InlineData(7, true, true, true)]
     [InlineData(8, true, true, true)]
-    public void StartGame_TooManyEvilRoles_ThrowsTooManyEvilRolesException(int numberOfPlayers, bool MnA, bool PnM, bool OnM)
+    public void StartGameTooManyEvilRolesThrowsTooManyEvilRolesException(int numberOfPlayers, bool MnA, bool PnM, bool OnM)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -164,8 +175,11 @@ public class StartGameTests
         // Create room and player list
         const int roomId = 1;
         List<Player> players = [];
-        for (int i = 1; i < 1 + numberOfPlayers; i++)
+        for (var i = 1; i < 1 + numberOfPlayers; i++)
+        {
             players.Add(new Player() { PlayerId = i, Nick = $"test_nick_{i}", RoomId = roomId });
+        }
+
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup, Players = players };
         List<Room> rooms = [room];
 

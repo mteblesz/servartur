@@ -1,8 +1,8 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 namespace servartur.Enums;
 
-public enum RoomStatus
+internal enum RoomStatus
 {
     [EnumMember(Value = "unknown")]
     Unknown,

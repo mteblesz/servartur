@@ -1,15 +1,15 @@
-using servartur.Entities;
-using servartur.Services;
+using Microsoft.OpenApi;
 using NLog;
 using NLog.Web;
-using servartur.Middleware;
-using servartur.Seeders;
 using servartur;
+using servartur.Entities;
+using servartur.Middleware;
 using servartur.RealTimeUpdates;
-using Microsoft.OpenApi;
+using servartur.Seeders;
+using servartur.Services;
 
 // Early init of NLog to allow startup and exception logging, before host is built
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
 
 FirebaseInitializer.Initialize();
@@ -68,7 +68,9 @@ try
     app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseMiddleware<RequestTimingMiddleware>();
     if (Environment.GetEnvironmentVariable("AUTH_TRIGGERED") == "true")
+    {
         app.UseMiddleware<FirebaseAuthMiddleware>();
+    }
 
     app.UseCors("AllowAll");
 
@@ -87,7 +89,7 @@ catch (Exception exception)
 finally
 {
     // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-    NLog.LogManager.Shutdown();
+    LogManager.Shutdown();
 }
 
 static Action<Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions> addSwaggerOptions()

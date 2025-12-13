@@ -1,6 +1,6 @@
-﻿namespace servartur.Models.Outgoing;
+namespace servartur.Models.Outgoing;
 
-public class VotingQuestEndedInfoDto
+internal class VotingQuestEndedInfoDto
 {
     public required SquadInfoDto CurrentSquadInfo { get; set; }
     public required List<QuestInfoShortDto> QuestsSummary { get; set; }

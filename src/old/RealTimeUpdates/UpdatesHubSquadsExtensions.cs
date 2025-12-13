@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using servartur.Models.Outgoing;
+
+using UpdatesHubContext = Microsoft.AspNetCore.SignalR.IHubContext<servartur.RealTimeUpdates.UpdatesHub, servartur.RealTimeUpdates.IUpdatesHubClient>;
 
 namespace servartur.RealTimeUpdates;
 
-using UpdatesHubContext = IHubContext<UpdatesHub, IUpdatesHubClient>;
-
-public static class UpdatesHubSquadsExtensions
+internal static class UpdatesHubSquadsExtensions
 {
     public static async Task RefreshCurrentSquad(this UpdatesHubContext context, int roomId, SquadInfoDto updatedCurrentSquad)
     {

@@ -1,23 +1,26 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
-using servartur.Services;
-using Moq.EntityFrameworkCore;
 using servartur.Models.Outgoing;
+using servartur.Services;
 
 namespace servartur.Tests.InfoServiceTests;
 
-public class GetPlayerByIdTests
+internal class GetPlayerByIdTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-                .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                    .Options;
+    }
+
     [Fact]
-    public void GetPlayerById_ValidPlayerId_ReturnsPlayerInfoDto()
+    public void GetPlayerByIdValidPlayerIdReturnsPlayerInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -39,7 +42,7 @@ public class GetPlayerByIdTests
             Nick = player!.Nick,
         };
 
-        dbContextMock.Setup(db => db.Players).ReturnsDbSet(new List<Player>() { player });
+        dbContextMock.Setup(db => db.Players).ReturnsDbSet([player]);
         mapperMock.Setup(m => m.Map<PlayerInfoDto>(player)).Returns(expectedPlayerInfoDto);
 
         // Act
@@ -50,7 +53,7 @@ public class GetPlayerByIdTests
     }
 
     [Fact]
-    public void GetPlayerById_InvalidPlayerId_ThrowsPlayerNotFoundException()
+    public void GetPlayerByIdInvalidPlayerIdThrowsPlayerNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -59,10 +62,10 @@ public class GetPlayerByIdTests
         var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         var invalidPlayerId = 999;
-        dbContextMock.Setup(db => db.Players).ReturnsDbSet(new List<Player>());
+        dbContextMock.Setup(db => db.Players).ReturnsDbSet([]);
 
         // Act and Assert
-        Action action = () => infoService.GetPlayerById(invalidPlayerId);
+        void action() => infoService.GetPlayerById(invalidPlayerId);
         Assert.Throws<PlayerNotFoundException>(action);
     }
 }

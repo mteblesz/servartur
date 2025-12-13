@@ -1,12 +1,12 @@
-﻿namespace servartur.Entities;
+namespace servartur.Entities;
 
-public class QuestVote
+internal class QuestVote
 {
     public int QuestVoteId { get; set; }
     public bool Value { get; set; }
 
     public int SquadId { get; set; }
-    public required virtual Squad Squad { get; set; }
+    public virtual required Squad Squad { get; set; }
     public int VoterId { get; set; }
-    public required virtual Player Voter { get; set; }
+    public virtual required Player Voter { get; set; }
 }

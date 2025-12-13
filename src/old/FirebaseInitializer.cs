@@ -3,7 +3,7 @@ using Google.Apis.Auth.OAuth2;
 
 namespace servartur;
 
-public static class FirebaseInitializer
+internal static class FirebaseInitializer
 {
     public static void Initialize()
     {

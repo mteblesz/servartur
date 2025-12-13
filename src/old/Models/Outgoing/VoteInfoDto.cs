@@ -1,6 +1,6 @@
-﻿namespace servartur.Models.Outgoing;
+namespace servartur.Models.Outgoing;
 
-public class VoteInfoDto
+internal class VoteInfoDto
 {
     public required string VoterNick { get; set; }
     public required bool Value { get; set; }

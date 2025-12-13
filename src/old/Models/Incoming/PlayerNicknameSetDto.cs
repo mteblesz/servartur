@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace servartur.Models.Incoming;
 
-public class PlayerNicknameSetDto
+internal class PlayerNicknameSetDto
 {
     [Required]
     public required int RoomId { get; set; }

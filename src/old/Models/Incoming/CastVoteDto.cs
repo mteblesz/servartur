@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace servartur.Models.Incoming;
 
-public class CastVoteDto
+internal class CastVoteDto
 {
     [Required]
     public required bool Value { get; set; }

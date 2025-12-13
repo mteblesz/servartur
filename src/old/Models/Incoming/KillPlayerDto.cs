@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace servartur.Models.Incoming;
 
-public class KillPlayerDto
+internal class KillPlayerDto
 {
     [Required]
     public int RoomId { get; set; }

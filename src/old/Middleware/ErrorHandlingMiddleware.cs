@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using servartur.Exceptions;
 
 namespace servartur.Middleware;
 
-public class ErrorHandlingMiddleware : IMiddleware
+internal class ErrorHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<ErrorHandlingMiddleware> _logger;
 

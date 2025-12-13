@@ -1,6 +1,6 @@
-﻿namespace servartur.Models.Outgoing;
+namespace servartur.Models.Outgoing;
 
-public class PlayerRoleInfoDto
+internal class PlayerRoleInfoDto
 {
     public required int PlayerId { get; set; }
     public required string Team { get; set; }

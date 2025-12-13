@@ -1,6 +1,6 @@
-﻿namespace servartur.Entities;
+namespace servartur.Entities;
 
-public class Assassination
+internal class Assassination
 {
     public int AssassinationId { get; set; }
     public bool Result { get; set; }

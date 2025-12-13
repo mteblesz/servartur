@@ -1,8 +1,8 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 namespace servartur.Enums;
 
-public enum SquadStatus
+internal enum SquadStatus
 {
     [EnumMember(Value = "uknown")]
     Uknown,

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using servartur.Entities;
 
 namespace servartur.Services;
@@ -6,7 +6,7 @@ namespace servartur.Services;
 /// <summary>
 /// Stores common fields all services use.
 /// </summary>
-public abstract class BaseService
+internal abstract class BaseService
 {
     protected readonly GameDbContext _dbContext;
     protected readonly IMapper _mapper;

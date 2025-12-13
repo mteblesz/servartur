@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
 
 namespace servartur.Middleware;
 
-public class FirebaseAuthMiddleware : IMiddleware
+internal class FirebaseAuthMiddleware : IMiddleware
 {
     public FirebaseAuthMiddleware()
     { }
@@ -20,7 +17,7 @@ public class FirebaseAuthMiddleware : IMiddleware
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;
             }
-            var token = authHeader.Substring("Bearer ".Length).Trim();
+            var token = authHeader["Bearer ".Length..].Trim();
             var decodedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token);
             await next.Invoke(context);
         }

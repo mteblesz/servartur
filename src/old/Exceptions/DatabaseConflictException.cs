@@ -1,12 +1,12 @@
-﻿namespace servartur.Exceptions;
+namespace servartur.Exceptions;
 
-public class DatabaseConflictException : Exception
+internal class DatabaseConflictException : Exception
 {
     public DatabaseConflictException(string message)
         : base(message) { }
 }
 
-public class PercivalButNoMerlinMorganaException : ConflitedRequestDataException
+internal class PercivalButNoMerlinMorganaException : ConflitedRequestDataException
 {
     /// <param name="roomId">Id of the room that is not in matchup state.</param>
     public PercivalButNoMerlinMorganaException(int roomId)

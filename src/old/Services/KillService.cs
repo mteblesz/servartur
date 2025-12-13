@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Exceptions;
@@ -7,12 +7,12 @@ using servartur.Models.Outgoing;
 
 namespace servartur.Services;
 
-public interface IKillService
+internal interface IKillService
 {
     EndGameInfoDto GetUpdatedEndGame(int roomId);
     void KillPlayer(KillPlayerDto dto, out int roomId);
 }
-public class KillService : DataUpdatesService, IKillService
+internal class KillService : DataUpdatesService, IKillService
 {
     public KillService(GameDbContext dbContext, IMapper mapper, ILogger<KillService> logger)
         : base(dbContext, mapper, logger) { }
@@ -28,7 +28,9 @@ public class KillService : DataUpdatesService, IKillService
             .FirstOrDefault(p => p.PlayerId == dto.AssassinId)
             ?? throw new PlayerNotFoundException(dto.RoomId);
         if (assassin.Role != Enums.Role.Assassin)
+        {
             throw new PlayerIsNotAssassinException(assassin.PlayerId);
+        }
 
         var target = room.Players
             .FirstOrDefault(p => p.PlayerId == dto.TargetId)

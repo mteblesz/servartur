@@ -1,15 +1,14 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using servartur.Utils;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Outgoing;
-using System.Linq;
+using servartur.Utils;
 
 namespace servartur.Services;
 
-public interface IInfoService
+internal interface IInfoService
 {
     RoomInfoDto GetRoomById(int roomId);
     List<PlayerInfoDto> GetPlayers(int roomId);
@@ -19,7 +18,7 @@ public interface IInfoService
     List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId);
     QuestInfoDto GetQuestBySquadId(int squadId);
 }
-public class InfoService : BaseService, IInfoService
+internal class InfoService : BaseService, IInfoService
 {
     public InfoService(GameDbContext dbContext, IMapper mapper, ILogger<InfoService> logger)
         : base(dbContext, mapper, logger) { }
@@ -43,7 +42,7 @@ public class InfoService : BaseService, IInfoService
             ?? throw new RoomNotFoundException(roomId);
 
         var players = _mapper.Map<List<PlayerInfoDto>>(room.Players);
-        return players.OrderBy(player => player.PlayerId).ToList();
+        return [.. players.OrderBy(player => player.PlayerId)];
     }
 
     public PlayerInfoDto GetPlayerById(int playerId)
@@ -75,15 +74,19 @@ public class InfoService : BaseService, IInfoService
     /// <param name="obfuscate"> Modify filtered players. When not provided, do Identity(player) </param> 
     /// <returns></returns>
     /// <exception cref="RoomNotFoundException"></exception>
-    public List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> filter, Func<Player, Player>? obfuscate = null)
+    public List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate, Func<Player, Player>? obfuscate = null)
     {
         var room = _dbContext.Rooms
             .Include(r => r.Players)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
-        var filteredPlayers = room.Players.Where(p => filter(p)).ToList();
-        if (obfuscate != null) filteredPlayers.Shuffle();
+        var filteredPlayers = room.Players.Where(p => predicate(p)).ToList();
+        if (obfuscate != null)
+        {
+            filteredPlayers.Shuffle();
+        }
+
         obfuscate ??= p => p;
         var obfuscatedPlayers = filteredPlayers.Select(p => obfuscate(p)).ToList();
         var result = obfuscatedPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
@@ -99,12 +102,16 @@ public class InfoService : BaseService, IInfoService
             ?? throw new RoomNotFoundException(roomId);
 
         if (!room.Players.Any(p => p.Role == Role.Percival))
+        {
             throw new PercivalNotInGameException(roomId);
+        }
 
-        Predicate<Player> predicate = p => p.Role == Role.Merlin || p.Role == Role.Morgana;
+        bool predicate(Player p) => p.Role == Role.Merlin || p.Role == Role.Morgana;
         var filteredPlayers = room.Players.Where(p => predicate(p)).ToList();
         if (filteredPlayers.Count != 2)
+        {
             throw new PercivalButNoMerlinMorganaException(roomId);
+        }
 
         filteredPlayers.Shuffle();
         var result = filteredPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();

@@ -1,13 +1,12 @@
-﻿using AutoMapper;
+using AutoMapper;
 using servartur.Entities;
-using servartur.Mappings;
 using servartur.Enums;
-using static servartur.DomainLogic.GameStartHelper;
+using servartur.Mappings;
 using servartur.Models.Outgoing;
 
 namespace servartur.Tests;
 
-public class MappingProfileTests
+internal class MappingProfileTests
 {
     public static TheoryData<Squad, List<PlayerInfoDto>> ValidTestCases()
     {
@@ -75,7 +74,7 @@ public class MappingProfileTests
 
     [Theory]
     [MemberData(nameof(ValidTestCases))]
-    public void SquadToSquadInfoDtoMapping_IsValid(Squad squad, List<PlayerInfoDto> expectedMemberDtos)
+    public void SquadToSquadInfoDtoMappingIsValid(Squad squad, List<PlayerInfoDto> expectedMemberDtos)
     {
         // Arrange
         var configuration = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });

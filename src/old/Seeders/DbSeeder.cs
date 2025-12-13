@@ -1,17 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
-using System.Xml.Schema;
 
 namespace servartur.Seeders;
 
-public class DbSeeder
+internal class DbSeeder
 {
     private readonly GameDbContext _dbContext;
 
     public DbSeeder(GameDbContext dbContext)
     {
-        this._dbContext = dbContext;
+        _dbContext = dbContext;
     }
     public void Seed()
     {
@@ -19,7 +18,7 @@ public class DbSeeder
         {
             if (!_dbContext.Rooms.Any())
             {
-                var partialRooms = new List<Room>() { new Room(), new Room() };
+                var partialRooms = new List<Room>() { new(), new() };
                 _dbContext.Rooms.AddRange(partialRooms);
                 _dbContext.SaveChanges();
 

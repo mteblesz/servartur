@@ -1,8 +1,8 @@
-﻿using servartur.Enums;
+using servartur.Enums;
 
 namespace servartur.Entities;
 
-public class Squad
+internal class Squad
 {
     public Squad()
     {

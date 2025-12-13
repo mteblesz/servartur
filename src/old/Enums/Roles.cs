@@ -1,8 +1,8 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 namespace servartur.Enums;
 
-public enum Team
+internal enum Team
 {
     [EnumMember(Value = "evil")]
     Evil,
@@ -10,7 +10,7 @@ public enum Team
     [EnumMember(Value = "good")]
     Good,
 }
-public enum Role
+internal enum Role
 {
     [EnumMember(Value = "goodKnight")]
     GoodKnight,
@@ -36,11 +36,14 @@ public enum Role
     [EnumMember(Value = "oberon")]
     Oberon,
 }
-public static class RoleTeamMapping
+internal static class RoleTeamMapping
 {
-    public static Team Map(Role role) => _dictionary[role];
+    public static Team Map(Role role)
+    {
+        return Dictionary[role];
+    }
 
-    private static readonly Dictionary<Role, Team> _dictionary = new()
+    private static readonly Dictionary<Role, Team> Dictionary = new()
     {
         { Role.GoodKnight, Team.Good },
         { Role.EvilEntity, Team.Evil },

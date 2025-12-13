@@ -1,23 +1,26 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
-using servartur.Services;
-using Moq.EntityFrameworkCore;
 using servartur.Models.Outgoing;
+using servartur.Services;
 
 namespace servartur.Tests.InfoServiceTests;
 
-public class GetQuestBySquadIdTests
+internal class GetQuestBySquadIdTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-                .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                    .Options;
+    }
+
     [Fact]
-    public void GetQuestById_ValidSquadId_ReturnsSquadInfoDto()
+    public void GetQuestByIdValidSquadIdReturnsSquadInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -63,7 +66,7 @@ public class GetQuestBySquadIdTests
             QuestVoteSuccessCount = 0,
         };
 
-        dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>() { squad });
+        dbContextMock.Setup(db => db.Squads).ReturnsDbSet([squad]);
         mapperMock.Setup(m => m.Map<QuestInfoDto>(It.IsAny<Squad>())).Returns(expectedQuestInfoDto);
 
         // Act
@@ -74,7 +77,7 @@ public class GetQuestBySquadIdTests
     }
 
     [Fact]
-    public void GetQuestById_InvalidSquadId_ThrowsSquadNotFoundException()
+    public void GetQuestByIdInvalidSquadIdThrowsSquadNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -83,10 +86,10 @@ public class GetQuestBySquadIdTests
         var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         var invalidSquadId = 999;
-        dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>());
+        dbContextMock.Setup(db => db.Squads).ReturnsDbSet([]);
 
         // Act and Assert
-        Action action = () => infoService.GetQuestBySquadId(invalidSquadId);
+        void action() => infoService.GetQuestBySquadId(invalidSquadId);
         Assert.Throws<SquadNotFoundException>(action);
     }
 }

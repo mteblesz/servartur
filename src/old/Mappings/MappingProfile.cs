@@ -1,12 +1,12 @@
-﻿using AutoMapper;
-using servartur.Entities;
+using AutoMapper;
 using servartur.DomainLogic;
+using servartur.Entities;
 using servartur.Models.Incoming;
 using servartur.Models.Outgoing;
 
 namespace servartur.Mappings;
 
-public class MappingProfile : Profile
+internal class MappingProfile : Profile
 {
     public MappingProfile()
     {

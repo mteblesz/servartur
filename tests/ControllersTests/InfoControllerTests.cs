@@ -1,18 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using servartur.Controllers;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Models.Outgoing;
 using servartur.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace servartur.Tests.ControllersTests;
 
-public class InfoControllerTests
+internal class InfoControllerTests
 {
     private readonly InfoController _controller;
     private readonly Mock<IInfoService> _infoServiceMock;
@@ -24,7 +19,7 @@ public class InfoControllerTests
     }
 
     [Fact]
-    public void GetRoomById_Returns_OkResultWithContent()
+    public void GetRoomByIdReturnsOkResultWithContent()
     {
         // Arrange
         var roomId = 1;
@@ -50,14 +45,14 @@ public class InfoControllerTests
     }
 
     [Fact]
-    public void GetGoodPlayers_Returns_OkResultWithContent()
+    public void GetGoodPlayersReturnsOkResultWithContent()
     {
         // Arrange
         var roomId = 1;
         var goodPlayersDto = new List<PlayerInfoDto>
             {
-                new PlayerInfoDto { PlayerId = 1, Nick = "Player1"},
-                new PlayerInfoDto { PlayerId = 2, Nick = "Player2"},
+                new() { PlayerId = 1, Nick = "Player1"},
+                new() { PlayerId = 2, Nick = "Player2"},
             };
         _infoServiceMock.Setup(m => m.GetFilteredPlayers(It.IsAny<int>(), It.IsAny<Predicate<Player>>(), null))
             .Returns(goodPlayersDto);
@@ -76,14 +71,14 @@ public class InfoControllerTests
     }
 
     [Fact]
-    public void GetEvilPlayers_Returns_OkResultWithContent()
+    public void GetEvilPlayersReturnsOkResultWithContent()
     {
         // Arrange
         var roomId = 1;
         var evilPlayersDto = new List<PlayerInfoDto>
             {
-                new PlayerInfoDto { PlayerId = 3, Nick = "Player3"},
-                new PlayerInfoDto { PlayerId = 4, Nick = "Player4"},
+                new() { PlayerId = 3, Nick = "Player3"},
+                new() { PlayerId = 4, Nick = "Player4"},
             };
         _infoServiceMock.Setup(m => m.GetFilteredPlayers(It.IsAny<int>(), It.IsAny<Predicate<Player>>(), null))
             .Returns(evilPlayersDto);

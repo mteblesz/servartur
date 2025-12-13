@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace servartur.Models.Incoming;
 
-public class StartGameDto
+internal class StartGameDto
 {
     [Required]
     public required int RoomId { get; set; }

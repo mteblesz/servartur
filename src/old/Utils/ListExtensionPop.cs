@@ -1,6 +1,6 @@
 namespace servartur.Utils;
 
-public static class ListExtensionPop
+internal static class ListExtensionPop
 {
     public static T Pop<T>(this List<T> list)
     {

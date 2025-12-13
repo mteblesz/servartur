@@ -1,17 +1,16 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using servartur.DomainLogic;
 using servartur.Entities;
-using servartur.Exceptions;
 using servartur.Enums;
-using servartur.Utils;
-using servartur.Models.Outgoing;
+using servartur.Exceptions;
 using servartur.Models.Incoming;
+using servartur.Models.Outgoing;
+using servartur.Utils;
 
 namespace servartur.Services;
 
-public interface IMatchupService
+internal interface IMatchupService
 {
     int CreateRoom();
     int JoinRoom(int roomId);
@@ -24,7 +23,7 @@ public interface IMatchupService
     PlayerInfoDto LeaveGame(int playerId, out int roomId);
 }
 
-public class MatchupService : DataUpdatesService, IMatchupService
+internal class MatchupService : DataUpdatesService, IMatchupService
 {
     public MatchupService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger)
         : base(dbContext, mapper, logger) { }
@@ -45,9 +44,14 @@ public class MatchupService : DataUpdatesService, IMatchupService
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
         if (room.Status != RoomStatus.Matchup)
+        {
             throw new RoomNotInMatchupException(roomId);
+        }
+
         if (room.Players.Count >= GameCountsCalculator.MaxNumberOfPlayers)
+        {
             throw new RoomIsFullException(roomId);
+        }
 
         var player = new Player() { RoomId = roomId };
         _dbContext.Players.Add(player);
@@ -74,7 +78,9 @@ public class MatchupService : DataUpdatesService, IMatchupService
 
         var room = _dbContext.Rooms.FirstOrDefault(r => r.RoomId == player.RoomId);
         if (room!.Status != RoomStatus.Matchup)
+        {
             throw new RoomNotInMatchupException(player.RoomId);
+        }
 
         _dbContext.Players.Remove(player);
         _dbContext.SaveChanges();
@@ -88,16 +94,23 @@ public class MatchupService : DataUpdatesService, IMatchupService
             .FirstOrDefault(r => r.RoomId == dto.RoomId)
             ?? throw new RoomNotFoundException(dto.RoomId);
 
-        int playerCount = room.Players.Count;
+        var playerCount = room.Players.Count;
         if (!GameCountsCalculator.IsPlayerCountValid(playerCount))
+        {
             throw new PlayerCountInvalidException(dto.RoomId);
+        }
+
         if (room.Status != RoomStatus.Matchup)
+        {
             throw new RoomNotInMatchupException(dto.RoomId);
+        }
 
         var roleInfo = _mapper.Map<GameStartHelper.RoleInfo>(dto);
-        var roles = GameStartHelper.MakeRoleDeck(playerCount, roleInfo, out bool tooManyEvilRoles);
+        var roles = GameStartHelper.MakeRoleDeck(playerCount, roleInfo, out var tooManyEvilRoles);
         if (tooManyEvilRoles)
+        {
             throw new TooManyEvilRolesException();
+        }
 
         // Assign roles
         foreach (var player in room.Players)
@@ -124,7 +137,9 @@ public class MatchupService : DataUpdatesService, IMatchupService
 
         var room = player.Room;
         if (room!.Status == RoomStatus.Unknown)
+        {
             throw new RoomInBadStateException(player.RoomId);
+        }
 
         // don't change anythng in db, no new quest can be started,
         // other must wait for this player to reconnect somehow (TODO),

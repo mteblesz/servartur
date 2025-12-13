@@ -1,9 +1,9 @@
-﻿using servartur.Enums;
 using System.ComponentModel.DataAnnotations;
+using servartur.Enums;
 
 namespace servartur.Entities;
 
-public class Player
+internal class Player
 {
     public int PlayerId { get; set; }
 

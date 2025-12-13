@@ -1,14 +1,14 @@
-﻿using servartur.Entities;
+using servartur.Entities;
 using servartur.Enums;
 
 namespace servartur.DomainLogic;
 
-public static class SquadFactory
+internal static class SquadFactory
 {
     public static Squad OnGameStart(List<Player> roomPlayers)
     {
         Random random = new Random();
-        int playerCount = roomPlayers.Count;
+        var playerCount = roomPlayers.Count;
         var leader = roomPlayers[random.Next(playerCount)];
 
         var questNumber = 1;
@@ -26,8 +26,8 @@ public static class SquadFactory
 
     public static Squad OnRejection(List<Player> roomPlayers, Squad prevSquad, Player prevLeader)
     {
-        int leaderIndex = roomPlayers.IndexOf(prevLeader);
-        int nextLeaderIndex = (leaderIndex + 1) % roomPlayers.Count;
+        var leaderIndex = roomPlayers.IndexOf(prevLeader);
+        var nextLeaderIndex = (leaderIndex + 1) % roomPlayers.Count;
         var nextLeader = roomPlayers[nextLeaderIndex];
 
         Squad nextSquad = new Squad()
@@ -44,12 +44,12 @@ public static class SquadFactory
     }
     public static Squad OnQuestFinished(List<Player> roomPlayers, Squad prevSquad, Player prevLeader)
     {
-        int playerCount = roomPlayers.Count;
-        int leaderIndex = roomPlayers.IndexOf(prevLeader);
-        int nextLeaderIndex = (leaderIndex + 1) % playerCount;
+        var playerCount = roomPlayers.Count;
+        var leaderIndex = roomPlayers.IndexOf(prevLeader);
+        var nextLeaderIndex = (leaderIndex + 1) % playerCount;
         var nextLeader = roomPlayers[nextLeaderIndex];
 
-        int nextQuestNumber = prevSquad.QuestNumber + 1;
+        var nextQuestNumber = prevSquad.QuestNumber + 1;
         Squad nextSquad = new Squad()
         {
             QuestNumber = nextQuestNumber,

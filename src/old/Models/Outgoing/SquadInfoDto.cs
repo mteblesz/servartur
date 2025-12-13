@@ -1,9 +1,8 @@
-﻿using servartur.Entities;
 using servartur.Enums;
 
 namespace servartur.Models.Outgoing;
 
-public class SquadInfoDto
+internal class SquadInfoDto
 {
     public required int SquadId { get; set; }
     public required int QuestNumber { get; set; }

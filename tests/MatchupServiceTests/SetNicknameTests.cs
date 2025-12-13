@@ -1,24 +1,25 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq.EntityFrameworkCore;
 using servartur.Entities;
-using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Incoming;
 using servartur.Services;
 
 namespace servartur.Tests.MatchupServiceTests;
 
-public class SetNicknameTests
+internal class SetNicknameTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-            .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                .Options;
+    }
 
     [Fact]
-    public void SetNickname_ValidDto_ShouldUpdatePlayerNicknameAndSaveChanges()
+    public void SetNicknameValidDtoShouldUpdatePlayerNicknameAndSaveChanges()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -27,11 +28,11 @@ public class SetNicknameTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int playerId = 1;
-        string newNick = "new_nick";
+        var newNick = "new_nick";
         var dto = new PlayerNicknameSetDto() { RoomId = -1, PlayerId = playerId, Nick = newNick };
         var player = new Player() { PlayerId = playerId, Nick = "old_nick" };
 
-        dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(new[] { player });
+        dbContextMock.SetupGet(x => x.Players).ReturnsDbSet([player]);
 
         // Act
         matchupService.SetNickname(dto);
@@ -42,7 +43,7 @@ public class SetNicknameTests
     }
 
     [Fact]
-    public void SetNickname_PlayerNotFound_ThrowsPlayerNotFoundException()
+    public void SetNicknamePlayerNotFoundThrowsPlayerNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -53,10 +54,10 @@ public class SetNicknameTests
         const int playerId = 100;
         var dto = new PlayerNicknameSetDto() { RoomId = -1, PlayerId = playerId, Nick = "new_nick" };
 
-        dbContextMock.Setup(x => x.Players).ReturnsDbSet(Array.Empty<Player>());
+        dbContextMock.Setup(x => x.Players).ReturnsDbSet([]);
 
         // Act and Assert
-        Action action = () => matchupService.SetNickname(dto);
+        void action() => matchupService.SetNickname(dto);
         Assert.Throws<PlayerNotFoundException>(action);
     }
 }

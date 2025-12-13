@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
 using servartur.DomainLogic;
 using servartur.Enums;
-using servartur.Models;
-using servartur.Services;
+
+using RoleInfo = servartur.DomainLogic.GameStartHelper.RoleInfo;
 
 namespace servartur.Tests;
 
-using RoleInfo = GameStartHelper.RoleInfo;
-public class GameStartHelperTests
+internal class GameStartHelperTests
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "style is ok now")]
     public static TheoryData<int, RoleInfo, List<Role>> ValidTestCases()
@@ -53,11 +51,11 @@ public class GameStartHelperTests
     }
     [Theory]
     [MemberData(nameof(ValidTestCases))]
-    public void MakeRoleDeck_ShouldGenerateValidRoleDeck(int numberOfPlayers, RoleInfo roleInfo, List<Role> expectedResult)
+    public void MakeRoleDeckShouldGenerateValidRoleDeck(int numberOfPlayers, RoleInfo roleInfo, List<Role> expectedResult)
     {
         // Arrange
         // Act
-        var result = GameStartHelper.MakeRoleDeck(numberOfPlayers, roleInfo, out bool tooManyEvilRoles);
+        var result = GameStartHelper.MakeRoleDeck(numberOfPlayers, roleInfo, out var tooManyEvilRoles);
 
         // Assert
         tooManyEvilRoles.Should().BeFalse();
@@ -67,18 +65,21 @@ public class GameStartHelperTests
     }
 
     public static TheoryData<int, RoleInfo> InvalidTestCases()
-        => new TheoryData<int, RoleInfo> {
+    {
+        return new TheoryData<int, RoleInfo> {
             {5, new RoleInfo(true, false, true) },
             {6, new RoleInfo(true, false, true) },
             {7, new RoleInfo(true, true, true) },
             {8, new RoleInfo(true, true, true) },};
+    }
+
     [Theory]
     [MemberData(nameof(InvalidTestCases))]
-    public void MakeRoleDeck_TooManyEvilRoles_ReturnsEmptyListAndSetsFlag(int numberOfPlayers, RoleInfo roleInfo)
+    public void MakeRoleDeckTooManyEvilRolesReturnsEmptyListAndSetsFlag(int numberOfPlayers, RoleInfo roleInfo)
     {
         // Arrange
         // Act
-        var result = GameStartHelper.MakeRoleDeck(numberOfPlayers, roleInfo, out bool tooManyEvilRoles);
+        var result = GameStartHelper.MakeRoleDeck(numberOfPlayers, roleInfo, out var tooManyEvilRoles);
 
         // Assert
         tooManyEvilRoles.Should().BeTrue();
@@ -86,14 +87,14 @@ public class GameStartHelperTests
     }
 
     [Fact]
-    public void MakeRoleDeck_InvalidNumberOfPlayers_ThrowsArgumentException()
+    public void MakeRoleDeckInvalidNumberOfPlayersThrowsArgumentException()
     {
         // Arrange
-        int invalidPlayerCount = -1;
+        var invalidPlayerCount = -1;
         RoleInfo roleInfo = new RoleInfo(true, true, true);
 
         // Act & Assert
-        Action action = () => GameStartHelper.MakeRoleDeck(invalidPlayerCount, roleInfo, out _);
+        void action() => GameStartHelper.MakeRoleDeck(invalidPlayerCount, roleInfo, out _);
         Assert.Throws<ArgumentException>(action);
     }
 }

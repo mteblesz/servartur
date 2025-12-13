@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Models.Outgoing;
@@ -8,13 +8,13 @@ namespace servartur.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class InfoController : ControllerBase
+internal class InfoController : ControllerBase
 {
     private readonly IInfoService _infoService;
 
     public InfoController(IInfoService InfoService)
     {
-        this._infoService = InfoService;
+        _infoService = InfoService;
     }
 
     [HttpGet("room/{roomId}")]
@@ -48,7 +48,7 @@ public class InfoController : ControllerBase
     [HttpGet("goodplayers/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetGoodPlayers([FromRoute] int roomId)
     {
-        Predicate<Player> goodPredicate = p => p.Team == Team.Good;
+        bool goodPredicate(Player p) => p.Team == Team.Good;
         var goodPlayers = _infoService.GetFilteredPlayers(roomId, goodPredicate);
         return Ok(goodPlayers);
     }
@@ -56,7 +56,7 @@ public class InfoController : ControllerBase
     [HttpGet("evilplayers/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetEvilPlayers([FromRoute] int roomId)
     {
-        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
+        bool evilPredicate(Player p) => p.Team == Team.Evil;
         var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate);
         return Ok(evilPlayers);
     }
@@ -64,12 +64,12 @@ public class InfoController : ControllerBase
     [HttpGet("evilknows/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForEvil([FromRoute] int roomId)
     {
-        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
-        Func<Player, Player> obfuscate = p =>
+        bool evilPredicate(Player p) => p.Team == Team.Evil;
+        Player obfuscate(Player p)
         {
             p.Nick = (p.Role == Role.Oberon) ? "<Oberon>" : p.Nick;
             return p;
-        };
+        }
         var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate, obfuscate);
         return Ok(evilPlayers);
     }
@@ -77,12 +77,12 @@ public class InfoController : ControllerBase
     [HttpGet("merlinknows/{roomId}")]
     public ActionResult<List<PlayerInfoDto>> GetEvilPlayersForMerlin([FromRoute] int roomId)
     {
-        Predicate<Player> evilPredicate = p => p.Team == Team.Evil;
-        Func<Player, Player> obfuscate = p =>
+        bool evilPredicate(Player p) => p.Team == Team.Evil;
+        Player obfuscate(Player p)
         {
             p.Nick = (p.Role == Role.Mordred) ? "<Mordred>" : p.Nick;
             return p;
-        };
+        }
         var evilPlayers = _infoService.GetFilteredPlayers(roomId, evilPredicate, obfuscate);
         return Ok(evilPlayers);
     }

@@ -1,8 +1,8 @@
-﻿using servartur.Enums;
+using servartur.Enums;
 
 namespace servartur.Entities;
 
-public class Room
+internal class Room
 {
     public Room()
     {

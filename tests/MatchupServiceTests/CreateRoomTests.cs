@@ -1,23 +1,24 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
-using servartur.Models;
 using servartur.Services;
-using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
 
-public class CreateRoomTests
+internal class CreateRoomTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-                .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                    .Options;
+    }
 
     [Fact]
-    public void CreateRoom_ValidDto_ReturnsRoomIdAndAddRoomToDB()
+    public void CreateRoomValidDtoReturnsRoomIdAndAddRoomToDB()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -28,7 +29,7 @@ public class CreateRoomTests
         var expectedRoomId = 0; // InMemoryDatabase indexing
         var room = new Room { RoomId = expectedRoomId, Status = RoomStatus.Matchup };
 
-        dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(new List<Room>());
+        dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet([]);
 
         // Act
         var result = matchupService.CreateRoom();
