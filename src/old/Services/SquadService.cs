@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using servartur.DomainLogic;
 using servartur.Entities;

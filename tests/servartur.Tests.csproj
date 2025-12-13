@@ -19,6 +19,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\servartur.csproj" />
+    <ProjectReference Include="..\src\old\servartur.csproj" />
   </ItemGroup>
 </Project>

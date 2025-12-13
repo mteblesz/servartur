@@ -2,7 +2,6 @@
 using servartur.Exceptions;
 using servartur.Enums;
 using servartur.Utils;
-using Humanizer;
 
 namespace servartur.DomainLogic;
 
