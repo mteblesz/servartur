@@ -6,8 +6,7 @@
     <File Path="Directory.Packages.props" />
     <File Path="LICENSE" />
     <File Path="README.md" />
-    <File Path="src/firebase_private_key.json" />
   </Folder>
-  <Project Path="src/servartur.csproj" />
+  <Project Path="src/old/servartur.csproj" />
   <Project Path="tests/servartur.Tests.csproj" />
 </Solution>
