@@ -32,16 +32,15 @@ public abstract class DataUpdatesService : BaseService
     public SquadInfoDto GetUpdatedCurrentSquad(int roomId)
     {
         var room = _dbContext.Rooms
+            .Include(r => r.CurrentSquad)
+                .ThenInclude(s => s.Leader)
+            .Include(r => r.CurrentSquad)
+                .ThenInclude(s => s.Memberships)
+                    .ThenInclude(m => m.Player)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
 
-        var squadId = room.CurrentSquadId;
-        var squad = _dbContext.Squads
-             .Include(s => s.Leader)
-             .Include(s => s.Memberships)
-                .ThenInclude(m => m.Player)
-            .FirstOrDefault(r => r.RoomId == roomId)
-            ?? throw new RoomNotFoundException(roomId);
+        var squad = room.CurrentSquad ?? throw new SquadNotFoundException(roomId);
 
         var result = _mapper.Map<SquadInfoDto>(squad);
         return result;
@@ -71,7 +70,7 @@ public abstract class DataUpdatesService : BaseService
         // return (finished + current + future) quest info
         return summary.OrderBy(s => s.QuestNumber).ToList();
     }
-    private static List<QuestInfoShortDto> getUpcomingQuestsInfo(int playersCount, int curentQuestNumber)
+    private static List<QuestInfoShortDto> getUpcomingQuestsInfo(int playerCount, int curentQuestNumber)
     {
         List<QuestInfoShortDto> result = [];
         for (int i = curentQuestNumber + 1; i <= 5; i++)
@@ -80,11 +79,21 @@ public abstract class DataUpdatesService : BaseService
             {
                 SquadId = null,
                 QuestNumber = i,
-                RequiredPlayersNumber = GameCountsCalculator.GetSquadRequiredSize(playersCount, i),
-                IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playersCount, i),
+                RequiredMembersNumber = GameCountsCalculator.GetSquadRequiredSize(playerCount, i),
+                IsDoubleFail = GameCountsCalculator.IsQuestDoubleFail(playerCount, i),
                 Status = SquadStatus.Upcoming,
             });
         }
+        return result;
+    }
+
+    public EndGameInfoDto GetUpdatedEndGame(int roomId)
+    {
+        var room = _dbContext.Rooms
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
+
+        var result = _mapper.Map<EndGameInfoDto>(room);
         return result;
     }
 }

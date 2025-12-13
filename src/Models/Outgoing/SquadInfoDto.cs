@@ -5,12 +5,12 @@ namespace servartur.Models.Outgoing;
 
 public class SquadInfoDto
 {
-    public int SquadId { get; set; }
-    public int QuestNumber { get; set; }
-    public int RejectionsLeftToEvilWin { get; set; }
-    public int RequiredPlayersNumber { get; set; }
-    public SquadStatus Status { get; set; }
-    public PlayerInfoDto Leader { get; set; } = null!;
+    public required int SquadId { get; set; }
+    public required int QuestNumber { get; set; }
+    public required int PrevRejectionCount { get; set; }
+    public required int RequiredMembersNumber { get; set; }
+    public required SquadStatus Status { get; set; }
+    public required PlayerInfoDto Leader { get; set; }
 
-    public List<PlayerInfoDto> Members { get; set; } = null!;
+    public required List<PlayerInfoDto> Members { get; set; }
 }

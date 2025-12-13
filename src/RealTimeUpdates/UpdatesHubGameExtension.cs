@@ -12,4 +12,21 @@ public static class UpdatesHubGameExtensions
         var groupName = roomId.ToString();
         await context.Clients.Group(groupName).ReceivePlayerLeft(playerInfoDto);
     }
+
+    public static async Task RefreshEndGameInfo(this UpdatesHubContext context, int roomId, EndGameInfoDto endGameInfoDto)
+    {
+        var groupName = roomId.ToString();
+        await context.Clients.Group(groupName).ReceiveEndGameInfo(endGameInfoDto);
+    }
+
+    public static async Task RefreshSquadVotingEndedInfo(this UpdatesHubContext context, int roomId, VotingSquadEndedInfoDto votingSquadEndedInfoDto)
+    {
+        var groupName = roomId.ToString();
+        await context.Clients.Group(groupName).ReceiveVotingSquadEndedInfo(votingSquadEndedInfoDto);
+    }
+    public static async Task RefreshQuestVotingEndedInfo(this UpdatesHubContext context, int roomId, VotingQuestEndedInfoDto votingQuestEndedInfoDto)
+    {
+        var groupName = roomId.ToString();
+        await context.Clients.Group(groupName).ReceiveVotingQuestEndedInfo(votingQuestEndedInfoDto);
+    }
 }

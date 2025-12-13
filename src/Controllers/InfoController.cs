@@ -23,6 +23,13 @@ public class InfoController : ControllerBase
         return Ok(room);
     }
 
+    [HttpGet("players/{roomId}")]
+    public ActionResult<List<PlayerInfoDto>> GetPlayers([FromRoute] int roomId)
+    {
+        var goodPlayers = _infoService.GetPlayers(roomId);
+        return Ok(goodPlayers);
+    }
+
     [HttpGet("player/{playerId}")]
     public ActionResult<PlayerInfoDto> GetPlayerById([FromRoute] int playerId)
     {

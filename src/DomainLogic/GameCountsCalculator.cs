@@ -8,27 +8,27 @@ public static class GameCountsCalculator
 {
     public static int MaxNumberOfPlayers { get => 10; }
     public static int MinNumberOfPlayers { get => 5; }
-    public static bool IsPlayerCountValid(int playersCount)
-    => playersCount >= MinNumberOfPlayers && playersCount <= MaxNumberOfPlayers;
+    public static bool IsPlayerCountValid(int playerCount)
+    => playerCount >= MinNumberOfPlayers && playerCount <= MaxNumberOfPlayers;
     public static bool IsQuestNumberValid(int questNumber)
     => questNumber >= 1 && questNumber <= 5;
 
-    public static int GetEvilPlayersCount(int playersCount)
+    public static int GetEvilPlayerCount(int playerCount)
     {
-        if (!IsPlayerCountValid(playersCount))
+        if (!IsPlayerCountValid(playerCount))
             throw new ArgumentException("Invalid number of players given");
 
-        return (playersCount - 1) / 2;
+        return (playerCount - 1) / 2;
     }
 
-    public static int GetSquadRequiredSize(int playersCount, int questNumber)
+    public static int GetSquadRequiredSize(int playerCount, int questNumber)
     {
-        if (!IsPlayerCountValid(playersCount))
+        if (!IsPlayerCountValid(playerCount))
             throw new ArgumentException("Invalid number of players given");
         if (!IsQuestNumberValid(questNumber))
             throw new ArgumentException("Invalid quest number given");
 
-        return _squadRequiredSizes[playersCount - 5, questNumber - 1];
+        return _squadRequiredSizes[playerCount - 5, questNumber - 1];
     }
     private static readonly int[,] _squadRequiredSizes = new int[,]
     {
@@ -39,13 +39,14 @@ public static class GameCountsCalculator
         {3, 4, 4, 5, 5}, // 9 players
         {3, 4, 4, 5, 5}, // 10 players
     };
-    public static bool IsQuestDoubleFail(int playersCount, int questNumber)
+    public static bool IsQuestDoubleFail(int playerCount, int questNumber)
     {
-        if (!IsPlayerCountValid(playersCount))
+        if (!IsPlayerCountValid(playerCount))
             throw new ArgumentException("Invalid number of players given");
         if (!IsQuestNumberValid(questNumber))
             throw new ArgumentException("Invalid quest number given");
 
-        return playersCount >= 7 && questNumber == 4;
+        return playerCount >= 7 && questNumber == 4;
     }
+    public static int MaxNumberOfPrevRejection { get => 5; }
 }

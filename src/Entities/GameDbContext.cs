@@ -88,7 +88,7 @@ public class GameDbContext : DbContext
 
         // One-to-many without navigation to principal
         modelBuilder.Entity<Squad>()
-        .HasOne<Room>()
+        .HasOne(e => e.Room)
         .WithMany(e => e.Squads)
         .HasForeignKey(e => e.RoomId)
         .IsRequired();

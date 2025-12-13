@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using servartur.Entities;
 using servartur.Models;
+using servartur.Models.Incoming;
 using servartur.RealTimeUpdates;
 using servartur.Services;
 
@@ -23,24 +24,24 @@ public class SquadController : ControllerBase
     [HttpPost("add/{playerId}")]
     public ActionResult AddMember([FromRoute] int playerId)
     {
-        _squadService.AddMember(playerId);
-        // refreshSquadsData(roomId);
+        _squadService.AddMember(playerId, out int roomId);
+        refreshCurrentSquadsData(roomId);
         return NoContent();
     }
 
     [HttpDelete("remove/{playerId}")]
     public ActionResult RemoveMember([FromRoute] int playerId)
     {
-        _squadService.RemoveMember(playerId);
-        // refreshSquadsData(roomId);
+        _squadService.RemoveMember(playerId, out int roomId);
+        refreshCurrentSquadsData(roomId);
         return NoContent();
     }
 
     [HttpPatch("submit/{squadId}")]
     public ActionResult SubmitSquad([FromRoute] int squadId)
     {
-        _squadService.SubmitSquad(squadId);
-        // refreshSquadsData(roomId);
+        _squadService.SubmitSquad(squadId, out int roomId);
+        refreshCurrentSquadsData(roomId);
         return NoContent();
     }
 
@@ -49,9 +50,9 @@ public class SquadController : ControllerBase
         var curentSquad = _squadService.GetUpdatedCurrentSquad(roomId);
         _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
     }
-    private void refreshQuestsSummaryData(int roomId)
-    {
-        var questsSummary = _squadService.GetUpdatedQuestsSummary(roomId);
-        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
-    }
+    //private void refreshQuestsSummaryData(int roomId)
+    //{
+    //    var questsSummary = _squadService.GetUpdatedQuestsSummary(roomId);
+    //    _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
+    //}
 }

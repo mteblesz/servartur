@@ -11,8 +11,8 @@ namespace servartur.Services;
 
 public interface IInfoService
 {
-    
     RoomInfoDto GetRoomById(int roomId);
+    List<PlayerInfoDto> GetPlayers(int roomId);
     PlayerInfoDto GetPlayerById(int playerId);
     PlayerRoleInfoDto GetRoleByPlayerId(int playerId);
     List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate, Func<Player, Player>? obfuscate = null);
@@ -33,6 +33,17 @@ public class InfoService : BaseService, IInfoService
 
         var result = _mapper.Map<RoomInfoDto>(room);
         return result;
+    }
+
+    public List<PlayerInfoDto> GetPlayers(int roomId)
+    {
+        var room = _dbContext.Rooms
+            .Include(r => r.Players)
+            .FirstOrDefault(r => r.RoomId == roomId)
+            ?? throw new RoomNotFoundException(roomId);
+
+        var players = _mapper.Map<List<PlayerInfoDto>>(room.Players);
+        return players.OrderBy(player => player.PlayerId).ToList();
     }
 
     public PlayerInfoDto GetPlayerById(int playerId)
@@ -78,6 +89,8 @@ public class InfoService : BaseService, IInfoService
         var result = obfuscatedPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
         return result;
     }
+
+
     public List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId)
     {
         var room = _dbContext.Rooms

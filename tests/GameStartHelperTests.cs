@@ -88,11 +88,11 @@ public class GameStartHelperTests
     public void MakeRoleDeck_InvalidNumberOfPlayers_ThrowsArgumentException()
     {
         // Arrange
-        int invalidPlayersCount = -1;
+        int invalidPlayerCount = -1;
         RoleInfo roleInfo = new RoleInfo(true, true, true);
 
         // Act & Assert
-        Action action = () => GameStartHelper.MakeRoleDeck(invalidPlayersCount, roleInfo, out _);
+        Action action = () => GameStartHelper.MakeRoleDeck(invalidPlayerCount, roleInfo, out _);
         Assert.Throws<ArgumentException>(action);
     }
 }

@@ -10,8 +10,8 @@ public enum SquadStatus
     [EnumMember(Value = "upcoming")]
     Upcoming,
 
-    [EnumMember(Value = "squadVoting")]
-    SquadVoting,
+    [EnumMember(Value = "squadChoice")]
+    SquadChoice,
 
     [EnumMember(Value = "submitted")]
     Submitted,
@@ -20,9 +20,6 @@ public enum SquadStatus
     Approved,
     [EnumMember(Value = "rejected")]
     Rejected,
-
-    [EnumMember(Value = "questVoting")]
-    QuestVoting,
 
     [EnumMember(Value = "successful")]
     Successful,

@@ -28,7 +28,7 @@ public class SetNicknameTests
 
         const int playerId = 1;
         string newNick = "new_nick";
-        var dto = new PlayerNicknameSetDto() { PlayerId = playerId, Nick = newNick };
+        var dto = new PlayerNicknameSetDto() { RoomId = -1, PlayerId = playerId, Nick = newNick };
         var player = new Player() { PlayerId = playerId, Nick = "old_nick" };
 
         dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(new[] { player });
@@ -51,7 +51,7 @@ public class SetNicknameTests
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         const int playerId = 100;
-        var dto = new PlayerNicknameSetDto() { PlayerId = playerId, Nick = "new_nick" };
+        var dto = new PlayerNicknameSetDto() { RoomId = -1, PlayerId = playerId, Nick = "new_nick" };
 
         dbContextMock.Setup(x => x.Players).ReturnsDbSet(Array.Empty<Player>());
 

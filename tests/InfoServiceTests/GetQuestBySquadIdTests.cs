@@ -16,7 +16,7 @@ public class GetQuestBySquadIdTests
                 .UseInMemoryDatabase(databaseName: "test_db")
                 .Options;
     [Fact]
-    public void GetQuestById_ValidSquadId_ReturnsQuestInfoDto()
+    public void GetQuestById_ValidSquadId_ReturnsSquadInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -31,7 +31,7 @@ public class GetQuestBySquadIdTests
             SquadId = 1,
             QuestNumber = 1,
             SquadNumber = 1,
-            RequiredPlayersNumber = 2,
+            RequiredMembersNumber = 2,
             Status = SquadStatus.Failed,
             LeaderId = leader.PlayerId,
             Leader = leader,
@@ -43,18 +43,23 @@ public class GetQuestBySquadIdTests
                 new Membership { SquadId = 1, Squad = squad, PlayerId = evilEntity.PlayerId, Player =  evilEntity },
             ];
 
+        PlayerInfoDto leaderDto = new PlayerInfoDto{ PlayerId = leader.PlayerId, Nick = "leader" };
         List<PlayerInfoDto> memberDtos =
         [
-            new () { PlayerId = leader.PlayerId, Nick = "leader"},
+            leaderDto,
             new () { PlayerId = evilEntity.PlayerId, Nick = "evil_entity"},
-        ]; 
+        ];
         var expectedQuestInfoDto = new QuestInfoDto
         {
             SquadId = squad.SquadId,
             QuestNumber = 1,
-            RequiredPlayersNumber = 2,
+            SquadNumber = 1,
+            RequiredMembersNumber = 2,
+            Leader = leaderDto,
             Status = SquadStatus.Failed,
             Members = memberDtos,
+            SquadVoteInfo = [],
+            QuestVoteSuccessCount = 0,
         };
 
         dbContextMock.Setup(db => db.Squads).ReturnsDbSet(new List<Squad>() { squad });

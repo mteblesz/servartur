@@ -13,18 +13,24 @@ public class Squad
     /// </summary>
     public int QuestNumber { get; set; }
     /// <summary>
-    /// number of squads that failed Squad Voting for this quest + 1
+    /// Number assigned to (this) squad for it's quest. Starts from 1
     /// </summary>
     public int SquadNumber { get; set; }
-    public int RejectionsLeftToEvilWin => 5 - SquadNumber;
-    public int RequiredPlayersNumber { get; set; }
+    /// <summary>
+    /// number of squads that failed Squad Voting for this quest
+    /// </summary>
+    public int PrevRejectionCount => SquadNumber - 1;
+    public int RequiredMembersNumber { get; set; }
     public bool IsDoubleFail { get; set; }
     public SquadStatus Status { get; set; }
 
     public int LeaderId { get; set; }
     public virtual Player Leader { get; set; } = null!;
 
-    public int RoomId { get; set; } // Required foreign key property
+    public int RoomId { get; set; }
+    public virtual Room Room { get; set; } = null!;
+
+
 
     public virtual List<Membership> Memberships { get; set; } = [];
     public virtual List<SquadVote> SquadVotes { get; set; } = [];

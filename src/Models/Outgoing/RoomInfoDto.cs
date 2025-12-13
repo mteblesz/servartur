@@ -2,10 +2,10 @@
 
 public class RoomInfoDto
 {
-    public int RoomId { get; set; }
-    public string Status { get; set; } = null!;
-    public int? CurrentSquadId { get; set; }
+    public required int RoomId { get; set; }
+    public required string Status { get; set; }
+    public required int? CurrentSquadId { get; set; }
 
-    public List<PlayerInfoDto> Players { get; set; } = null!;
+    public required List<PlayerInfoDto> Players { get; set; }
 
 }

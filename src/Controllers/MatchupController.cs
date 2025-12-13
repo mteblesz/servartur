@@ -4,6 +4,7 @@ using servartur.RealTimeUpdates;
 using Microsoft.AspNetCore.SignalR;
 using servartur.Models.Incoming;
 using servartur.Utils;
+using servartur.Models.Outgoing;
 
 namespace servartur.Controllers;
 
@@ -74,6 +75,14 @@ public class MatchupController : ControllerBase
         return NoContent();
     }
 
+    [HttpDelete("leave/{playerId}")]
+    public ActionResult LeaveGame([FromRoute] int playerId)
+    {
+        var playerInfoDto = _matchupService.LeaveGame(playerId, out int roomId);
+        sendPlayerLeftInfo(roomId, playerInfoDto);
+        return NoContent();
+    }
+
     private void refreshPlayersData(int roomId)
     {
         var players = _matchupService.GetUpdatedPlayers(roomId);
@@ -92,6 +101,10 @@ public class MatchupController : ControllerBase
         var curentSquad = _matchupService.GetUpdatedCurrentSquad(roomId);
         var questsSummary = _matchupService.GetUpdatedQuestsSummary(roomId);
         _ = _hubContext.RefreshCurrentSquad(roomId, curentSquad);
-        _ = _hubContext.RefreshSquadsSummary(roomId, questsSummary);
+        _ = _hubContext.RefreshQuestsSummary(roomId, questsSummary);
+    }
+    private void sendPlayerLeftInfo(int roomId, PlayerInfoDto playerInfoDto)
+    {
+        _ = _hubContext.SendPlayerLeftInfo(roomId, playerInfoDto);
     }
 }

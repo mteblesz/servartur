@@ -21,6 +21,7 @@ public interface IMatchupService
     List<PlayerInfoDto> GetUpdatedPlayers(int roomId);
     SquadInfoDto GetUpdatedCurrentSquad(int roomId);
     List<QuestInfoShortDto> GetUpdatedQuestsSummary(int roomId);
+    PlayerInfoDto LeaveGame(int playerId, out int roomId);
 }
 
 public class MatchupService : DataUpdatesService, IMatchupService
@@ -87,14 +88,14 @@ public class MatchupService : DataUpdatesService, IMatchupService
             .FirstOrDefault(r => r.RoomId == dto.RoomId)
             ?? throw new RoomNotFoundException(dto.RoomId);
 
-        int playersCount = room.Players.Count;
-        if (!GameCountsCalculator.IsPlayerCountValid(playersCount))
+        int playerCount = room.Players.Count;
+        if (!GameCountsCalculator.IsPlayerCountValid(playerCount))
             throw new PlayerCountInvalidException(dto.RoomId);
         if (room.Status != RoomStatus.Matchup)
             throw new RoomNotInMatchupException(dto.RoomId);
 
         var roleInfo = _mapper.Map<GameStartHelper.RoleInfo>(dto);
-        var roles = GameStartHelper.MakeRoleDeck(playersCount, roleInfo, out bool tooManyEvilRoles);
+        var roles = GameStartHelper.MakeRoleDeck(playerCount, roleInfo, out bool tooManyEvilRoles);
         if (tooManyEvilRoles)
             throw new TooManyEvilRolesException();
 
@@ -106,14 +107,30 @@ public class MatchupService : DataUpdatesService, IMatchupService
         }
 
         // Create first Squad
-        Random random = new Random();
-        var leader = room.Players[random.Next(room.Players.Count)];
-        var firstSquad = GameStartHelper.MakeFirstSquad(leader, playersCount);
+        var firstSquad = SquadFactory.OnGameStart(room.Players);
         room.Squads.Add(firstSquad);
         room.CurrentSquad = firstSquad;
 
         // Update room
         room.Status = RoomStatus.Playing;
         _dbContext.SaveChanges();
+    }
+    public PlayerInfoDto LeaveGame(int playerId, out int roomId)
+    {
+        var player = _dbContext.Players
+            .Include(p => p.Room)
+            .FirstOrDefault(p => p.PlayerId == playerId)
+            ?? throw new PlayerNotFoundException(playerId);
+
+        var room = player.Room;
+        if (room!.Status == RoomStatus.Unknown)
+            throw new RoomInBadStateException(player.RoomId);
+
+        // don't change anythng in db, no new quest can be started,
+        // other must wait for this player to reconnect somehow (TODO),
+        // for now, others get notified via signalr from controller
+
+        roomId = player.RoomId;
+        return _mapper.Map<PlayerInfoDto>(player);
     }
 }

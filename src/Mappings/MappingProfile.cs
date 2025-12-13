@@ -40,5 +40,9 @@ public class MappingProfile : Profile
 
         CreateMap<CastVoteDto, SquadVote>();
         CreateMap<CastVoteDto, QuestVote>();
+
+
+        CreateMap<Room, EndGameInfoDto>();
+        CreateMap<KillPlayerDto, Assassination>();
     }
 }

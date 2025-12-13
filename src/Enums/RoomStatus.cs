@@ -16,6 +16,9 @@ public enum RoomStatus
     [EnumMember(Value = "assassination")]
     Assassination,
 
-    [EnumMember(Value = "result")]
-    Result,
+    [EnumMember(Value = "resultEvilWin")]
+    ResultGoodWin,
+
+    [EnumMember(Value = "resultGoodWin")]
+    ResultEvilWin,
 }
