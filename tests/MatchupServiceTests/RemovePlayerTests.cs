@@ -8,6 +8,7 @@ using servartur.Services;
 using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
+
 public class RemovePlayerTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()

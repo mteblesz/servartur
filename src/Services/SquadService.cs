@@ -28,7 +28,7 @@ public class SquadService : DataUpdatesService, ISquadService
     {
         var player = _dbContext.Players
             .Include(p => p.Room)
-                .ThenInclude(r => r.CurrentSquad )
+                .ThenInclude(r => r.CurrentSquad)
                     .ThenInclude(s => s!.Memberships)
             .FirstOrDefault(p => p.PlayerId == playerId)
             ?? throw new PlayerNotFoundException(playerId);
@@ -66,7 +66,7 @@ public class SquadService : DataUpdatesService, ISquadService
         var membershipToBeRemoved = _dbContext.Memberships
             .FirstOrDefault(m => m.PlayerId == playerId && m.SquadId == currentSquad.SquadId);
         if (membershipToBeRemoved != null)
-        _dbContext.Memberships.Remove(membershipToBeRemoved);
+            _dbContext.Memberships.Remove(membershipToBeRemoved);
         _dbContext.SaveChanges();
         roomId = player.RoomId;
     }

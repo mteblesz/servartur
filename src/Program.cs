@@ -68,8 +68,8 @@ try
     app.UseMiddleware<ErrorHandlingMiddleware>();
     app.UseMiddleware<RequestTimingMiddleware>();
     if (Environment.GetEnvironmentVariable("AUTH_TRIGGERED") == "true")
-        app.UseMiddleware<FirebaseAuthMiddleware>(); 
-    
+        app.UseMiddleware<FirebaseAuthMiddleware>();
+
     app.UseCors("AllowAll");
 
     //app.UseHttpsRedirection();

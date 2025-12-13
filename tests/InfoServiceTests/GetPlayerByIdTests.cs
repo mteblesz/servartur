@@ -9,6 +9,7 @@ using Moq.EntityFrameworkCore;
 using servartur.Models.Outgoing;
 
 namespace servartur.Tests.InfoServiceTests;
+
 public class GetPlayerByIdTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()

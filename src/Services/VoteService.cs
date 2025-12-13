@@ -96,7 +96,7 @@ public class VoteService : VotingUpdates, IVoteService
         }
 
     }
-    
+
 
     public void VoteQuest(CastVoteDto voteDto, out bool votingEnded, out int roomId)
     {

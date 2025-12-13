@@ -2,7 +2,7 @@ namespace servartur.Exceptions;
 
 public class ConflitedRequestDataException : Exception
 {
-    public ConflitedRequestDataException(string message) 
+    public ConflitedRequestDataException(string message)
         : base(message) { }
 }
 public class RoomNotInMatchupException : ConflitedRequestDataException

@@ -84,7 +84,7 @@ public class InfoService : BaseService, IInfoService
 
         var filteredPlayers = room.Players.Where(p => filter(p)).ToList();
         if (obfuscate != null) filteredPlayers.Shuffle();
-        obfuscate ??= p => p; 
+        obfuscate ??= p => p;
         var obfuscatedPlayers = filteredPlayers.Select(p => obfuscate(p)).ToList();
         var result = obfuscatedPlayers.Select(p => _mapper.Map<PlayerInfoDto>(p)).ToList();
         return result;
@@ -101,7 +101,7 @@ public class InfoService : BaseService, IInfoService
         if (!room.Players.Any(p => p.Role == Role.Percival))
             throw new PercivalNotInGameException(roomId);
 
-        Predicate<Player> predicate = p => p.Role == Role.Merlin || p.Role == Role.Morgana; 
+        Predicate<Player> predicate = p => p.Role == Role.Merlin || p.Role == Role.Morgana;
         var filteredPlayers = room.Players.Where(p => predicate(p)).ToList();
         if (filteredPlayers.Count != 2)
             throw new PercivalButNoMerlinMorganaException(roomId);

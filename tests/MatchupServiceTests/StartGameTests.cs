@@ -29,7 +29,7 @@ public class StartGameTests
         var loggerMock = new Mock<ILogger<MatchupService>>();
         var mapperMock = new Mock<IMapper>();
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
-        
+
         // Create room and player list
         const int roomId = 1;
         var startGameDto = new StartGameDto()
@@ -44,7 +44,7 @@ public class StartGameTests
         for (int i = 1; i < 1 + numberOfPlayers; i++)
             players.Add(new Player() { PlayerId = i, Nick = $"test_nick_{i}", RoomId = roomId });
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup, Players = players };
-        List<Room> rooms = [ room ];
+        List<Room> rooms = [room];
 
         mapperMock.Setup(m => m.Map<GameStartHelper.RoleInfo>(It.IsAny<StartGameDto>()))
             .Returns(new GameStartHelper.RoleInfo(MnA, PnM, OnM));

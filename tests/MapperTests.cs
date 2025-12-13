@@ -6,6 +6,7 @@ using static servartur.DomainLogic.GameStartHelper;
 using servartur.Models.Outgoing;
 
 namespace servartur.Tests;
+
 public class MappingProfileTests
 {
     public static TheoryData<Squad, List<PlayerInfoDto>> ValidTestCases()

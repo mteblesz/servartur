@@ -1,6 +1,7 @@
 ﻿using servartur.Enums;
 
 namespace servartur.Entities;
+
 public class Room
 {
     public Room()

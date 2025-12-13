@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using servartur.RealTimeUpdates;
 
 namespace servartur.Tests.ControllersTests;
+
 public class MatchupControllerTests
 {
     private readonly MatchupController _controller;

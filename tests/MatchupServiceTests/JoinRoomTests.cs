@@ -9,6 +9,7 @@ using servartur.Services;
 using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
+
 public class JoinRoomTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
@@ -57,13 +58,13 @@ public class JoinRoomTests
         const int roomId = 1;
         var expectedPlayerIds = Enumerable.Range(1, numberOfCreations);
 
-        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup};
+        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup };
         var rooms = new List<Room> { room };
 
         var playerIdProvider = new PlayerIdProvider(expectedPlayerIds.ToList());
         dbContextMock.Setup(x => x.Players.Add(It.IsAny<Player>()))
             .Callback<Player>(p =>
-            { 
+            {
                 p.PlayerId = playerIdProvider.GetNext(); // Mock<GameDbContext> won't index propertly by itself
             });
 

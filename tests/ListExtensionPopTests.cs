@@ -1,6 +1,7 @@
 ﻿using servartur.Utils;
 
 namespace servartur.Tests;
+
 public class ListExtensionPopTests
 {
     [Fact]
@@ -9,7 +10,7 @@ public class ListExtensionPopTests
         // Arrange
         int elementToPop = 0;
         List<int> backOfList = [1, 2, 3];
-        List<int> list = [elementToPop, ..backOfList];
+        List<int> list = [elementToPop, .. backOfList];
 
         // Act
         var result = list.Pop();

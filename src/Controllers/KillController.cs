@@ -6,6 +6,7 @@ using servartur.RealTimeUpdates;
 using servartur.Services;
 
 namespace servartur.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class KillController : ControllerBase

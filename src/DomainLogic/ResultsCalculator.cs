@@ -20,7 +20,7 @@ public static class ResultsCalculator
 
     public static SquadVotingResult CountSquadVotes(int playerCount, List<SquadVote> votes)
     {
-        if (playerCount != votes.Count) 
+        if (playerCount != votes.Count)
             return SquadVotingResult.Unfinished;
 
         int positiveVotesCount = votes.Where(v => v.Value == true).Count();
@@ -32,7 +32,7 @@ public static class ResultsCalculator
     }
     public static QuestVotingResult CountQuestVotes(int membersCount, List<QuestVote> votes, bool isDoubleFail)
     {
-        if (membersCount != votes.Count) 
+        if (membersCount != votes.Count)
             return QuestVotingResult.Unfinished;
 
         int negativeVotesCount = votes.Where(v => v.Value == false).Count();

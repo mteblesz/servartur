@@ -48,7 +48,7 @@ public class GameDbContext : DbContext
             .HasConversion<string>();
 
         modelBuilder.Entity<Room>()
-            .Property(r => r.Status) 
+            .Property(r => r.Status)
             .HasConversion<string>();
 
         modelBuilder.Entity<Squad>()

@@ -25,8 +25,8 @@ public interface IMatchupService
 }
 
 public class MatchupService : DataUpdatesService, IMatchupService
-{ 
-    public MatchupService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger) 
+{
+    public MatchupService(GameDbContext dbContext, IMapper mapper, ILogger<MatchupService> logger)
         : base(dbContext, mapper, logger) { }
 
     public int CreateRoom()

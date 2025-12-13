@@ -5,6 +5,7 @@ using servartur.Models.Outgoing;
 using servartur.Services;
 
 namespace servartur.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class InfoController : ControllerBase

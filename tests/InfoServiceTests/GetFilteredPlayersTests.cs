@@ -10,6 +10,7 @@ using System;
 using servartur.Models.Outgoing;
 
 namespace servartur.Tests.InfoServiceTests;
+
 public class GetFilteredPlayersTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()

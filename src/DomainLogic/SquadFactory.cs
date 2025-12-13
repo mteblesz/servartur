@@ -12,7 +12,7 @@ public static class SquadFactory
         var leader = roomPlayers[random.Next(playerCount)];
 
         var questNumber = 1;
-        Squad  firstSquad = new Squad()
+        Squad firstSquad = new Squad()
         {
             Leader = leader,
             QuestNumber = questNumber,

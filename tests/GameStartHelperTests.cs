@@ -5,49 +5,50 @@ using servartur.Models;
 using servartur.Services;
 
 namespace servartur.Tests;
+
 using RoleInfo = GameStartHelper.RoleInfo;
 public class GameStartHelperTests
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "style is ok now")]
-    public static TheoryData<int, RoleInfo, List<Role>>  ValidTestCases()
+    public static TheoryData<int, RoleInfo, List<Role>> ValidTestCases()
     {
         var data = new TheoryData<int, RoleInfo, List<Role>>();
-        data.Add( 10, new RoleInfo(true, true, true), [
+        data.Add(10, new RoleInfo(true, true, true), [
             Role.Merlin, Role.Percival, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight,
             Role.Assassin, Role.Morgana, Role.Mordred, Role.Oberon,
-        ] );
-        data.Add( 10, new RoleInfo(true, true, false), [
+        ]);
+        data.Add(10, new RoleInfo(true, true, false), [
             Role.Merlin, Role.Percival, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight,
             Role.Assassin, Role.Morgana, Role.EvilEntity, Role.EvilEntity,
-        ] );
-        data.Add( 10, new RoleInfo(true, false, true), [
+        ]);
+        data.Add(10, new RoleInfo(true, false, true), [
             Role.Merlin, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight,
             Role.Assassin, Role.EvilEntity, Role.Mordred, Role.Oberon,
-        ] );
-        data.Add( 9, new RoleInfo(false, false, false), [
+        ]);
+        data.Add(9, new RoleInfo(false, false, false), [
             Role.GoodKnight, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight,
             Role.EvilEntity, Role.EvilEntity, Role.EvilEntity, Role.EvilEntity,
-        ] );
-        data.Add( 7, new RoleInfo(true, true, false), [
+        ]);
+        data.Add(7, new RoleInfo(true, true, false), [
             Role.Merlin, Role.Percival, Role.GoodKnight, Role.GoodKnight,
             Role.Assassin, Role.Morgana, Role.EvilEntity,
-        ] );
-        data.Add( 7, new RoleInfo(true, false, true), [
+        ]);
+        data.Add(7, new RoleInfo(true, false, true), [
             Role.Merlin, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight,
             Role.Assassin, Role.Mordred, Role.Oberon,
-        ] );
-        data.Add( 6, new RoleInfo(true, false, false), [
+        ]);
+        data.Add(6, new RoleInfo(true, false, false), [
             Role.Merlin, Role.GoodKnight, Role.GoodKnight, Role.GoodKnight,
             Role.Assassin, Role.EvilEntity,
-        ] );
-        data.Add( 5, new RoleInfo(true, true, false), [
-            Role.Merlin, Role.Percival, Role.GoodKnight, 
-            Role.Assassin, Role.Morgana, 
-        ] );
-        data.Add( 5, new RoleInfo(false, false, false), [
+        ]);
+        data.Add(5, new RoleInfo(true, true, false), [
+            Role.Merlin, Role.Percival, Role.GoodKnight,
+            Role.Assassin, Role.Morgana,
+        ]);
+        data.Add(5, new RoleInfo(false, false, false), [
             Role.GoodKnight, Role.GoodKnight, Role.GoodKnight,
             Role.EvilEntity, Role.EvilEntity,
-        ] );
+        ]);
         return data;
     }
     [Theory]

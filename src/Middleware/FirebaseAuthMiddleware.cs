@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
 
 namespace servartur.Middleware;
+
 public class FirebaseAuthMiddleware : IMiddleware
 {
     public FirebaseAuthMiddleware()

@@ -9,6 +9,7 @@ using Moq.EntityFrameworkCore;
 using servartur.Models.Outgoing;
 
 namespace servartur.Tests.InfoServiceTests;
+
 public class GetQuestBySquadIdTests
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
@@ -43,7 +44,7 @@ public class GetQuestBySquadIdTests
                 new Membership { SquadId = 1, Squad = squad, PlayerId = evilEntity.PlayerId, Player =  evilEntity },
             ];
 
-        PlayerInfoDto leaderDto = new PlayerInfoDto{ PlayerId = leader.PlayerId, Nick = "leader" };
+        PlayerInfoDto leaderDto = new PlayerInfoDto { PlayerId = leader.PlayerId, Nick = "leader" };
         List<PlayerInfoDto> memberDtos =
         [
             leaderDto,
