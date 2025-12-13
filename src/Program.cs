@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 using servartur.Entities;
 using servartur.Services;
 using NLog;
@@ -7,10 +6,7 @@ using servartur.Middleware;
 using servartur.Seeders;
 using servartur;
 using servartur.RealTimeUpdates;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.AspNetCore.Server.Kestrel.Https;
-using Microsoft.Extensions.Options;
-using System.Security.Cryptography.X509Certificates;
+using Microsoft.OpenApi;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
