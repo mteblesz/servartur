@@ -7,7 +7,7 @@ create table rooms (
 create table players (
     id          uuid    primary key,
     name        text    not null,
-    character   text    not null,
+    character   text    null,
 
     room_id     uuid    not null references rooms(id),
 

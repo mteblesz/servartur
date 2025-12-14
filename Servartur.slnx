@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Core/">
+    <Project Path="src/Servartur.Core/Servartur.Core.csproj" Id="0e1b7d17-3140-41fd-88d0-e35764d9da60" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
@@ -7,10 +10,12 @@
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/servartur.Tests.csproj" />
+  </Folder>
   <Project Path="src/old/servartur.csproj" />
-  <Project Path="src/Servartur.Api/Servartur.Api.csproj"/>
-  <Project Path="src/Servartur.ApplicatonServices/Servartur.ApplicatonServices.csproj"/>
-  <Project Path="src/Servartur.Data.Firebase/Servartur.Infrastructure.Firebase.csproj"/>
-  <Project Path="src/Servartur.Domain/Servartur.Domain.csproj"/>
-  <Project Path="tests/servartur.Tests.csproj" />
+  <Project Path="src/Servartur.Api/Servartur.Api.csproj" />
+  <Project Path="src/Servartur.ApplicatonServices/Servartur.ApplicatonServices.csproj" />
+  <Project Path="src/Servartur.Data.PostgreSQL/Servartur.Data.PostgreSQL.csproj" />
+  <Project Path="src/Servartur.Domain/Servartur.Domain.csproj" />
 </Solution>

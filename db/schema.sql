@@ -1,4 +1,4 @@
-\restrict gZHFTouo5iaMY2aKn5hfx1WNqLxYMMtzq2LEmkBiWXyhUK7qDbed0HdRbnE2dQd
+\restrict 9mkLCjWhhePvfzJ3t9GZ3qhnnrmC3tuJGFNaoWhHCCOwodP1DmZ0Qp5SPunPd09
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -52,7 +52,7 @@ CREATE TABLE public.memberships (
 CREATE TABLE public.players (
     id uuid NOT NULL,
     name text NOT NULL,
-    "character" text NOT NULL,
+    "character" text,
     room_id uuid NOT NULL
 );
 
@@ -258,7 +258,7 @@ ALTER TABLE ONLY public.squads
 -- PostgreSQL database dump complete
 --
 
-\unrestrict gZHFTouo5iaMY2aKn5hfx1WNqLxYMMtzq2LEmkBiWXyhUK7qDbed0HdRbnE2dQd
+\unrestrict 9mkLCjWhhePvfzJ3t9GZ3qhnnrmC3tuJGFNaoWhHCCOwodP1DmZ0Qp5SPunPd09
 
 
 --
