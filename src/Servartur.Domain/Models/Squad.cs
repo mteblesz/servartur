@@ -6,13 +6,13 @@ public class Squad
 {
     public Guid Id { get; set; }
 
-    public QuestStatus Status { get; set; }
+    public required QuestStatus Status { get; set; }
 
-    public uint QuestNumber { get; set; }
+    public required int QuestNumber { get; set; }
 
-    public uint SquadNumber { get; set; }
+    public required int SquadNumber { get; set; }
 
-    public int RequiredMembersNumber { get; set; }
+    public required int RequiredMembersNumber { get; set; }
 
-    public bool IsDoubleFail { get; set; }
+    public required bool IsDoubleFail { get; set; }
 }

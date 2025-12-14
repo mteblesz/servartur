@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <UserSecretsId>92e7fd4b-addb-414b-9bfa-0b0e12ef94d3</UserSecretsId>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Servartur.ApplicatonServices\Servartur.ApplicatonServices.csproj" />
+    <ProjectReference Include="..\Servartur.Data.PostgreSQL\Servartur.Data.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Servartur.Domain\Servartur.Domain.csproj" />
   </ItemGroup>
 
 </Project>

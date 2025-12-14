@@ -6,5 +6,5 @@ public class Room
 {
     public Guid Id { get; set; }
 
-    public RoomStatus Status { get; set; }
+    public required RoomStatus Status { get; set; }
 }
