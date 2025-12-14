@@ -1,4 +1,4 @@
-namespace Servartur.Domain.Models;
+namespace Servartur.Domain.Models.Enums;
 
 internal static class Roles
 {
@@ -11,6 +11,6 @@ internal static class Roles
         Character.EvilEntity,
         Character.Assassin,
         Character.Morgana,
-         Character.Mordred,
+        Character.Mordred,
         Character.Oberon ];
 }

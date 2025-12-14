@@ -1,4 +1,4 @@
-namespace Servartur.Domain.Models;
+namespace Servartur.Domain.Models.Enums;
 
 public enum RoomStatus
 {
