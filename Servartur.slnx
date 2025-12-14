@@ -8,5 +8,9 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="src/old/servartur.csproj" />
+  <Project Path="src/Servartur.Api/Servartur.Api.csproj"/>
+  <Project Path="src/Servartur.ApplicatonServices/Servartur.ApplicatonServices.csproj"/>
+  <Project Path="src/Servartur.Data.Firebase/Servartur.Infrastructure.Firebase.csproj"/>
+  <Project Path="src/Servartur.Domain/Servartur.Domain.csproj"/>
   <Project Path="tests/servartur.Tests.csproj" />
 </Solution>
