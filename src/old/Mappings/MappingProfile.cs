@@ -12,7 +12,7 @@ internal class MappingProfile : Profile
     {
         CreateMap<Room, RoomInfoDto>();
 
-        CreateMap<StartGameDto, GameStartHelper.RoleInfo>();
+        CreateMap<StartGameDto, RoleInfo>();
 
         CreateMap<Player, PlayerInfoDto>();
         CreateMap<Player, PlayerRoleInfoDto>();
