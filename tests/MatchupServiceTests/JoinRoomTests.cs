@@ -1,23 +1,27 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
-using servartur.Models;
 using servartur.Services;
-using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
+
+#pragma warning disable CA1515 // Consider making public types internal
 public class JoinRoomTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-                .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                    .Options;
+    }
 
     [Fact]
-    public void JoinRoom_ValidDto_ReturnsPlayerIdAndAddsPlayerToDB()
+    public void JoinRoomValidDtoReturnsPlayerIdAndAddsPlayerToDB()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -30,7 +34,7 @@ public class JoinRoomTests
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup };
 
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet([room]);
-        dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(new List<Player>());
+        dbContextMock.SetupGet(x => x.Players).ReturnsDbSet([]);
 
         // Act
         var result = matchupService.JoinRoom(roomId);
@@ -46,7 +50,7 @@ public class JoinRoomTests
     [InlineData(2)]
     [InlineData(5)]
     [InlineData(10)]
-    public void JoinRoomMultiple_ValidDto_ReturnsPlayerIdAndAddsPlayerToDB(int numberOfCreations)
+    public void JoinRoomMultipleValidDtoReturnsPlayerIdAndAddsPlayerToDB(int numberOfCreations)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -57,13 +61,13 @@ public class JoinRoomTests
         const int roomId = 1;
         var expectedPlayerIds = Enumerable.Range(1, numberOfCreations);
 
-        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup};
+        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup };
         var rooms = new List<Room> { room };
 
-        var playerIdProvider = new PlayerIdProvider(expectedPlayerIds.ToList());
+        var playerIdProvider = new PlayerIdProvider([.. expectedPlayerIds]);
         dbContextMock.Setup(x => x.Players.Add(It.IsAny<Player>()))
             .Callback<Player>(p =>
-            { 
+            {
                 p.PlayerId = playerIdProvider.GetNext(); // Mock<GameDbContext> won't index propertly by itself
             });
 
@@ -71,8 +75,10 @@ public class JoinRoomTests
 
         // Act
         var results = new List<int>();
-        for (int i = 0; i < numberOfCreations; i++)
+        for (var i = 0; i < numberOfCreations; i++)
+        {
             results.Add(matchupService.JoinRoom(roomId));
+        }
 
         // Assert
         results.Should().BeEquivalentTo(expectedPlayerIds);
@@ -82,12 +88,15 @@ public class JoinRoomTests
     private class PlayerIdProvider(IList<int> ids)
     {
         private readonly IList<int> _ids = ids;
-        private int i = 0;
-        public int GetNext() => _ids[i++];
+        private int i;
+        public int GetNext()
+        {
+            return _ids[i++];
+        }
     }
 
     [Fact]
-    public void JoinRoom_RoomNotFound_ThrowsRoomNotFoundException()
+    public void JoinRoomRoomNotFoundThrowsRoomNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -100,7 +109,7 @@ public class JoinRoomTests
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        Action action = () => matchupService.JoinRoom(invalidRoomId);
+        void action() => matchupService.JoinRoom(invalidRoomId);
         Assert.Throws<RoomNotFoundException>(action);
     }
 
@@ -109,7 +118,7 @@ public class JoinRoomTests
     [InlineData(RoomStatus.Playing)]
     [InlineData(RoomStatus.Assassination)]
     [InlineData(RoomStatus.ResultEvilWin)]
-    public void JoinRoom_RoomNotInMatchup_ThrowsRoomNotInMatchupException(RoomStatus status)
+    public void JoinRoomRoomNotInMatchupThrowsRoomNotInMatchupException(RoomStatus status)
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -123,11 +132,11 @@ public class JoinRoomTests
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        Action action = () => matchupService.JoinRoom(roomId);
+        void action() => matchupService.JoinRoom(roomId);
         Assert.Throws<RoomNotInMatchupException>(action);
     }
     [Fact]
-    public void JoinRoom_RoomNotInFull_ThrowsRoomIsFullException()
+    public void JoinRoomRoomNotInFullThrowsRoomIsFullException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -149,7 +158,7 @@ public class JoinRoomTests
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        Action action = () => matchupService.JoinRoom(roomId);
+        void action() => matchupService.JoinRoom(roomId);
         Assert.Throws<RoomIsFullException>(action);
     }
 

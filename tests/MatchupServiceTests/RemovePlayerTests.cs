@@ -1,22 +1,27 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Services;
-using Moq.EntityFrameworkCore;
 
 namespace servartur.Tests.MatchupServiceTests;
+
+#pragma warning disable CA1515 // Consider making public types internal
 public class RemovePlayerTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-                .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                    .Options;
+    }
 
     [Fact]
-    public void RemovePlayer_ExistingPlayerId_RemovesPlayerFromDB()
+    public void RemovePlayerExistingPlayerIdRemovesPlayerFromDB()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -45,7 +50,7 @@ public class RemovePlayerTests
     }
 
     [Fact]
-    public void RemovePlayer_NonExistingPlayerId_ThrowsPlayerNotFoundException()
+    public void RemovePlayerNonExistingPlayerIdThrowsPlayerNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -55,10 +60,10 @@ public class RemovePlayerTests
 
         // Set up the DbContext to indicate that the specified PlayerId doesn't exist
         var nonExistingPlayerId = 1;
-        dbContextMock.Setup(db => db.Players).ReturnsDbSet(new List<Player>());
+        dbContextMock.Setup(db => db.Players).ReturnsDbSet([]);
 
         // Act and Assert
-        Action action = () => matchupService.RemovePlayer(nonExistingPlayerId);
+        void action() => matchupService.RemovePlayer(nonExistingPlayerId);
         Assert.Throws<PlayerNotFoundException>(action);
 
         dbContextMock.Verify(db => db.Players.Remove(It.IsAny<Player>()), Times.Never);
@@ -66,7 +71,7 @@ public class RemovePlayerTests
     }
 
     [Fact]
-    public void RemovePlayer_PlayersRoomIsNotInMatchup_ThrowsRoomNotInMatchupException()
+    public void RemovePlayerPlayersRoomIsNotInMatchupThrowsRoomNotInMatchupException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -87,7 +92,7 @@ public class RemovePlayerTests
         dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(existingRooms);
 
         // Act and Assert
-        Action action = () => matchupService.RemovePlayer(existingPlayerId);
+        void action() => matchupService.RemovePlayer(existingPlayerId);
         Assert.Throws<RoomNotInMatchupException>(action);
 
         dbContextMock.Verify(db => db.Players.Remove(It.IsAny<Player>()), Times.Never);

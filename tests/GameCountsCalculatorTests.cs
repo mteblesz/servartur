@@ -2,7 +2,9 @@ using servartur.DomainLogic;
 
 namespace servartur.Tests;
 
+#pragma warning disable CA1515 // Consider making public types internal
 public class GameCountsCalculatorTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     [Theory]
     [InlineData(5, 2)]
@@ -11,7 +13,7 @@ public class GameCountsCalculatorTests
     [InlineData(8, 3)]
     [InlineData(9, 4)]
     [InlineData(10, 4)]
-    public void GetEvilPlayersNumber_ValidInput_ReturnsCorrectResult
+    public void GetEvilPlayersNumberValidInputReturnsCorrectResult
         (int playerCount, int expected)
     {
         // Arrange
@@ -27,12 +29,12 @@ public class GameCountsCalculatorTests
     [InlineData(4)]
     [InlineData(12)]
     [InlineData(120)]
-    public void GetEvilPlayersNumber_InvalidPlayerCount_ThrowsArgumentException
+    public void GetEvilPlayersNumberInvalidPlayerCountThrowsArgumentException
         (int invalidPlayerCount)
     {
         // Arrange
         // Act
-        Action action = () => GameCountsCalculator.GetEvilPlayerCount(invalidPlayerCount);
+        void action() => GameCountsCalculator.GetEvilPlayerCount(invalidPlayerCount);
         // Assert
         Assert.Throws<ArgumentException>(action);
     }
@@ -49,7 +51,7 @@ public class GameCountsCalculatorTests
     [InlineData(8, 4, 5)]
     [InlineData(9, 5, 5)]
     [InlineData(10, 3, 4)]
-    public void GetSquadRequiredSize_ValidInput_ReturnsCorrectResult(int playerCount, int questNumber, int expected)
+    public void GetSquadRequiredSizeValidInputReturnsCorrectResult(int playerCount, int questNumber, int expected)
     {
         // Arrange
         // Act
@@ -63,11 +65,11 @@ public class GameCountsCalculatorTests
     [InlineData(11, 5)]
     [InlineData(6, 0)]
     [InlineData(7, 6)]
-    public void GetSquadRequiredSize_InvalidInput_ThrowsArgumentException(int questNumber, int playerCount)
+    public void GetSquadRequiredSizeInvalidInputThrowsArgumentException(int questNumber, int playerCount)
     {
         // Arrange
         // Act
-        Action action = () => GameCountsCalculator.GetSquadRequiredSize(questNumber, playerCount);
+        void action() => GameCountsCalculator.GetSquadRequiredSize(questNumber, playerCount);
         // Assert
         Assert.Throws<ArgumentException>(action);
     }

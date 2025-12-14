@@ -1,15 +1,18 @@
-﻿using servartur.Utils;
+using servartur.Utils;
 
 namespace servartur.Tests;
+
+#pragma warning disable CA1515 // Consider making public types internal
 public class ListExtensionPopTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     [Fact]
-    public void Pop_RemovesFirstElementFromList_ReturnsRemovedElement()
+    public void PopRemovesFirstElementFromListReturnsRemovedElement()
     {
         // Arrange
-        int elementToPop = 0;
+        var elementToPop = 0;
         List<int> backOfList = [1, 2, 3];
-        List<int> list = [elementToPop, ..backOfList];
+        List<int> list = [elementToPop, .. backOfList];
 
         // Act
         var result = list.Pop();
@@ -20,13 +23,13 @@ public class ListExtensionPopTests
     }
 
     [Fact]
-    public void Pop_OnEmptyList_ThrowsException()
+    public void PopOnEmptyListThrowsException()
     {
         // Arrange
         var emptyList = new List<int>();
 
         // Act and Assert
-        Action action = () => emptyList.Pop();
+        void action() => emptyList.Pop();
         Assert.Throws<InvalidOperationException>(action);
     }
 }

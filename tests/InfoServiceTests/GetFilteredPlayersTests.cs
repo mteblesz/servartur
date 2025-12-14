@@ -1,28 +1,34 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
-using servartur.Services;
-using Moq.EntityFrameworkCore;
-using System;
 using servartur.Models.Outgoing;
+using servartur.Services;
 
 namespace servartur.Tests.InfoServiceTests;
+
+#pragma warning disable CA1515 // Consider making public types internal
 public class GetFilteredPlayersTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-            => new DbContextOptionsBuilder<GameDbContext>()
-                    .UseInMemoryDatabase(databaseName: "test_db")
-                    .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                        .UseInMemoryDatabase(databaseName: "test_db")
+                        .Options;
+    }
 
-    private static PlayerInfoDto mapPlayer(Player p) =>
-        new PlayerInfoDto
+    private static PlayerInfoDto mapPlayer(Player p)
+    {
+        return new PlayerInfoDto
         {
             PlayerId = p.PlayerId,
             Nick = p.Nick ?? "",
         };
+    }
 
     public static TheoryData<List<Player>, Predicate<Player>, List<PlayerInfoDto>> ValidTestCases()
     {
@@ -45,7 +51,8 @@ public class GetFilteredPlayersTests
 
     [Theory]
     [MemberData(nameof(ValidTestCases))]
-    public void GetFilteredPlayers_ValidRoomIdAndPredicate_ReturnsFilteredPlayerList
+    internal void GetFilteredPlayersValidRoomIdAndPredicateReturnsFilteredPlayerList
+#pragma warning disable CA1002 // Do not expose generic lists
         (List<Player> players, Predicate<Player> predicate, List<PlayerInfoDto> expectedDtos)
     {
         // Arrange
@@ -67,7 +74,7 @@ public class GetFilteredPlayersTests
     }
 
     [Fact]
-    public void GetFilteredPlayers_InvalidRoomId_ThrowsRoomNotFoundException()
+    public void GetFilteredPlayersInvalidRoomIdThrowsRoomNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -76,10 +83,10 @@ public class GetFilteredPlayersTests
         var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         var invalidRoomId = 999;
-        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>());
+        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet([]);
 
         // Act and Assert
-        Action action = () => infoService.GetFilteredPlayers(invalidRoomId, p => p.Team == Team.Good);
+        var action = () => infoService.GetFilteredPlayers(invalidRoomId, p => p.Team == Team.Good);
         action.Should().Throw<RoomNotFoundException>();
     }
 }

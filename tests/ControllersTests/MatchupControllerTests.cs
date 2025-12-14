@@ -1,13 +1,15 @@
-﻿using servartur.Enums;
-using servartur.Services;
-using servartur.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using servartur.Models.Incoming;
 using Microsoft.AspNetCore.SignalR;
+using servartur.Controllers;
+using servartur.Models.Incoming;
 using servartur.RealTimeUpdates;
+using servartur.Services;
 
 namespace servartur.Tests.ControllersTests;
+
+#pragma warning disable CA1515 // Consider making public types internal
 public class MatchupControllerTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private readonly MatchupController _controller;
     private readonly Mock<IMatchupService> _matchupServiceMock;
@@ -21,7 +23,7 @@ public class MatchupControllerTests
     }
 
     [Fact]
-    public void CreateRoom_Returns_CreatedResult()
+    public void CreateRoomReturnsCreatedResult()
     {
         // Arrange
         // Act
@@ -32,7 +34,7 @@ public class MatchupControllerTests
     }
 
     [Fact]
-    public void JoinRoom_Returns_CreatedResult()
+    public void JoinRoomReturnsCreatedResult()
     {
         // Arrange
         var playerId = 1;
@@ -44,7 +46,7 @@ public class MatchupControllerTests
     }
 
     [Fact]
-    public void SetNickname_Returns_NoContentResult()
+    public void SetNicknameReturnsNoContentResult()
     {
         // Arrange
         var playerId = 1;
@@ -62,7 +64,7 @@ public class MatchupControllerTests
     }
 
     [Fact]
-    public void RemovePlayer_Returns_NoContentResult()
+    public void RemovePlayerReturnsNoContentResult()
     {
         // Arrange
         var playerId = 1;
@@ -82,7 +84,7 @@ public class MatchupControllerTests
     [InlineData(true, true, false)]
     [InlineData(true, false, false)]
     [InlineData(false, false, false)]
-    public void StartGame_ValidDto_ReturnsNoContent(bool MnA, bool PnM, bool OnM)
+    public void StartGameValidDtoReturnsNoContent(bool MnA, bool PnM, bool OnM)
     {
         var validDto = new StartGameDto
         {
@@ -105,7 +107,7 @@ public class MatchupControllerTests
     [InlineData(false, true, true)]
     [InlineData(false, true, false)]
     [InlineData(false, false, true)]
-    public void StartGame_InvalidDto_ReturnsBadRequest(bool MnA, bool PnM, bool OnM)
+    public void StartGameInvalidDtoReturnsBadRequest(bool MnA, bool PnM, bool OnM)
     {
         // Arrange
         var invalidDto = new StartGameDto

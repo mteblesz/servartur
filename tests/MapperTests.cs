@@ -1,12 +1,14 @@
-﻿using AutoMapper;
+using AutoMapper;
 using servartur.Entities;
-using servartur.Mappings;
 using servartur.Enums;
-using static servartur.DomainLogic.GameStartHelper;
+using servartur.Mappings;
 using servartur.Models.Outgoing;
 
 namespace servartur.Tests;
+
+#pragma warning disable CA1515 // Consider making public types internal
 public class MappingProfileTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     public static TheoryData<Squad, List<PlayerInfoDto>> ValidTestCases()
     {
@@ -74,7 +76,9 @@ public class MappingProfileTests
 
     [Theory]
     [MemberData(nameof(ValidTestCases))]
-    public void SquadToSquadInfoDtoMapping_IsValid(Squad squad, List<PlayerInfoDto> expectedMemberDtos)
+#pragma warning disable CA1002 // Do not expose generic lists
+    public void SquadToSquadInfoDtoMappingIsValid(Squad squad, List<PlayerInfoDto> expectedMemberDtos)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         // Arrange
         var configuration = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });

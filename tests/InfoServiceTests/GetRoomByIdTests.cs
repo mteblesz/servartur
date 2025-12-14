@@ -1,22 +1,28 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Moq.EntityFrameworkCore;
 using servartur.Entities;
 using servartur.Enums;
-using servartur.Services;
 using servartur.Exceptions;
-using Moq.EntityFrameworkCore;
 using servartur.Models.Outgoing;
+using servartur.Services;
 
 namespace servartur.Tests.InfoServiceTests;
+
+#pragma warning disable CA1515 // Consider making public types internal
 public class GetRoomByIdTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
-        => new DbContextOptionsBuilder<GameDbContext>()
-                .UseInMemoryDatabase(databaseName: "test_db")
-                .Options;
+    {
+        return new DbContextOptionsBuilder<GameDbContext>()
+                    .UseInMemoryDatabase(databaseName: "test_db")
+                    .Options;
+    }
+
     [Fact]
-    public void GetRoomById_ValidRoomId_ReturnsRoomInfoDto()
+    public void GetRoomByIdValidRoomIdReturnsRoomInfoDto()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -41,7 +47,7 @@ public class GetRoomByIdTests
             Players = []
         };
 
-        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>() { room });
+        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet([room]);
         mapperMock.Setup(m => m.Map<RoomInfoDto>(room)).Returns(expectedRoomInfoDto);
 
         // Act
@@ -52,7 +58,7 @@ public class GetRoomByIdTests
     }
 
     [Fact]
-    public void GetRoomById_InvalidRoomId_ThrowsRoomNotFoundException()
+    public void GetRoomByIdInvalidRoomIdThrowsRoomNotFoundException()
     {
         // Arrange
         var dbContextMock = new Mock<GameDbContext>(getDbOptions());
@@ -61,10 +67,10 @@ public class GetRoomByIdTests
         var infoService = new InfoService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
         var invalidRoomId = 999;
-        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet(new List<Room>());
+        dbContextMock.Setup(db => db.Rooms).ReturnsDbSet([]);
 
         // Act and Assert
-        Action action = () => infoService.GetRoomById(invalidRoomId);
+        void action() => infoService.GetRoomById(invalidRoomId);
         Assert.Throws<RoomNotFoundException>(action);
     }
 }
