@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.SignalR;
 using servartur.Models.Outgoing;
 
 using UpdatesHubContext = Microsoft.AspNetCore.SignalR.IHubContext<servartur.RealTimeUpdates.UpdatesHub, servartur.RealTimeUpdates.IUpdatesHubClient>;
