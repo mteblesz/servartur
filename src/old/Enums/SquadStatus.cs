@@ -2,7 +2,9 @@ using System.Runtime.Serialization;
 
 namespace servartur.Enums;
 
-internal enum SquadStatus
+#pragma warning disable CA1515 // Consider making public types internal
+public enum SquadStatus
+#pragma warning restore CA1515 // Consider making public types internal
 {
     [EnumMember(Value = "uknown")]
     Uknown,

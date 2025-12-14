@@ -7,12 +7,16 @@ internal interface IUpdatesHubClient
 {
     Task ReceiveMessage(string message);
 
+#pragma warning disable CA1002 // Do not expose generic lists
     Task ReceivePlayerList(List<PlayerInfoDto> updatedPlayers);
+#pragma warning restore CA1002 // Do not expose generic lists
     Task ReceiveRemoval(string playerId);
     Task ReceiveStartGame();
 
     Task ReceiveCurrentSquad(SquadInfoDto updatedCurrentSquad);
+#pragma warning disable CA1002 // Do not expose generic lists
     Task ReceiveQuestsSummary(List<QuestInfoShortDto> updatedQuestsSummary);
+#pragma warning restore CA1002 // Do not expose generic lists
 
     Task ReceivePlayerLeft(PlayerInfoDto playerInfoDto);
     Task ReceiveEndGameInfo(EndGameInfoDto updatedEndGameInfo);

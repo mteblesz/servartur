@@ -26,8 +26,13 @@ internal class RequestTimingMiddleware : IMiddleware
             var elapsed_seconds = _stopwatch.Elapsed.TotalSeconds;
             if (elapsed_seconds > 4)
             {
-                _logger.LogInformation($"Request took {elapsed_seconds:F2} seconds: " +
-                    $"{context.Request.Method} {context.Request.Path}");
+#pragma warning disable CA1873 // Avoid potentially expensive logging
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+                _logger.LogInformation("Request took {ElapsedSeconds} seconds: {Method} {Path}",
+                    elapsed_seconds,
+                    context.Request.Method,
+                    context.Request.Path
+                    );
             }
         }
     }

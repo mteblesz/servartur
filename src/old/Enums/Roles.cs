@@ -2,7 +2,8 @@ using System.Runtime.Serialization;
 
 namespace servartur.Enums;
 
-internal enum Team
+#pragma warning disable CA1515 // Consider making public types internal
+public enum Team
 {
     [EnumMember(Value = "evil")]
     Evil,
@@ -10,7 +11,7 @@ internal enum Team
     [EnumMember(Value = "good")]
     Good,
 }
-internal enum Role
+public enum Role
 {
     [EnumMember(Value = "goodKnight")]
     GoodKnight,

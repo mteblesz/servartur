@@ -10,7 +10,9 @@ using servartur.Services;
 
 namespace servartur.Tests.InfoServiceTests;
 
-internal class GetQuestBySquadIdTests
+#pragma warning disable CA1515 // Consider making public types internal
+public class GetQuestBySquadIdTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
     {

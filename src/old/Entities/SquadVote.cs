@@ -1,6 +1,7 @@
 namespace servartur.Entities;
 
-internal class SquadVote
+#pragma warning disable CA1515 // Consider making public types internal
+public class SquadVote
 {
     public int SquadVoteId { get; set; }
     public bool Value { get; set; }

@@ -2,7 +2,9 @@ using servartur.DomainLogic;
 
 namespace servartur.Tests;
 
-internal class GameCountsCalculatorTests
+#pragma warning disable CA1515 // Consider making public types internal
+public class GameCountsCalculatorTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     [Theory]
     [InlineData(5, 2)]

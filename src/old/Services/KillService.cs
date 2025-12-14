@@ -10,7 +10,9 @@ namespace servartur.Services;
 internal interface IKillService
 {
     EndGameInfoDto GetUpdatedEndGame(int roomId);
+#pragma warning disable CA1021 // Avoid out parameters
     void KillPlayer(KillPlayerDto dto, out int roomId);
+#pragma warning restore CA1021 // Avoid out parameters
 }
 internal class KillService : DataUpdatesService, IKillService
 {

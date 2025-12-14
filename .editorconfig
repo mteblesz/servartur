@@ -252,7 +252,7 @@ dotnet_diagnostic.CA1422.severity = error
 dotnet_diagnostic.CA1501.severity = error
 dotnet_diagnostic.CA1502.severity = error
 dotnet_diagnostic.CA1505.severity = error
-dotnet_diagnostic.CA1506.severity = error
+dotnet_diagnostic.CA1506.severity = warning
 dotnet_diagnostic.CA1507.severity = error
 dotnet_diagnostic.CA1508.severity = error
 dotnet_diagnostic.CA1509.severity = error
@@ -331,7 +331,6 @@ dotnet_diagnostic.CA1812.severity = none
 # CA1813: Avoid unsealed attributes
 dotnet_diagnostic.CA1813.severity = warning
 
-dotnet_diagnostic.CA1814.severity = error
 dotnet_diagnostic.CA1815.severity = error
 
 # CA1819: Properties should not return arrays

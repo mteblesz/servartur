@@ -8,6 +8,8 @@ namespace servartur.Services;
 /// </summary>
 internal abstract class BaseService
 {
+#pragma warning disable CA1051 // Do not declare visible instance fields
+#pragma warning disable IDE1006 // Naming Styles
     protected readonly GameDbContext _dbContext;
     protected readonly IMapper _mapper;
     protected readonly ILogger _logger;

@@ -11,11 +11,17 @@ namespace servartur.Services;
 internal interface IInfoService
 {
     RoomInfoDto GetRoomById(int roomId);
+#pragma warning disable CA1002 // Do not expose generic lists
     List<PlayerInfoDto> GetPlayers(int roomId);
+#pragma warning restore CA1002 // Do not expose generic lists
     PlayerInfoDto GetPlayerById(int playerId);
     PlayerRoleInfoDto GetRoleByPlayerId(int playerId);
+#pragma warning disable CA1002 // Do not expose generic lists
     List<PlayerInfoDto> GetFilteredPlayers(int roomId, Predicate<Player> predicate, Func<Player, Player>? obfuscate = null);
+#pragma warning restore CA1002 // Do not expose generic lists
+#pragma warning disable CA1002 // Do not expose generic lists
     List<PlayerInfoDto> GetKnownByPercivalPlayers(int roomId);
+#pragma warning restore CA1002 // Do not expose generic lists
     QuestInfoDto GetQuestBySquadId(int squadId);
 }
 internal class InfoService : BaseService, IInfoService

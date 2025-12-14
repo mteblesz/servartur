@@ -6,7 +6,7 @@ using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Incoming;
 using servartur.Models.Outgoing;
-using servartur.Services.Base_Services;
+using servartur.Services.BaseServices;
 
 namespace servartur.Services;
 
@@ -14,6 +14,7 @@ internal interface IVoteService
 {
     VotingSquadEndedInfoDto GetUpdatedSquadVotingEnded(int roomId);
     VotingQuestEndedInfoDto GetUpdatedQuestVotingEnded(int roomId);
+#pragma warning disable CA1021 // Avoid out parameters
     void VoteSquad(CastVoteDto voteDto, out bool votingEnded, out int roomId);
     void VoteQuest(CastVoteDto voteDto, out bool votingEnded, out int roomId);
 
@@ -51,7 +52,9 @@ internal class VoteService : VotingUpdates, IVoteService
 
         roomId = squad.RoomId;
     }
+#pragma warning disable CA1021 // Avoid out parameters
     private void recountSquadVotes(Squad squad, out bool votingEnded)
+#pragma warning restore CA1021 // Avoid out parameters
     {
         votingEnded = true;
         var votingResult = ResultsCalculator.CountSquadVotes(squad.Room.Players.Count, squad.SquadVotes);
@@ -128,7 +131,9 @@ internal class VoteService : VotingUpdates, IVoteService
         recountQuestVotes(squad, out votingEnded);
         roomId = squad.RoomId;
     }
+#pragma warning disable CA1021 // Avoid out parameters
     private void recountQuestVotes(Squad squad, out bool votingEnded)
+#pragma warning restore CA1021 // Avoid out parameters
     {
         votingEnded = true;
         var votingResult = ResultsCalculator.CountQuestVotes(squad.RequiredMembersNumber, squad.QuestVotes, squad.IsDoubleFail);
@@ -167,10 +172,10 @@ internal class VoteService : VotingUpdates, IVoteService
                  .FirstOrDefault(r => r.RoomId == roomId)
                  ?? throw new RoomNotFoundException(roomId);
 
-            Squad prevSquad = room.CurrentSquad
+            var prevSquad = room.CurrentSquad
                 ?? throw new SquadNotFoundException(roomId);
 
-            Squad nextSquad = SquadFactory.OnQuestFinished(room.Players, prevSquad, prevSquad.Leader);
+            var nextSquad = SquadFactory.OnQuestFinished(room.Players, prevSquad, prevSquad.Leader);
 
             room.Squads.Add(nextSquad);
             room.CurrentSquad = nextSquad;

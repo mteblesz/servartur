@@ -13,6 +13,8 @@ internal class ErrorHandlingMiddleware : IMiddleware
     }
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
+#pragma warning disable CA1873 // Avoid potentially expensive logging
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
         try
         {
             await next.Invoke(context);
@@ -34,13 +36,13 @@ internal class ErrorHandlingMiddleware : IMiddleware
         }
         catch (DbUpdateException ex)
         {
-            _logger.LogError(ex, "{message}", ex.Message);
+            _logger.LogError(ex, "{Message}", ex.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsync("Database error");
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            _logger.LogError(ex, "{message}", ex.Message);
+            _logger.LogError(ex, "{Message}", ex.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsync("Something went wrong");
         }

@@ -2,7 +2,8 @@ using System.Runtime.Serialization;
 
 namespace servartur.Enums;
 
-internal enum RoomStatus
+#pragma warning disable CA1515 // Consider making public types internal
+public enum RoomStatus
 {
     [EnumMember(Value = "unknown")]
     Unknown,

@@ -1,11 +1,13 @@
 using servartur.DomainLogic;
 using servartur.Enums;
 
-using RoleInfo = servartur.DomainLogic.GameStartHelper.RoleInfo;
+using RoleInfo = servartur.DomainLogic.RoleInfo;
 
 namespace servartur.Tests;
 
-internal class GameStartHelperTests
+#pragma warning disable CA1515 // Consider making public types internal
+public class GameStartHelperTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0028:Simplify collection initialization", Justification = "style is ok now")]
     public static TheoryData<int, RoleInfo, List<Role>> ValidTestCases()
@@ -51,7 +53,9 @@ internal class GameStartHelperTests
     }
     [Theory]
     [MemberData(nameof(ValidTestCases))]
-    public void MakeRoleDeckShouldGenerateValidRoleDeck(int numberOfPlayers, RoleInfo roleInfo, List<Role> expectedResult)
+#pragma warning disable CA1002 // Do not expose generic lists
+    internal void MakeRoleDeckShouldGenerateValidRoleDeck(int numberOfPlayers, RoleInfo roleInfo, List<Role> expectedResult)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         // Arrange
         // Act
@@ -75,7 +79,7 @@ internal class GameStartHelperTests
 
     [Theory]
     [MemberData(nameof(InvalidTestCases))]
-    public void MakeRoleDeckTooManyEvilRolesReturnsEmptyListAndSetsFlag(int numberOfPlayers, RoleInfo roleInfo)
+    internal void MakeRoleDeckTooManyEvilRolesReturnsEmptyListAndSetsFlag(int numberOfPlayers, RoleInfo roleInfo)
     {
         // Arrange
         // Act

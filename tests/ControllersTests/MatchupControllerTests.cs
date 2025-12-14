@@ -7,7 +7,9 @@ using servartur.Services;
 
 namespace servartur.Tests.ControllersTests;
 
-internal class MatchupControllerTests
+#pragma warning disable CA1515 // Consider making public types internal
+public class MatchupControllerTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private readonly MatchupController _controller;
     private readonly Mock<IMatchupService> _matchupServiceMock;

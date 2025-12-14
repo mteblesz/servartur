@@ -6,7 +6,9 @@ using servartur.Models.Outgoing;
 
 namespace servartur.Tests;
 
-internal class MappingProfileTests
+#pragma warning disable CA1515 // Consider making public types internal
+public class MappingProfileTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     public static TheoryData<Squad, List<PlayerInfoDto>> ValidTestCases()
     {
@@ -74,7 +76,9 @@ internal class MappingProfileTests
 
     [Theory]
     [MemberData(nameof(ValidTestCases))]
+#pragma warning disable CA1002 // Do not expose generic lists
     public void SquadToSquadInfoDtoMappingIsValid(Squad squad, List<PlayerInfoDto> expectedMemberDtos)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         // Arrange
         var configuration = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });

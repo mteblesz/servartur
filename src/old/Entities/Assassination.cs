@@ -1,6 +1,8 @@
 namespace servartur.Entities;
 
-internal class Assassination
+#pragma warning disable CA1515 // Consider making public types internal
+public class Assassination
+#pragma warning restore CA1515 // Consider making public types internal
 {
     public int AssassinationId { get; set; }
     public bool Result { get; set; }

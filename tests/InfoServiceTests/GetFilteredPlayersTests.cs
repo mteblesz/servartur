@@ -10,7 +10,9 @@ using servartur.Services;
 
 namespace servartur.Tests.InfoServiceTests;
 
-internal class GetFilteredPlayersTests
+#pragma warning disable CA1515 // Consider making public types internal
+public class GetFilteredPlayersTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
     {
@@ -49,7 +51,8 @@ internal class GetFilteredPlayersTests
 
     [Theory]
     [MemberData(nameof(ValidTestCases))]
-    public void GetFilteredPlayersValidRoomIdAndPredicateReturnsFilteredPlayerList
+    internal void GetFilteredPlayersValidRoomIdAndPredicateReturnsFilteredPlayerList
+#pragma warning disable CA1002 // Do not expose generic lists
         (List<Player> players, Predicate<Player> predicate, List<PlayerInfoDto> expectedDtos)
     {
         // Arrange
@@ -83,7 +86,7 @@ internal class GetFilteredPlayersTests
         dbContextMock.Setup(db => db.Rooms).ReturnsDbSet([]);
 
         // Act and Assert
-        Action action = () => infoService.GetFilteredPlayers(invalidRoomId, p => p.Team == Team.Good);
+        var action = () => infoService.GetFilteredPlayers(invalidRoomId, p => p.Team == Team.Good);
         action.Should().Throw<RoomNotFoundException>();
     }
 }

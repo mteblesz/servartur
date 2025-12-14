@@ -9,7 +9,9 @@ using servartur.Services;
 
 namespace servartur.Tests.MatchupServiceTests;
 
-internal class SetNicknameTests
+#pragma warning disable CA1515 // Consider making public types internal
+public class SetNicknameTests
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static DbContextOptions<GameDbContext> getDbOptions()
     {

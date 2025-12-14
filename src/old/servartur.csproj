@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <!-- https://stackoverflow.com/questions/10311347/duplicate-assemblyversion-attribute -->
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <!-- https://stackoverflow.com/questions/61997928/errorcs0579duplicate-globalsystem-runtime-versioning-targetframeworkattribu -->
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-  </PropertyGroup>
+  
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
@@ -21,4 +16,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="servartur.Tests" />
+  </ItemGroup>
+
 </Project>

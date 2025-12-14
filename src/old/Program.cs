@@ -52,7 +52,7 @@ try
     var app = builder.Build();
 
     // Call services
-    var scope = app.Services.CreateScope();
+    using var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
     seeder.Seed();
 

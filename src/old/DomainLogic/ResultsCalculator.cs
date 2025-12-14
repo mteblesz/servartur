@@ -18,7 +18,9 @@ internal static class ResultsCalculator
         Unfinished, GoodWin, EvilWin,
     }
 
+#pragma warning disable CA1002 // Do not expose generic lists
     public static SquadVotingResult CountSquadVotes(int playerCount, List<SquadVote> votes)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         if (playerCount != votes.Count)
         {
@@ -36,7 +38,9 @@ internal static class ResultsCalculator
             return SquadVotingResult.Rejected;
         }
     }
+#pragma warning disable CA1002 // Do not expose generic lists
     public static QuestVotingResult CountQuestVotes(int membersCount, List<QuestVote> votes, bool isDoubleFail)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         if (membersCount != votes.Count)
         {
@@ -54,7 +58,9 @@ internal static class ResultsCalculator
             return QuestVotingResult.Failed;
         }
     }
+#pragma warning disable CA1002 // Do not expose generic lists
     public static GameResult EvaluateGame(List<Squad> roomSquads)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         var successfulQuestsCount = roomSquads
             .Count(s => s.Status == SquadStatus.Successful);

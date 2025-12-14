@@ -1,6 +1,7 @@
 namespace servartur.Entities;
 
-internal class Membership
+#pragma warning disable CA1515 // Consider making public types internal
+public class Membership
 {
     public int SquadId { get; set; }
     public virtual required Squad Squad { get; set; }

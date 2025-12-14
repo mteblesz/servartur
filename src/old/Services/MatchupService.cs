@@ -17,10 +17,16 @@ internal interface IMatchupService
     void SetNickname(PlayerNicknameSetDto dto);
     void RemovePlayer(int playerId);
     void StartGame(StartGameDto dto);
+#pragma warning disable CA1002 // Do not expose generic lists
     List<PlayerInfoDto> GetUpdatedPlayers(int roomId);
+#pragma warning restore CA1002 // Do not expose generic lists
     SquadInfoDto GetUpdatedCurrentSquad(int roomId);
+#pragma warning disable CA1002 // Do not expose generic lists
     List<QuestInfoShortDto> GetUpdatedQuestsSummary(int roomId);
+#pragma warning restore CA1002 // Do not expose generic lists
+#pragma warning disable CA1021 // Avoid out parameters
     PlayerInfoDto LeaveGame(int playerId, out int roomId);
+#pragma warning restore CA1021 // Avoid out parameters
 }
 
 internal class MatchupService : DataUpdatesService, IMatchupService
@@ -105,7 +111,7 @@ internal class MatchupService : DataUpdatesService, IMatchupService
             throw new RoomNotInMatchupException(dto.RoomId);
         }
 
-        var roleInfo = _mapper.Map<GameStartHelper.RoleInfo>(dto);
+        var roleInfo = _mapper.Map<RoleInfo>(dto);
         var roles = GameStartHelper.MakeRoleDeck(playerCount, roleInfo, out var tooManyEvilRoles);
         if (tooManyEvilRoles)
         {

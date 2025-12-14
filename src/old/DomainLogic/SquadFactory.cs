@@ -5,7 +5,9 @@ namespace servartur.DomainLogic;
 
 internal static class SquadFactory
 {
+#pragma warning disable CA1002 // Do not expose generic lists
     public static Squad OnGameStart(List<Player> roomPlayers)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         Random random = new Random();
         var playerCount = roomPlayers.Count;
@@ -24,7 +26,9 @@ internal static class SquadFactory
         return firstSquad;
     }
 
+#pragma warning disable CA1002 // Do not expose generic lists
     public static Squad OnRejection(List<Player> roomPlayers, Squad prevSquad, Player prevLeader)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         var leaderIndex = roomPlayers.IndexOf(prevLeader);
         var nextLeaderIndex = (leaderIndex + 1) % roomPlayers.Count;
@@ -42,7 +46,9 @@ internal static class SquadFactory
 
         return nextSquad;
     }
+#pragma warning disable CA1002 // Do not expose generic lists
     public static Squad OnQuestFinished(List<Player> roomPlayers, Squad prevSquad, Player prevLeader)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         var playerCount = roomPlayers.Count;
         var leaderIndex = roomPlayers.IndexOf(prevLeader);

@@ -2,7 +2,7 @@ using AutoMapper;
 using servartur.Entities;
 using servartur.Models.Outgoing;
 
-namespace servartur.Services.Base_Services;
+namespace servartur.Services.BaseServices;
 
 /// <summary>
 /// Exposes methods for getting updated data about votings for voting data refreshes

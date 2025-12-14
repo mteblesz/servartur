@@ -12,7 +12,9 @@ internal static class UpdatesHubSquadsExtensions
         var groupName = roomId.ToString();
         await context.Clients.Group(groupName).ReceiveCurrentSquad(updatedCurrentSquad);
     }
+#pragma warning disable CA1002 // Do not expose generic lists
     public static async Task RefreshQuestsSummary(this UpdatesHubContext context, int roomId, List<QuestInfoShortDto> updatedQuestsSummary)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         var groupName = roomId.ToString();
         await context.Clients.Group(groupName).ReceiveQuestsSummary(updatedQuestsSummary);

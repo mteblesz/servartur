@@ -3,24 +3,26 @@ using servartur.Utils;
 
 namespace servartur.DomainLogic;
 
+#pragma warning disable CA1515 // Consider making public types internal
+public class RoleInfo
+{
+    public bool AreMerlinAndAssassinInGame { get; set; }
+    public bool ArePercivalAndMorganaInGame { get; set; }
+    public bool AreOberonAndMordredInGame { get; set; }
+
+    public RoleInfo(
+        bool areMerlinAndAssassinInGame,
+        bool arePercivalAndMorganaInGame,
+        bool areOberonAndMordredInGame)
+    {
+        AreMerlinAndAssassinInGame = areMerlinAndAssassinInGame;
+        ArePercivalAndMorganaInGame = arePercivalAndMorganaInGame;
+        AreOberonAndMordredInGame = areOberonAndMordredInGame;
+    }
+}
+
 internal static class GameStartHelper
 {
-    internal class RoleInfo
-    {
-        public bool AreMerlinAndAssassinInGame { get; set; }
-        public bool ArePercivalAndMorganaInGame { get; set; }
-        public bool AreOberonAndMordredInGame { get; set; }
-
-        public RoleInfo(
-            bool areMerlinAndAssassinInGame,
-            bool arePercivalAndMorganaInGame,
-            bool areOberonAndMordredInGame)
-        {
-            AreMerlinAndAssassinInGame = areMerlinAndAssassinInGame;
-            ArePercivalAndMorganaInGame = arePercivalAndMorganaInGame;
-            AreOberonAndMordredInGame = areOberonAndMordredInGame;
-        }
-    }
 #pragma warning disable CA1002 // Do not expose generic lists
 #pragma warning disable CA1021 // Avoid out parameters
     public static List<Role> MakeRoleDeck(int playerCount, RoleInfo roleInfo, out bool tooManyEvilRoles)

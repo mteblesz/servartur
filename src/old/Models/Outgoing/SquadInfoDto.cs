@@ -11,5 +11,7 @@ internal class SquadInfoDto
     public required SquadStatus Status { get; set; }
     public required PlayerInfoDto Leader { get; set; }
 
+#pragma warning disable CA1002 // Do not expose generic lists
     public required List<PlayerInfoDto> Members { get; set; }
+#pragma warning restore CA1002 // Do not expose generic lists
 }

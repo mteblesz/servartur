@@ -17,7 +17,9 @@ internal abstract class DataUpdatesService : BaseService
         : base(dbContext, mapper, logger)
     { }
 
+#pragma warning disable CA1002 // Do not expose generic lists
     public List<PlayerInfoDto> GetUpdatedPlayers(int roomId)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         var room = _dbContext.Rooms
             .Include(r => r.Players)
@@ -32,9 +34,9 @@ internal abstract class DataUpdatesService : BaseService
     {
         var room = _dbContext.Rooms
             .Include(r => r.CurrentSquad)
-                .ThenInclude(s => s.Leader)
+                .ThenInclude(s => s!.Leader)
             .Include(r => r.CurrentSquad)
-                .ThenInclude(s => s.Memberships)
+                .ThenInclude(s => s!.Memberships)
                     .ThenInclude(m => m.Player)
             .FirstOrDefault(r => r.RoomId == roomId)
             ?? throw new RoomNotFoundException(roomId);
@@ -45,7 +47,9 @@ internal abstract class DataUpdatesService : BaseService
         return result;
     }
 
+#pragma warning disable CA1002 // Do not expose generic lists
     public List<QuestInfoShortDto> GetUpdatedQuestsSummary(int roomId)
+#pragma warning restore CA1002 // Do not expose generic lists
     {
         var room = _dbContext.Rooms
             .Include(r => r.Players)
