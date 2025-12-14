@@ -59,7 +59,7 @@ public class StartGameTests
         dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(room.Players);
         dbContextMock.SetupGet(x => x.Squads).ReturnsDbSet(room.Squads);
 
-        // Act
+        // Act 
         matchupService.StartGame(startGameDto);
 
         // Assert
