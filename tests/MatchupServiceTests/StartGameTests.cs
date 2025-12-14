@@ -53,8 +53,8 @@ public class StartGameTests
         var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup, Players = players };
         List<Room> rooms = [room];
 
-        mapperMock.Setup(m => m.Map<GameStartHelper.RoleInfo>(It.IsAny<StartGameDto>()))
-            .Returns(new GameStartHelper.RoleInfo(MnA, PnM, OnM));
+        mapperMock.Setup(m => m.Map<RoleInfo>(It.IsAny<StartGameDto>()))
+            .Returns(new RoleInfo(MnA, PnM, OnM));
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
         dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(room.Players);
         dbContextMock.SetupGet(x => x.Squads).ReturnsDbSet(room.Squads);
@@ -193,8 +193,8 @@ public class StartGameTests
             AreOberonAndMordredInGame = OnM,
         };
 
-        mapperMock.Setup(m => m.Map<GameStartHelper.RoleInfo>(It.IsAny<StartGameDto>()))
-            .Returns(new GameStartHelper.RoleInfo(MnA, PnM, OnM));
+        mapperMock.Setup(m => m.Map<RoleInfo>(It.IsAny<StartGameDto>()))
+            .Returns(new RoleInfo(MnA, PnM, OnM));
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
         dbContextMock.SetupGet(x => x.Players).ReturnsDbSet(room.Players);
         dbContextMock.SetupGet(x => x.Squads).ReturnsDbSet(room.Squads);
