@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Servartur.Data.PostgreSQL.Configuration;
+using Servartur.Data.PostgreSQL.Rooms;
+using Servartur.Domain.DbRepositories;
 
 namespace Servartur.Data.PostgreSQL;
 
@@ -10,7 +12,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDatabaseServices(this IServiceCollection services)
     {
         return services
-            .AddPostgreSql<DatabaseContext>();
+            .AddPostgreSql<DatabaseContext>()
+            .AddScoped<IRoomsDbRepository, RoomsDbRepository>();
     }
 
     public static IServiceCollection AddPostgreSql<TContext>(this IServiceCollection services)

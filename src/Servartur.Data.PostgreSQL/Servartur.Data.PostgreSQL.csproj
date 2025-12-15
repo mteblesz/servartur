@@ -4,4 +4,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Servartur.Domain\Servartur.Domain.csproj" />
+  </ItemGroup>
 </Project>
