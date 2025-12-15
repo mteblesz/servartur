@@ -95,7 +95,7 @@ public class GameStartHelperTests
     {
         // Arrange
         var invalidPlayerCount = -1;
-        RoleInfo roleInfo = new RoleInfo(true, true, true);
+        var roleInfo = new RoleInfo(true, true, true);
 
         // Act & Assert
         void action() => GameStartHelper.MakeRoleDeck(invalidPlayerCount, roleInfo, out _);
