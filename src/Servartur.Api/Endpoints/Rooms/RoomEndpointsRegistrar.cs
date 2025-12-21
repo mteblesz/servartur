@@ -18,7 +18,6 @@ internal class RoomEndpointsRegistrar : IEndpointsGroupRegistrar
     }
 
     private async Task<Created<CreateRoomResponse>> CreateRoomAsync(
-        CreateRoomRequest request,
         HttpContext context,
         RoomService roomService,
         CancellationToken ct)

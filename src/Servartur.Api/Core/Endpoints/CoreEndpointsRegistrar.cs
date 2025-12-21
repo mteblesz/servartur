@@ -1,6 +1,6 @@
 namespace Servartur.Api.Core.Endpoints;
 
-internal class EndpointsRegistrar(IEnumerable<IEndpointsGroupRegistrar> registrars)
+internal class CoreEndpointsRegistrar(IEnumerable<IEndpointsGroupRegistrar> registrars)
 {
     private readonly IEnumerable<IEndpointsGroupRegistrar> _registrars = registrars;
 

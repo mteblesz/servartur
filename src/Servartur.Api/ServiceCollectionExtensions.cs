@@ -9,7 +9,7 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection RegisterServices(this IServiceCollection services)
     {
         return services
-            .AddEndpointRegistrarServices()
+            .AddEndpointRegistrarServicesFromAssemblyContaining(typeof(ServiceCollectionExtensions))
             .AddApplicationServices()
             .AddDatabaseServices();
     }

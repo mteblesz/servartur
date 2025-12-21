@@ -2,9 +2,9 @@ namespace Servartur.Api.Core.Endpoints;
 
 internal static class WebApplicationExtensions
 {
-    public static WebApplication UseEndpoints(this WebApplication application)
+    public static WebApplication RegisterEndpoints(this WebApplication application)
     {
-        var registrar = application.Services.GetRequiredService<EndpointsRegistrar>();
+        var registrar = application.Services.GetRequiredService<CoreEndpointsRegistrar>();
 
         registrar.RegisterEndpoints(application);
 

@@ -1,4 +1,5 @@
 using Servartur.Api;
+using Servartur.Api.Core.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseEndpoints();
+app.RegisterEndpoints();
+
+app.UseRouting();
 
 app.UseHttpsRedirection();
 
