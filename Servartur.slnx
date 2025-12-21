@@ -1,7 +1,4 @@
 <Solution>
-  <Folder Name="/Core/">
-    <Project Path="src/Servartur.Core/Servartur.Core.csproj" Id="0e1b7d17-3140-41fd-88d0-e35764d9da60" />
-  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />

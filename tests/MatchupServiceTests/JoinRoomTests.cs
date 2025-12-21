@@ -29,15 +29,15 @@ public class JoinRoomTests
         var mapperMock = new Mock<IMapper>();
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
-        const int roomId = 1;
+        const int RoomId = 1;
         var expectedPlayerId = 0; // InMemoryDatabase indexing
-        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup };
+        var room = new Room() { RoomId = RoomId, Status = RoomStatus.Matchup };
 
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet([room]);
         dbContextMock.SetupGet(x => x.Players).ReturnsDbSet([]);
 
         // Act
-        var result = matchupService.JoinRoom(roomId);
+        var result = matchupService.JoinRoom(RoomId);
 
         // Assert
         result.Should().Be(expectedPlayerId);
@@ -58,17 +58,17 @@ public class JoinRoomTests
         var mapperMock = new Mock<IMapper>();
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
-        const int roomId = 1;
+        const int RoomId = 1;
         var expectedPlayerIds = Enumerable.Range(1, numberOfCreations);
 
-        var room = new Room() { RoomId = roomId, Status = RoomStatus.Matchup };
+        var room = new Room() { RoomId = RoomId, Status = RoomStatus.Matchup };
         var rooms = new List<Room> { room };
 
         var playerIdProvider = new PlayerIdProvider([.. expectedPlayerIds]);
         dbContextMock.Setup(x => x.Players.Add(It.IsAny<Player>()))
             .Callback<Player>(p =>
             {
-                p.PlayerId = playerIdProvider.GetNext(); // Mock<GameDbContext> won't index propertly by itself
+                p.PlayerId = playerIdProvider.GetNext; // Mock<GameDbContext> won't index propertly by itself
             });
 
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
@@ -77,7 +77,7 @@ public class JoinRoomTests
         var results = new List<int>();
         for (var i = 0; i < numberOfCreations; i++)
         {
-            results.Add(matchupService.JoinRoom(roomId));
+            results.Add(matchupService.JoinRoom(RoomId));
         }
 
         // Assert
@@ -88,11 +88,8 @@ public class JoinRoomTests
     private class PlayerIdProvider(IList<int> ids)
     {
         private readonly IList<int> _ids = ids;
-        private int i;
-        public int GetNext()
-        {
-            return _ids[i++];
-        }
+
+        public int GetNext => _ids[field++];
     }
 
     [Fact]
@@ -126,13 +123,13 @@ public class JoinRoomTests
         var mapperMock = new Mock<IMapper>();
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
-        const int roomId = 1;
+        const int RoomId = 1;
 
-        var rooms = new List<Room>() { new() { RoomId = roomId, Status = status } };
+        var rooms = new List<Room>() { new() { RoomId = RoomId, Status = status } };
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        void action() => matchupService.JoinRoom(roomId);
+        void action() => matchupService.JoinRoom(RoomId);
         Assert.Throws<RoomNotInMatchupException>(action);
     }
     [Fact]
@@ -144,13 +141,13 @@ public class JoinRoomTests
         var mapperMock = new Mock<IMapper>();
         var matchupService = new MatchupService(dbContextMock.Object, mapperMock.Object, loggerMock.Object);
 
-        const int roomId = 1;
+        const int RoomId = 1;
         var players = Enumerable.Range(1, 10)
-            .Select(i => new Player() { PlayerId = i, Nick = $"test_{i}", RoomId = roomId })
+            .Select(i => new Player() { PlayerId = i, Nick = $"test_{i}", RoomId = RoomId })
             .ToList();
         var rooms = new List<Room>() { new()
         {
-            RoomId = roomId,
+            RoomId = RoomId,
             Status = RoomStatus.Matchup,
             Players = players,
         } };
@@ -158,7 +155,7 @@ public class JoinRoomTests
         dbContextMock.SetupGet(x => x.Rooms).ReturnsDbSet(rooms);
 
         // Act and Assert
-        void action() => matchupService.JoinRoom(roomId);
+        void action() => matchupService.JoinRoom(RoomId);
         Assert.Throws<RoomIsFullException>(action);
     }
 

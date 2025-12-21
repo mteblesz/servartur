@@ -9,12 +9,12 @@ internal static class SquadFactory
     public static Squad OnGameStart(List<Player> roomPlayers)
 #pragma warning restore CA1002 // Do not expose generic lists
     {
-        Random random = new Random();
+        var random = new Random();
         var playerCount = roomPlayers.Count;
         var leader = roomPlayers[random.Next(playerCount)];
 
         var questNumber = 1;
-        Squad firstSquad = new Squad()
+        var firstSquad = new Squad()
         {
             Leader = leader,
             QuestNumber = questNumber,
@@ -34,7 +34,7 @@ internal static class SquadFactory
         var nextLeaderIndex = (leaderIndex + 1) % roomPlayers.Count;
         var nextLeader = roomPlayers[nextLeaderIndex];
 
-        Squad nextSquad = new Squad()
+        var nextSquad = new Squad()
         {
             QuestNumber = prevSquad.QuestNumber,
             SquadNumber = prevSquad.SquadNumber + 1,
@@ -56,7 +56,7 @@ internal static class SquadFactory
         var nextLeader = roomPlayers[nextLeaderIndex];
 
         var nextQuestNumber = prevSquad.QuestNumber + 1;
-        Squad nextSquad = new Squad()
+        var nextSquad = new Squad()
         {
             QuestNumber = nextQuestNumber,
             SquadNumber = 1,
