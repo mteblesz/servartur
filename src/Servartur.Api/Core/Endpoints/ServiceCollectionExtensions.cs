@@ -1,8 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
+namespace Servartur.Api.Core.Endpoints;
 
-namespace Servartur.Core.Endpoints;
-
-public static class ServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddEndpointRegistrarServices(this IServiceCollection services)
     {

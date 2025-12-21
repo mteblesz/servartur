@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Http.HttpResults;
+using Servartur.Api.Core.Endpoints;
 using Servartur.Api.Endpoints.Rooms.Models;
 using Servartur.ApplicatonServices.Services;
 

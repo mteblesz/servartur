@@ -4,6 +4,7 @@ using servartur.Entities;
 using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Outgoing;
+using servartur.Services.BaseServices;
 
 namespace servartur.Services;
 

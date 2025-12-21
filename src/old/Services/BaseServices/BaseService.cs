@@ -1,7 +1,7 @@
 using AutoMapper;
 using servartur.Entities;
 
-namespace servartur.Services;
+namespace servartur.Services.BaseServices;
 
 /// <summary>
 /// Stores common fields all services use.

@@ -1,5 +1,5 @@
+using Servartur.Api.Core.Endpoints;
 using Servartur.ApplicatonServices;
-using Servartur.Core.Endpoints;
 using Servartur.Data.PostgreSQL;
 
 namespace Servartur.Api;

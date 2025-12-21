@@ -1,4 +1,4 @@
-namespace Servartur.Core.Endpoints;
+namespace Servartur.Api.Core.Endpoints;
 
 internal interface IEndpointsGroupRegistrar
 {

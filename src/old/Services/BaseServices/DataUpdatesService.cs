@@ -6,7 +6,7 @@ using servartur.Enums;
 using servartur.Exceptions;
 using servartur.Models.Outgoing;
 
-namespace servartur.Services;
+namespace servartur.Services.BaseServices;
 
 /// <summary>
 /// Exposes methods for getting updated data for Refreshes

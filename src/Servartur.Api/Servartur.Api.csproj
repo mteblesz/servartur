@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Servartur.ApplicatonServices\Servartur.ApplicatonServices.csproj" />
-    <ProjectReference Include="..\Servartur.Core\Servartur.Core.csproj" />
     <ProjectReference Include="..\Servartur.Data.PostgreSQL\Servartur.Data.PostgreSQL.csproj" />
     <ProjectReference Include="..\Servartur.Domain\Servartur.Domain.csproj" />
   </ItemGroup>

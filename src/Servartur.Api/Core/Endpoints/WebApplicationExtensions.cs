@@ -1,6 +1,6 @@
-namespace Servartur.Core.Endpoints;
+namespace Servartur.Api.Core.Endpoints;
 
-public static class WebApplicationExtensions
+internal static class WebApplicationExtensions
 {
     public static WebApplication UseEndpoints(this WebApplication application)
     {
