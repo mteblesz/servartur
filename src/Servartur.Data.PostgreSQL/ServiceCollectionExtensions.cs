@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using Servartur.Data.PostgreSQL.Configuration;
-using Servartur.Data.PostgreSQL.Rooms;
+using Servartur.Data.PostgreSQL.Repositories;
 using Servartur.Domain.DbRepositories;
 
 namespace Servartur.Data.PostgreSQL;
@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddPostgreSql<DatabaseContext>()
+            .AddScoped<IPlayersDbRepository, PlayersDbRepository>()
             .AddScoped<IRoomsDbRepository, RoomsDbRepository>();
     }
 
@@ -55,6 +56,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    // TODO: move to core library
     private static IServiceCollection AddBindAndValdiateOptions<TOptions>(this IServiceCollection services)
         where TOptions : class
     {

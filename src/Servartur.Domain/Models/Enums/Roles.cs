@@ -8,7 +8,7 @@ internal static class Roles
         Character.Percival ];
 
     public static IReadOnlyCollection<Character> Evil = [
-        Character.EvilEntity,
+        Character.EvilAgent,
         Character.Assassin,
         Character.Morgana,
         Character.Mordred,

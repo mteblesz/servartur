@@ -4,7 +4,7 @@ public enum Character
 {
     Unspecfied,
     GoodKnight,
-    EvilEntity,
+    EvilAgent,
     Merlin,
     Assassin,
     Percival,

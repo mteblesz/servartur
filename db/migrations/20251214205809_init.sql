@@ -7,7 +7,7 @@ create table rooms (
 create table players (
     id          uuid    primary key,
     name        text    not null,
-    character   text    null,
+    character   text    not null,
 
     room_id     uuid    not null references rooms(id),
 
@@ -49,8 +49,8 @@ create table quest_votes (
     primary key (player_id, squad_id)
 );
 
-create unique index idx_players_room on players(room_id);
-create unique index idx_squads_room on squads(room_id);
+create index idx_players_room on players(room_id);
+create index idx_squads_room on squads(room_id);
 
 -- migrate:down
 drop index if exists idx_players_room;

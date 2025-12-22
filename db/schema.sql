@@ -1,4 +1,4 @@
-\restrict 9mkLCjWhhePvfzJ3t9GZ3qhnnrmC3tuJGFNaoWhHCCOwodP1DmZ0Qp5SPunPd09
+\restrict X1C5kPmgn7fhLydz33aGklyduL608eaHsrOc1v1EZV8ABzJ0FhpyINZhe8xqckm
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
@@ -52,7 +52,7 @@ CREATE TABLE public.memberships (
 CREATE TABLE public.players (
     id uuid NOT NULL,
     name text NOT NULL,
-    "character" text,
+    "character" text NOT NULL,
     room_id uuid NOT NULL
 );
 
@@ -180,14 +180,14 @@ ALTER TABLE ONLY public.squads
 -- Name: idx_players_room; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_players_room ON public.players USING btree (room_id);
+CREATE INDEX idx_players_room ON public.players USING btree (room_id);
 
 
 --
 -- Name: idx_squads_room; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_squads_room ON public.squads USING btree (room_id);
+CREATE INDEX idx_squads_room ON public.squads USING btree (room_id);
 
 
 --
@@ -258,7 +258,7 @@ ALTER TABLE ONLY public.squads
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 9mkLCjWhhePvfzJ3t9GZ3qhnnrmC3tuJGFNaoWhHCCOwodP1DmZ0Qp5SPunPd09
+\unrestrict X1C5kPmgn7fhLydz33aGklyduL608eaHsrOc1v1EZV8ABzJ0FhpyINZhe8xqckm
 
 
 --
