@@ -1,7 +1,8 @@
+using Servartur.Data.PostgreSQL.Entities;
 using Servartur.Domain.DbRepositories;
 using Servartur.Domain.Models;
 
-namespace Servartur.Data.PostgreSQL.Rooms;
+namespace Servartur.Data.PostgreSQL.Repositories;
 
 internal class RoomsDbRepository(DatabaseContext dbContext) : IRoomsDbRepository
 {

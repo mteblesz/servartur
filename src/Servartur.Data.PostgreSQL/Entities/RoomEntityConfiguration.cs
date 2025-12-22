@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Servartur.Data.PostgreSQL.Rooms;
+namespace Servartur.Data.PostgreSQL.Entities;
 
 internal class RoomEntityConfiguration : IEntityTypeConfiguration<RoomEntity>
 {
@@ -13,12 +13,7 @@ internal class RoomEntityConfiguration : IEntityTypeConfiguration<RoomEntity>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id)
-            .HasColumnName("id")
-            .IsRequired();
-
         builder.Property(x => x.Status)
-            .HasColumnName("status")
             .IsRequired();
     }
 }
