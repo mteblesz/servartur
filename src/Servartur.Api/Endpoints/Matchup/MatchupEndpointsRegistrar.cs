@@ -17,7 +17,11 @@ internal class MatchupEndpointsRegistrar : IEndpointsGroupRegistrar
             .Produces(StatusCodes.Status201Created);
 
         builder
-            .MapPost("/player", CreatePlayerAsync)
+            .MapPost("/{roomId}/player", CreatePlayerAsync)
+            .Produces(StatusCodes.Status201Created);
+
+        builder
+            .MapDelete("/{roomId}/player/{playerId}", LeaveRoomAsync)
             .Produces(StatusCodes.Status201Created);
     }
 
@@ -40,5 +44,18 @@ internal class MatchupEndpointsRegistrar : IEndpointsGroupRegistrar
         var id = await matchupService.CreatePlayerAsync(request.Name.Trim(), request.RoomId, ct);
 
         return TypedResults.Created($"{Path}/{id}", new CreatePlayerResponse { Id = id });
+    }
+
+    private async Task<Ok> LeaveRoomAsync(
+        LeaveRoomRequest request,
+        HttpContext context,
+        MatchupService matchupService,
+        CancellationToken ct)
+    {
+        // TODO:  move playerid to user headers details, validate user.playerId
+
+        await matchupService.RemovePlayerAsync(request.RoomId, request.PlayerId, ct);
+
+        return TypedResults.Ok();
     }
 }

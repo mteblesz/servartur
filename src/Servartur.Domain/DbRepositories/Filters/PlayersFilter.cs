@@ -1,7 +1,8 @@
-﻿namespace Servartur.Domain.DbRepositories.Filters;
+namespace Servartur.Domain.DbRepositories.Filters;
 
 public class PlayersFilter
 {
     public IEnumerable<string>? Names { get; init; }
     public Guid? RoomId { get; init; }
+    public Guid? PlayerId { get; init; }
 }

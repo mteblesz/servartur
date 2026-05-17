@@ -34,14 +34,14 @@ public class MatchupService(
 
         var playerId = Guid.NewGuid();
 
-        var room = new Player
+        var player = new Player
         {
             Id = playerId,
             Name = name,
             RoomId = roomId,
         };
 
-        await _playersDbRepository.CreatePlayerAsync(room, ct);
+        await _playersDbRepository.CreatePlayerAsync(player, ct);
 
         return playerId;
     }
@@ -59,5 +59,33 @@ public class MatchupService(
             // TODO: add handling
             throw new NameAlreadyUsedException(name, roomId);
         }
+    }
+
+    public async Task RemovePlayerAsync(Guid roomId, Guid playerId, CancellationToken ct)
+    {
+        // TODO: valdiate player is in room
+
+        await _playersDbRepository.DeletePlayersAsync(new PlayersFilter
+        {
+            PlayerId = playerId,
+        }, ct);
+    }
+
+    public async Task StartGameAsync(Guid roomId, CancellationToken ct)
+    {
+        // TODO: add game rules validation
+
+        //if (!dto.AreMerlinAndAssassinInGame && dto.ArePercivalAndMorganaInGame)
+        //{
+        //    ModelState.AddModelError("", "Morgana and Percival can't be present with Merlin and Assassin missing");
+        //    return BadRequest(ModelState);
+        //}
+        //if (!dto.AreMerlinAndAssassinInGame && dto.AreOberonAndMordredInGame)
+        //{
+        //    ModelState.AddModelError("", "Oberon and Mordred can't be present with Merlin and Assassin missing");
+        //    return BadRequest(ModelState);
+        //}
+
+        throw new NotImplementedException();
     }
 }

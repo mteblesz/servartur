@@ -32,4 +32,11 @@ internal class PlayersDbRepository(DatabaseContext dbContext) : IPlayersDbReposi
 
         return await query.AnyAsync(ct);
     }
+
+    public async Task DeletePlayerAsync(PlayersFilter filter, CancellationToken ct)
+    {
+        await _dbContext.Players.AddAsync(entity, ct);
+
+        await _dbContext.SaveChangesAsync(ct);
+    }
 }

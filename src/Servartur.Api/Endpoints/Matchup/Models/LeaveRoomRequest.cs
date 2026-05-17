@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Servartur.Api.Endpoints.Matchup.Models;
 
-internal class CreatePlayerRequest
+public class LeaveRoomRequest
 {
     [FromRoute]
     [Required]
     public required Guid RoomId { get; init; }
 
+    [FromRoute]
     [Required]
-    [MaxLength(32)]
-    public required string Name { get; init; }
+    public required Guid PlayerId { get; init; }
 }
